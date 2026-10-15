@@ -25,6 +25,18 @@ const nextConfig: NextConfig = {
           permanent: false,
         }),
       ),
+      // LoopCraft is no longer offered: its old page and share images go to
+      // the Crafting Apps index.
+      {
+        source: "/apps/loopcraft",
+        destination: "/apps",
+        permanent: true,
+      },
+      {
+        source: "/images/apps/loopcraft/:file",
+        destination: "/apps",
+        permanent: true,
+      },
       // DrawCraft was renamed VectorCraft; the Crafting Apps READMEs still
       // link the old page.
       {

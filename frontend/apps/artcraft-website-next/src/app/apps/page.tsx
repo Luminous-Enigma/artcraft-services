@@ -45,7 +45,7 @@ import { siteUrl } from "@/lib/links";
 
 const TITLE = "Crafting Apps: open-source creative tools";
 const COVERAGE =
-  "Image editing, vector illustration, video, photography, PDFs, motion graphics, page layout, interface design, beat making, word processing, audio, presentations, CAD and spreadsheets";
+  "Image editing, vector illustration, video, photography, PDFs, motion graphics, page layout, interface design, word processing, audio, presentations, CAD and spreadsheets";
 const DESCRIPTION = `${COVERAGE}: ${CRAFTING_APPS_COUNT_WORD.toLowerCase()} native, open-source apps from the ArtCraft team, built in Rust and free to use.`;
 
 export const metadata: Metadata = {

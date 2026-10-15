@@ -30,7 +30,6 @@ export type CraftAppSlug =
   | "effectcraft"
   | "designcraft"
   | "figcraft"
-  | "loopcraft"
   | "wordcraft"
   | "soundcraft"
   | "deckcraft"
@@ -650,83 +649,6 @@ export const CRAFTING_APPS: CraftApp[] = [
       lede: "Host the open file from the app or a server of your own, share the invite link, and edit it together. Changes sync live with cursors, selections and cursor chat, and undo takes back only your own.",
       caption: "A host and a guest editing one file",
       alt: "Two people editing one FigCraft file live: each sees the other's cursor, selection and edits land instantly, ending on the FigCraft end card.",
-    },
-  },
-  {
-    slug: "loopcraft",
-    prefix: "Loop",
-    category: "Beat making & music production",
-    status: "Early alpha",
-    headline: ["Beats, patterns and ", "songs", ", in pure Rust."],
-    pitch: "An open-source beat maker and music production studio, built in pure Rust.",
-    lede: "A pattern-based music workstation: a step sequencer and piano roll for writing parts, a playlist for arranging them, and a mixer with effects for finishing them. Native, open source, and drivable end to end by AI agents.",
-    schemaCategory: "MultimediaApplication",
-    platforms: ["macOS", "Windows", "Linux"],
-    rustVersion: "1.95",
-    features: [
-      {
-        title: "Step sequencer",
-        body: "Program drums in the channel rack, up to four bars a row, with swing, step fills and a graph editor for each step's velocity, pan, pitch and shift.",
-      },
-      {
-        title: "A deep piano roll",
-        body: "Draw, paint and slice notes, stamp chords and scale runs, then quantise, strum, arpeggiate or humanise them, with slide notes and ghost notes from other channels.",
-      },
-      {
-        title: "Arrange in the playlist",
-        body: "Place patterns and audio clips on tracks, resize, slice and duplicate them, drop time markers, and draw automation for any knob, fader or the tempo.",
-      },
-      {
-        title: "Instruments and effects",
-        body: "Twelve instruments, from a sampler and synths to drum machines and a slicer, and twenty-four effects, each with factory presets. The drum sounds are synthesised, not sampled.",
-      },
-      {
-        title: "Record and mix",
-        body: "Play parts in from a MIDI or computer keyboard, record audio takes, and mix on a master and twenty insert tracks with sends and sidechain compression.",
-      },
-      {
-        title: "Agent-ready",
-        body: "Every action is a command with an id, so a command-line tool, an MCP server and a control channel can write, arrange and export a track end to end.",
-      },
-    ],
-    shots: [
-      {
-        file: "hero.webp",
-        source: "loopcraft-hero.png",
-        caption: "First Light — playlist, channel rack and mixer",
-        alt: "LoopCraft with its demo song open: the browser on the left, the playlist with coloured pattern clips across fourteen bars, and on the right the channel rack with its step sequencer over the mixer",
-        wide: true,
-      },
-      {
-        file: "light.webp",
-        source: "light-theme.png",
-        caption: "Light theme",
-        alt: "LoopCraft in its light theme: the same windows on cool light grey panels with dark lettering and a violet accent",
-        wide: true,
-      },
-      {
-        file: "piano-roll.webp",
-        source: "piano-roll.png",
-        caption: "Piano roll with a velocity lane",
-        alt: "LoopCraft's piano roll showing the lead melody as green notes on a grid beside a piano keyboard, with a velocity lane underneath, beside the channel rack and the mixer",
-        wide: true,
-      },
-      {
-        file: "instruments.webp",
-        source: "instrument-and-mixer.png",
-        caption: "Instrument editor over the playlist",
-        alt: "LoopCraft's three-oscillator instrument editor, a grid of knobs for the oscillators, an envelope and a filter, floating over the playlist beside the channel rack and the mixer",
-        wide: true,
-      },
-    ],
-    demo: {
-      src: "https://frontend-cdn.fakeyou.com/videos/loopcraft-overview-web.mp4",
-      poster: "overview-poster.webp",
-      label: "Make music",
-      headline: ["Make the ", "beat", "."],
-      lede: "Click in a groove, draw a melody, arrange the song and mix it, all in one native app on your own machine.",
-      caption: "The real app playing its demo song, First Light: step sequencer, piano roll, playlist and mixer",
-      alt: "LoopCraft in use. Steps are clicked into the channel rack and play, a clip opens in the piano roll and gets three new notes, then the whole song plays with the mixer's meters moving.",
     },
   },
   {
