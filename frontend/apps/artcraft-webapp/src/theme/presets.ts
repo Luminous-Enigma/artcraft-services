@@ -8,6 +8,8 @@ import { DEFAULT_TOKENS } from "./soul-mark";
 export const LIGHT_BACKGROUNDS: [string, Hex][] = [
   ["Paper", "#FFFFFF"],
   ["Blush", "#FDF2F7"],
+  ["Rose", "#F9CADE"],
+  ["Coral", "#FFCCC4"],
   ["Peach", "#FFD8A8"],
   ["Butter", "#FFE066"],
   ["Honey", "#F3D588"],
@@ -22,6 +24,7 @@ export const DEEP_BACKGROUNDS: [string, Hex][] = [
   ["Deep blue", "#0D2661"],
   ["Royal blue", "#19206A"],
   ["Deep purple", "#391961"],
+  ["Deep rose", "#521232"],
   ["Deep red", "#5D101B"],
   ["Reddish brown", "#441E13"],
   ["Brown", "#34241A"],
@@ -46,6 +49,8 @@ export const ACCENTS: [string, Hex][] = [
  */
 export const BOLD_BACKGROUNDS: [string, Hex][] = [
   ["Red", "#E23E57"],
+  ["Crimson", "#DC143C"],
+  ["Burnt orange", "#CC5500"],
   ["Royal blue", "#4169E1"],
   ["Violet", "#7A4FBF"],
   ["Grey", "#777777"],
