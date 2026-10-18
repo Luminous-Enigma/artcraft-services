@@ -153,6 +153,19 @@ remapping Tailwind's `white` and `black` themed over a thousand
 `text-white` / `bg-black` / `border-white/15` uses without editing one of them.
 See `tailwind.config.js`.
 
+### Surfaces that stay dark on purpose
+
+Some parts of an app are branded artwork, not interface: ArtCraft's pricing
+cards are dark cards with green, purple and orange glows. Repainting them
+would change the brand. Give such an element the class `st-keep-dark`: inside
+it every theme variable goes back to the app's defaults, so its text is the
+light text it was designed with, whatever theme is on. (Defined in
+`tailwind.config.js` as a small plugin.)
+
+The one trap: text that sets no colour of its own inherits the page's colour,
+which was worked out before the island reset anything, so the island sets
+its own text colour too.
+
 ---
 
 ## Notes the panel shows
