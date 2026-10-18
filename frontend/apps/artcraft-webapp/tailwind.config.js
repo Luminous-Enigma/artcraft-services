@@ -56,7 +56,7 @@ const MEANING_FAMILIES = [
 const MEANING_SHADES = [200, 300, 400, 500, 600];
 const COLOR_DEFAULTS = { red: "#D33242", blue: "#2E70FF", green: "#308752" };
 const triplet = (hex) =>
-  [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(" ");
+  [1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16)).join(" ");
 const meaningText = Object.fromEntries(
   MEANING_FAMILIES.map((family) => [
     family,
