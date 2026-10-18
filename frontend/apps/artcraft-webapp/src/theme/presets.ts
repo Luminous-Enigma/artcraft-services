@@ -38,3 +38,19 @@ export const ACCENTS: [string, Hex][] = [
   ["Teal", "#1CB6BE"],
   ["Ink", "#111111"],
 ];
+
+/**
+ * Mid-tones the readability guard has to adjust: bright, saturated colours
+ * that neither white nor dark text reads on everywhere the app draws text.
+ * They are offered only with the guard off, marked as hard to read.
+ */
+export const BOLD_BACKGROUNDS: [string, Hex][] = [
+  ["Red", "#E23E57"],
+  ["Royal blue", "#4169E1"],
+  ["Violet", "#7A4FBF"],
+  ["Grey", "#777777"],
+  ["Emerald", "#10B981"],
+  ["Orange", "#F59E0B"],
+  ["Hot pink", "#E86FA6"],
+  ["Teal", "#1CB6BE"],
+];

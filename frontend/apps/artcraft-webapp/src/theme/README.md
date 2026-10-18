@@ -168,6 +168,36 @@ its own text colour too.
 
 ---
 
+## The readability guard switch
+
+Everything above is the **readability guard**, and it is on unless the
+person turns it off. It's their screen, so they can.
+
+With the guard **off**:
+
+- the background and accent are used **exactly as picked**, and nothing is
+  nudged;
+- two things still happen, because neither changes a colour anyone picked:
+  the text is whichever of the light and dark inks reads better, and faded
+  text is made as strong as it needs to be (ArtCraft's own 40% captions
+  never reach 4.5 : 1, on any background, without that);
+- the panel shows a **Bold** row of the hardest mid-tones (red, bright royal
+  blue, violet, grey, emerald, orange, hot pink, teal), and marks every
+  swatch the guard would change with a ⚠ "hard to read" sign;
+- it lists what falls **below the readability line** in plain words
+  ("Faded captions and hints: 2.4 : 1, needs 4.5") and shows what the
+  guard would use instead.
+
+Turn it back on and every guarantee comes back at once. In the code it's one
+seed, `guard: false`, which `composeSoulMark` hands to `composeOpen`. The
+theme code ends in `-open` when the guard is off.
+
+One thing we tried and dropped: a glow or halo around text to rescue hard
+combinations. It helped large headings a little but made small text blurry
+and harder to read, so Soul Mark doesn't use it.
+
+---
+
 ## Notes the panel shows
 
 | Kind     | Means                                                                    |
@@ -187,7 +217,7 @@ A theme code holds just the seeds:
 
 ```
 SM1-0C2F1C-F59E0B-50-warm
-    background  accent  tint  text tone
+    background  accent  tint  text tone   (+ "-open" when the guard is off)
 ```
 
 Because only seeds travel, any app that runs the same calculation (ArtCraft,

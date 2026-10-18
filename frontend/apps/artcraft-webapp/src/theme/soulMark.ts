@@ -12,6 +12,10 @@
 // That is stricter than the default theme in a few places (its faded captions,
 // the label on its blue buttons, some red error text): a Soul Mark can be
 // wilder than the default, but never harder to read.
+//
+// All of that is the readability guard, and it is on unless the person turns
+// it off. With it off, their colours are used exactly as picked, nothing is
+// nudged, and the result says what falls short and what the guard would use.
 
 import {
   channels,
@@ -33,6 +37,7 @@ export const SOUL_MARK_STARTER: SoulMarkSeeds = {
   accent: "#9B4DCA",
   tint: 0.5,
   character: "soft",
+  guard: true,
 };
 
 /** The app's own colours, as declared in styles.css. Soul Mark's floors are measured on these. */
@@ -85,6 +90,8 @@ export interface SoulMarkSeeds {
   /** 0 = panels barely step off the background, 1 = bold steps. 0.5 matches the default theme. */
   tint: number;
   character: Character;
+  /** The readability guard, on unless set to false. Off means every colour is used exactly as picked. */
+  guard?: boolean;
 }
 
 export interface SoulMarkTokens {
@@ -140,6 +147,17 @@ export interface SoulMark {
   /** Status colours (errors, badges ...) fitted to this theme's surfaces. */
   meaning: MeaningInk[];
   notes: SoulMarkNote[];
+  /** With the guard off: what falls below the readability line. Empty with it on. */
+  shortfalls: Shortfall[];
+  /** With the guard off: the theme the guard would have made from the same seeds. */
+  guarded?: SoulMarkTokens;
+}
+
+/** One kind of text below the readability line, at its worst. */
+export interface Shortfall {
+  label: string;
+  ratio: number;
+  floor: number;
 }
 
 export interface Measurement {
@@ -157,27 +175,31 @@ export function sanitizeSeeds(raw: unknown): SoulMarkSeeds {
     accent: isHex(r.accent) ? (r.accent.toUpperCase() as Hex) : SOUL_MARK_STARTER.accent,
     tint: Math.min(1, Math.max(0, tint)),
     character: r.character === "warm" || r.character === "cool" ? r.character : "soft",
+    guard: r.guard !== false,
   };
 }
 
 /**
  * A short code holding only the seeds, for sharing a Soul Mark or carrying it
- * to another Crafting App: SM1-<background>-<accent>-<tint 0-100>-<character>.
+ * to another Crafting App: SM1-<background>-<accent>-<tint 0-100>-<character>,
+ * with -open on the end when the readability guard is off.
  */
 export function encodeSeeds(seeds: SoulMarkSeeds): string {
   const s = sanitizeSeeds(seeds);
-  return ["SM1", s.background.slice(1), s.accent.slice(1), Math.round(s.tint * 100), s.character].join("-");
+  const parts = ["SM1", s.background.slice(1), s.accent.slice(1), Math.round(s.tint * 100), s.character];
+  return [...parts, ...(s.guard ? [] : ["open"])].join("-");
 }
 
 /** The seeds in a code from encodeSeeds, or null when it is not one. */
 export function decodeSeeds(code: string): SoulMarkSeeds | null {
-  const m = code.trim().match(/^SM1-([0-9a-f]{6})-([0-9a-f]{6})-(\d{1,3})-(soft|warm|cool)$/i);
+  const m = code.trim().match(/^SM1-([0-9a-f]{6})-([0-9a-f]{6})-(\d{1,3})-(soft|warm|cool)(-open)?$/i);
   if (!m) return null;
   return sanitizeSeeds({
     background: `#${m[1]}`,
     accent: `#${m[2]}`,
     tint: Number(m[3]) / 100,
     character: m[4].toLowerCase(),
+    guard: !m[5],
   });
 }
 
@@ -187,6 +209,7 @@ export function decodeSeeds(code: string): SoulMarkSeeds | null {
  */
 export function composeSoulMark(rawSeeds: SoulMarkSeeds): SoulMark {
   const seeds = sanitizeSeeds(rawSeeds);
+  if (!seeds.guard) return composeOpen(seeds);
   const notes: SoulMarkNote[] = [];
 
   const ground = fitGround(seeds);
@@ -213,7 +236,85 @@ export function composeSoulMark(rawSeeds: SoulMarkSeeds): SoulMark {
   const accent = fitAccent(seeds.accent, ground, notes);
   const tokens: SoulMarkTokens = { ...ground.tokens, ...accent };
   const meaning = fitMeaningInks(textSurfaces(tokens).map(([, s]) => s), () => AA);
-  return { seeds, tokens, meaning, notes };
+  return { seeds, tokens, meaning, notes, shortfalls: [] };
+}
+
+/**
+ * The guard off: the background and accent exactly as picked. Two things are
+ * still done, because neither changes a colour anyone picked: the text is
+ * whichever of the light and dark inks reads better, and faded text is made
+ * as strong as it needs to be (as far as it can go). What still falls short
+ * is measured and said, next to what the guard would have used.
+ */
+function composeOpen(seeds: SoulMarkSeeds): SoulMark {
+  const guarded = composeSoulMark({ ...seeds, guard: true });
+  const ground = (["light", "dark"] as const)
+    .map((pole) => withBestFade(buildGround(seeds.background, pole, seeds, 1)))
+    .reduce((a, b) => (textMargin(b) > textMargin(a) ? b : a));
+  const away: Hex = ground.scheme === "dark" ? "#000000" : "#FFFFFF";
+  const a = seeds.accent;
+  const tokens: SoulMarkTokens = {
+    ...ground,
+    accent: a,
+    accent600: mix(a, away, 0.12),
+    accent700: mix(a, away, 0.24),
+    accentText: a,
+    accentLine: a,
+    accent400: mix(a, ground.fg, 0.12),
+    accent300: mix(a, ground.fg, 0.25),
+    accentInk: mix(a, ground.fg, 0.18),
+  };
+  const surfaces = textSurfaces(tokens).map(([, s]) => s);
+  // Status colours exactly as Tailwind declares them: no surface is asked of them.
+  const meaning = fitMeaningInks(surfaces, () => 0);
+  const shortfalls = describeShortfalls(tokens, meaning);
+  const notes: SoulMarkNote[] = [];
+  if (guarded.tokens.bg !== seeds.background) {
+    notes.push({
+      kind: "warning",
+      seed: "background",
+      chosen: seeds.background,
+      used: guarded.tokens.bg,
+      message: "With the guard on, this background would be adjusted to the shade shown, so text on it reads.",
+    });
+  }
+  if (guarded.tokens.accent !== seeds.accent) {
+    notes.push({
+      kind: "warning",
+      seed: "accent",
+      chosen: seeds.accent,
+      used: guarded.tokens.accent,
+      message: "With the guard on, buttons in this accent would use the shade shown, so their labels read.",
+    });
+  }
+  return { seeds, tokens, meaning, notes, shortfalls, guarded: guarded.tokens };
+}
+
+/** Every measurement below its floor, grouped into the kinds of text a person would recognise. */
+function describeShortfalls(t: SoulMarkTokens, meaning: MeaningInk[]): Shortfall[] {
+  const groups: [string, (what: string) => boolean][] = [
+    ["Body text", (w) => /^(white|fg)\/(100|90|80) /.test(w)],
+    ["Faded captions and hints", (w) => /^(white|fg)\/(75|70|60|55|50|45|40) /.test(w)],
+    ["Text over pictures", (w) => w === "white on black"],
+    ["Button labels", (w) => w.startsWith("white on accent")],
+    ["Accent-coloured text", (w) => /^accent(Text|Ink|300|400) /.test(w)],
+    ["Selection rings and accent icons", (w) => w.startsWith("accentLine ")],
+    ["Buttons against the page", (w) => w.startsWith("button edge ")],
+  ];
+  const all = [
+    ...measureText(t),
+    ...measureAccent(t),
+    ...meaning.map((m) => ({ what: `status ${m.variable}`, ratio: m.ratio, floor: AA })),
+  ];
+  groups.push(["Error, warning and badge colours", (w) => w.startsWith("status ")]);
+  const out: Shortfall[] = [];
+  for (const [label, belongs] of groups) {
+    const short = all.filter((m) => belongs(m.what) && m.ratio < m.floor - 1e-9);
+    if (!short.length) continue;
+    const worst = short.reduce((x, y) => (y.ratio / y.floor < x.ratio / x.floor ? y : x));
+    out.push({ label, ratio: worst.ratio, floor: worst.floor });
+  }
+  return out;
 }
 
 /**
