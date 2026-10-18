@@ -1,9 +1,9 @@
 // Soul Mark's ready-made colours. Each background here is one Soul Mark uses
-// exactly as shown, at every tint and text tone (soulMark.spec.ts checks it);
+// exactly as shown, at every tint and text tone (soul-mark.spec.ts checks it);
 // any other colour can still be picked, and is fitted if it needs to be.
 
 import type { Hex } from "./contrast";
-import { DEFAULT_TOKENS } from "./soulMark";
+import { DEFAULT_TOKENS } from "./soul-mark";
 
 export const LIGHT_BACKGROUNDS: [string, Hex][] = [
   ["Paper", "#FFFFFF"],

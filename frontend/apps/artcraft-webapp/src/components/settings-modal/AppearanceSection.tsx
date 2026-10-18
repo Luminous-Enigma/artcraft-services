@@ -12,9 +12,9 @@ import {
   type Shortfall,
   type SoulMarkNote,
   type SoulMarkSeeds,
-} from "../../theme/soulMark";
+} from "../../theme/soul-mark";
 import { ACCENTS, BOLD_BACKGROUNDS, DEEP_BACKGROUNDS, LIGHT_BACKGROUNDS } from "../../theme/presets";
-import { type ThemeMode, useSoulMark, useThemeStore } from "../../theme/themeStore";
+import { type ThemeMode, useSoulMark, useThemeStore } from "../../theme/theme-store";
 
 const CHARACTERS: [Character, string][] = [
   ["soft", "Soft"],
