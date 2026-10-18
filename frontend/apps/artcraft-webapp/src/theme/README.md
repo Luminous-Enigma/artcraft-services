@@ -55,7 +55,7 @@ which is also how a colour at `t` opacity lands on another.
 
 ## How a Soul Mark is made, step by step
 
-All of this is one function, `composeSoulMark(seeds)` in `soulMark.ts`. It has
+All of this is one function, `composeSoulMark(seeds)` in `soul-mark.ts`. It has
 no side effects, so the page, the settings panel and the tests all call the
 same thing.
 

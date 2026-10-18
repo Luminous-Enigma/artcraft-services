@@ -9,7 +9,7 @@ import { setOmniGenErrorNotifier } from "@storyteller/omni-gen";
 import { setToastDelegate } from "@storyteller/ui-toaster";
 import { toast } from "./components/toast/toast";
 import { captureLoginBridgeContext, LOGIN_BRIDGE_PATH } from "./lib/login-bridge-context";
-import { startTheming } from "./theme/themeStore";
+import { startTheming } from "./theme/theme-store";
 
 captureLoginBridgeContext();
 startTheming();

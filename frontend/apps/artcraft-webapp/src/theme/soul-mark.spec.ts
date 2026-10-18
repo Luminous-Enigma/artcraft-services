@@ -13,7 +13,7 @@ import {
   sanitizeSeeds,
   SOUL_MARK_STARTER,
   type SoulMarkSeeds,
-} from "./soulMark";
+} from "./soul-mark";
 
 const SWEEP_TIMEOUT = 600_000;
 
@@ -121,9 +121,6 @@ describe("status colours", () => {
 });
 
 describe("the readability guard switched off", () => {
-  const open = (background: Hex, accent: Hex = "#2D81FF"): SoulMarkSeeds =>
-    ({ background, accent, tint: 0.5, character: "soft", guard: false });
-
   it("is on unless it is set to false", () => {
     expect(sanitizeSeeds({}).guard).toBe(true);
     expect(sanitizeSeeds({ guard: "no" }).guard).toBe(true);
@@ -172,6 +169,10 @@ describe("the readability guard switched off", () => {
       expect(failures(measureText(mark.tokens))).toEqual([]);
     }
   });
+
+  function open(background: Hex, accent: Hex = "#2D81FF"): SoulMarkSeeds {
+    return { background, accent, tint: 0.5, character: "soft", guard: false };
+  }
 });
 
 describe("theme codes", () => {
