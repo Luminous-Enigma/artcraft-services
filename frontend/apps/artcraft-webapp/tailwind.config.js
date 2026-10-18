@@ -61,6 +61,46 @@ const meaningText = Object.fromEntries(
     },
   ]),
 );
+// .st-keep-dark: a branded dark surface (the pricing cards) that keeps
+// ArtCraft's own colours whatever the theme. Inside it every theme variable
+// is reset to its default; under Soul Mark it also gets the default page
+// colour beneath it, since its see-through gradients were drawn for a dark page.
+const KEEP_DARK = {
+  "--st-white-rgb": "255 255 255",
+  "--st-black-rgb": "0 0 0",
+  "--st-fg-rgb": "242 241 238",
+  "--st-bg-rgb": "18 19 22",
+  "--st-panel-rgb": "16 16 20",
+  "--st-controls-rgb": "30 31 34",
+  "--st-sunken-rgb": "6 6 7",
+  "--st-accent-rgb": "45 129 255",
+  "--st-accent-300-rgb": "142 199 255",
+  "--st-accent-400-rgb": "89 167 255",
+  "--st-accent-600-rgb": "27 99 245",
+  "--st-accent-700-rgb": "20 78 225",
+  "--st-accent-ink-rgb": "116 170 255",
+  "--st-accent-text-rgb": "45 129 255",
+  "--st-accent-line-rgb": "45 129 255",
+  "--st-text-fade": "1",
+  "--st-icon-filter": "invert(1)",
+  "--st-wordmark-filter": "none",
+  ...Object.fromEntries(
+    MEANING_FAMILIES.flatMap((family) =>
+      MEANING_SHADES.map((shade) => [`--st-${family}-${shade}-rgb`, "initial"]),
+    ),
+  ),
+};
+const keepDark = ({ addComponents }) =>
+  addComponents({
+    ".st-keep-dark": KEEP_DARK,
+    // Text that sets no colour of its own inherits the page's, which was
+    // worked out before the reset above, so the island sets it again.
+    ':root[data-theme="soul-mark"] .st-keep-dark': {
+      backgroundColor: "rgb(18 19 22)",
+      color: "rgb(242 241 238)",
+      colorScheme: "dark",
+    },
+  });
 const accentFor = (rgbVar) => ({
   ...primaryScale,
   DEFAULT: `rgb(var(${rgbVar}) / <alpha-value>)`,
@@ -296,5 +336,5 @@ module.exports = {
       ring: "hsl(var(--ring))",
     },
   },
-  plugins: [],
+  plugins: [keepDark],
 };
