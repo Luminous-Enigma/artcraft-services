@@ -1,6 +1,6 @@
 import { contrastRatio, fromHsl, type Hex, mix, toHsl } from "./contrast";
 import { MEANING_LIGHTNESS } from "./meaning";
-import { DEEP_BACKGROUNDS, LIGHT_BACKGROUNDS } from "./presets";
+import { BOLD_BACKGROUNDS, DEEP_BACKGROUNDS, LIGHT_BACKGROUNDS } from "./presets";
 import {
   type Character,
   composeSoulMark,
@@ -120,11 +120,68 @@ describe("status colours", () => {
   });
 });
 
+describe("the readability guard switched off", () => {
+  const open = (background: Hex, accent: Hex = "#2D81FF"): SoulMarkSeeds =>
+    ({ background, accent, tint: 0.5, character: "soft", guard: false });
+
+  it("is on unless it is set to false", () => {
+    expect(sanitizeSeeds({}).guard).toBe(true);
+    expect(sanitizeSeeds({ guard: "no" }).guard).toBe(true);
+    expect(sanitizeSeeds({ guard: false }).guard).toBe(false);
+  });
+
+  it("uses the background and accent exactly as picked", () => {
+    const mark = composeSoulMark(open("#777777", "#E86FA6"));
+    expect(mark.tokens.bg).toBe("#777777");
+    expect(mark.tokens.accent).toBe("#E86FA6");
+    expect(mark.tokens.accentText).toBe("#E86FA6");
+  });
+
+  it("says what falls short, and what the guard would use instead", () => {
+    const mark = composeSoulMark(open("#777777"));
+    expect(mark.shortfalls.length).toBeGreaterThan(0);
+    for (const f of mark.shortfalls) expect(f.ratio).toBeLessThan(f.floor);
+    expect(mark.guarded).toEqual(composeSoulMark({ ...open("#777777"), guard: true }).tokens);
+    const note = mark.notes.find((n) => n.seed === "background");
+    expect(note?.chosen).toBe("#777777");
+    expect(note?.used).toBe(mark.guarded?.bg);
+  });
+
+  it("still picks whichever text colour reads better", () => {
+    const light = composeSoulMark(open("#4169E1"));
+    const lightFg = contrastRatio(light.tokens.fg, "#4169E1");
+    const other = light.tokens.scheme === "dark" ? "#1A1712" : "#F2F1EE";
+    expect(lightFg).toBeGreaterThanOrEqual(contrastRatio(other, "#4169E1") * 0.9);
+  });
+
+  it("still strengthens faded text, which is no colour anyone picked", () => {
+    const mark = composeSoulMark(open("#0B0E14", "#9B4DCA"));
+    expect(mark.tokens.textFade).toBeLessThan(1);
+    expect(mark.shortfalls.find((f) => f.label.startsWith("Faded"))).toBeUndefined();
+  });
+
+  it("marks every Bold preset honestly: each one falls short without the guard", () => {
+    const fine = BOLD_BACKGROUNDS.filter(([, hex]) => composeSoulMark(open(hex)).shortfalls.length === 0);
+    expect(fine).toEqual([]);
+  });
+
+  it("gives back the full guarantees as soon as it is on again", () => {
+    for (const [, hex] of BOLD_BACKGROUNDS) {
+      const mark = composeSoulMark({ ...open(hex), guard: true });
+      expect(mark.shortfalls).toEqual([]);
+      expect(failures(measureText(mark.tokens))).toEqual([]);
+    }
+  });
+});
+
 describe("theme codes", () => {
   it("round-trip the seeds", () => {
-    const seeds: SoulMarkSeeds = { background: "#0B0E14", accent: "#E86FA6", tint: 0.8, character: "warm" };
+    const seeds: SoulMarkSeeds = { background: "#0B0E14", accent: "#E86FA6", tint: 0.8, character: "warm", guard: true };
     expect(encodeSeeds(seeds)).toBe("SM1-0B0E14-E86FA6-80-warm");
     expect(decodeSeeds(encodeSeeds(seeds))).toEqual(seeds);
+    const open = { ...seeds, guard: false };
+    expect(encodeSeeds(open)).toBe("SM1-0B0E14-E86FA6-80-warm-open");
+    expect(decodeSeeds(encodeSeeds(open))).toEqual(open);
   });
 
   it("refuse anything that is not a code", () => {

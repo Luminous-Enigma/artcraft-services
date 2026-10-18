@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import { CheckIcon, CopyIcon, InfoIcon, TriangleAlertIcon, WandIcon } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { CheckIcon, CopyIcon, InfoIcon, ShieldCheckIcon, TriangleAlertIcon, WandIcon } from "lucide-react";
+import { Switch } from "@storyteller/ui-switch";
 import { twMerge } from "tailwind-merge";
 import { isHex, type Hex, toHsl } from "../../theme/contrast";
 import {
   type Character,
+  composeSoulMark,
   decodeSeeds,
   DEFAULT_TOKENS,
   encodeSeeds,
+  type Shortfall,
   type SoulMarkNote,
+  type SoulMarkSeeds,
 } from "../../theme/soulMark";
-import { ACCENTS, DEEP_BACKGROUNDS, LIGHT_BACKGROUNDS } from "../../theme/presets";
+import { ACCENTS, BOLD_BACKGROUNDS, DEEP_BACKGROUNDS, LIGHT_BACKGROUNDS } from "../../theme/presets";
 import { type ThemeMode, useSoulMark, useThemeStore } from "../../theme/themeStore";
 
 const CHARACTERS: [Character, string][] = [
@@ -47,14 +51,14 @@ export function AppearanceSection() {
 }
 
 function SoulMarkCard({ active, onSelect }: { active: boolean; onSelect: (m: ThemeMode) => void }) {
-  const { tokens } = useSoulMark();
+  const { tokens, seeds } = useSoulMark();
   return (
     <ModeCard
       mode="soul-mark"
       active={active}
       onSelect={onSelect}
       title="Soul Mark"
-      subtitle="Your own colours, always readable"
+      subtitle={seeds.guard ? "Your own colours, always readable" : "Your own colours, exactly as picked"}
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
     />
   );
@@ -103,10 +107,14 @@ function SoulMarkControls() {
   const seeds = useThemeStore((s) => s.seeds);
   const setSeeds = useThemeStore((s) => s.setSeeds);
   const resetSeeds = useThemeStore((s) => s.resetSeeds);
-  const { notes } = useSoulMark();
+  const { notes, shortfalls } = useSoulMark();
+  const guard = seeds.guard !== false;
+  const hardBackgrounds = useHardColours(guard ? [] : BOLD_BACKGROUNDS, seeds, "background");
+  const hardAccents = useHardColours(guard ? [] : ACCENTS, seeds, "accent");
 
   return (
     <div className="space-y-5 border-t border-white/15 pt-4">
+      <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
       <ColourField
         title="Background"
         hint="The colour behind everything. Panels and fields are built from it."
@@ -114,7 +122,9 @@ function SoulMarkControls() {
         presets={[
           ["Light", LIGHT_BACKGROUNDS],
           ["Deep", DEEP_BACKGROUNDS],
+          ...(guard ? [] : ([["Bold", BOLD_BACKGROUNDS]] as [string, [string, Hex][]][])),
         ]}
+        hard={hardBackgrounds}
         onChange={(background) => setSeeds({ background })}
       />
       <ColourField
@@ -122,6 +132,7 @@ function SoulMarkControls() {
         hint="Buttons like Generate, selections and highlights."
         value={seeds.accent}
         presets={[["", ACCENTS]]}
+        hard={hardAccents}
         onChange={(accent) => setSeeds({ accent })}
       />
       <div className="flex flex-col gap-2">
@@ -161,7 +172,8 @@ function SoulMarkControls() {
           ))}
         </div>
       </div>
-      <Notes notes={notes} />
+      {!guard && <Shortfalls shortfalls={shortfalls} />}
+      <Notes notes={notes} guard={guard} />
       <ThemeCode />
       <button
         type="button"
@@ -180,6 +192,7 @@ function ColourField({
   hint,
   value,
   presets,
+  hard,
   onChange,
 }: {
   title: string;
@@ -187,6 +200,8 @@ function ColourField({
   value: Hex;
   /** Rows of swatches, each with an optional label. */
   presets: [string, [string, Hex][]][];
+  /** Swatches to mark as hard to read (only ever filled with the guard off). */
+  hard?: Set<Hex>;
   onChange: (hex: Hex) => void;
 }) {
   const [draft, setDraft] = useState<string>(value);
@@ -204,21 +219,31 @@ function ColourField({
         <div key={rowLabel} className="flex items-center gap-2">
           {rowLabel && <span className="w-9 shrink-0 text-xs text-white/60">{rowLabel}</span>}
           <div className="flex flex-wrap gap-1.5">
-            {row.map(([name, hex]) => (
-              <button
-                key={hex}
-                type="button"
-                title={name}
-                aria-label={`${title}: ${name}`}
-                aria-pressed={value === hex}
-                onClick={() => onChange(hex)}
-                className={twMerge(
-                  "h-7 w-7 rounded-full border border-white/15",
-                  value === hex && "ring-2 ring-primary ring-offset-2 ring-offset-ui-panel",
-                )}
-                style={{ background: hex }}
-              />
-            ))}
+            {row.map(([name, hex]) => {
+              const isHard = hard?.has(hex) ?? false;
+              const label = isHard ? `${name}, hard to read` : name;
+              return (
+                <button
+                  key={hex}
+                  type="button"
+                  title={label}
+                  aria-label={`${title}: ${label}`}
+                  aria-pressed={value === hex}
+                  onClick={() => onChange(hex)}
+                  className={twMerge(
+                    "relative h-7 w-7 rounded-full border border-white/15",
+                    value === hex && "ring-2 ring-primary ring-offset-2 ring-offset-ui-panel",
+                  )}
+                  style={{ background: hex }}
+                >
+                  {isHard && (
+                    <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white/15 bg-ui-panel">
+                      <TriangleAlertIcon className="h-2.5 w-2.5 text-white" />
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       ))}
@@ -245,8 +270,85 @@ function ColourField({
   );
 }
 
-function Notes({ notes }: { notes: SoulMarkNote[] }) {
+/**
+ * The colours in `list` that the guard would change, under the current
+ * seeds: the ones that are hard to read with the guard off.
+ */
+function useHardColours(list: [string, Hex][], seeds: SoulMarkSeeds, field: "background" | "accent"): Set<Hex> {
+  const { background, accent, tint, character } = seeds;
+  // A background's fit never depends on the accent, so changing the accent
+  // does not recompute the background marks.
+  const key = field === "background" ? `${tint}|${character}` : `${background}|${tint}|${character}`;
+  return useMemo(() => {
+    const base = { background, accent, tint, character, guard: true };
+    return new Set(
+      list
+        .map(([, hex]) => hex)
+        .filter((hex) => {
+          const t = composeSoulMark({ ...base, [field]: hex }).tokens;
+          return (field === "background" ? t.bg : t.accent) !== hex;
+        }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list, field, key]);
+}
+
+function GuardSwitch({ guard, setGuard }: { guard: boolean; setGuard: (on: boolean) => void }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-start justify-between gap-4">
+        <Label
+          title="Readability guard"
+          hint={
+            guard
+              ? "On: where a colour would make text hard to read, Soul Mark nudges its shade (never its hue) so everything reads at the WCAG AA standard."
+              : "Off: your colours are used exactly as picked, and nothing is nudged. Some text may be hard to read, for you or for others using this screen. Turn it back on any time."
+          }
+        />
+        <Switch enabled={guard} setEnabled={setGuard} offClassName="bg-white/20" />
+      </div>
+      {!guard && (
+        <p className="flex items-center gap-2 text-xs text-white/80">
+          <TriangleAlertIcon className="h-3.5 w-3.5 shrink-0" />
+          Colours marked with this sign are hard to read on their own. The Bold row shows the hardest.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Shortfalls({ shortfalls }: { shortfalls: Shortfall[] }) {
+  if (!shortfalls.length) {
+    return (
+      <p className="flex items-center gap-2 text-xs text-white/70">
+        <ShieldCheckIcon className="h-3.5 w-3.5 text-primary" />
+        Nothing falls short: these colours read well even without the guard.
+      </p>
+    );
+  }
+  return (
+    <div className="flex flex-col gap-2">
+      <Label
+        title="Below the readability line"
+        hint="Measured contrast for what falls short, against what the WCAG AA standard asks for."
+      />
+      <ul className="flex flex-col border border-white/15">
+        {shortfalls.map((f) => (
+          <li key={f.label} className="flex items-center justify-between gap-3 border-b border-white/15 px-2 py-1.5 text-xs last:border-b-0">
+            <span className="text-white/80">{f.label}</span>
+            <span className="font-mono text-white">
+              {f.ratio.toFixed(1)} : 1 <span className="text-white/60">(needs {f.floor.toFixed(1)})</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
   const setSeeds = useThemeStore((s) => s.setSeeds);
+  if (!guard && !notes.length) return null;
   if (!notes.length) {
     return (
       <p className="flex items-center gap-2 text-xs text-white/70">
@@ -257,7 +359,11 @@ function Notes({ notes }: { notes: SoulMarkNote[] }) {
   }
   return (
     <div className="flex flex-col gap-2">
-      <Label title="Readability" hint="What Soul Mark did so your colours stay easy to read." />
+      {guard ? (
+        <Label title="Readability" hint="What Soul Mark did so your colours stay easy to read." />
+      ) : (
+        <Label title="With the guard on" hint="What the readability guard would change. Your colours are used as picked." />
+      )}
       <ul className="flex flex-col gap-1.5">
         {notes.map((n, i) => (
           <li key={i} className="flex items-start gap-2 border border-white/15 bg-white/[0.03] p-2 text-xs">
