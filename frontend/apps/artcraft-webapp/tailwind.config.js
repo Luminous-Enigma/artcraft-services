@@ -2,6 +2,70 @@ const { createGlobPatternsForDependencies } = require("@nx/react/tailwind");
 const { join } = require("path");
 import colors from "tailwindcss/colors";
 
+// The brand blue. Themeable: each shade a theme may change reads its own
+// --st-accent-* variable (defaults in src/styles.css are the values below).
+// Fills use DEFAULT; text, rings and lines get their own variables further
+// down, so a theme can give each the shade that reads in its place.
+const primaryScale = {
+  DEFAULT: "rgb(var(--st-accent-rgb) / <alpha-value>)",
+  50: "#eef6ff",
+  100: "#d9ebff",
+  200: "#bcdcff",
+  300: "rgb(var(--st-accent-300-rgb) / <alpha-value>)",
+  400: "rgb(var(--st-accent-400-rgb) / <alpha-value>)",
+  500: "rgb(var(--st-accent-rgb) / <alpha-value>)",
+  600: "rgb(var(--st-accent-600-rgb) / <alpha-value>)",
+  700: "rgb(var(--st-accent-700-rgb) / <alpha-value>)",
+  800: "#173fb6",
+  900: "#19398f",
+  950: "#142457",
+};
+
+// Faded text (text-white/40 ...) draws at 1 - (1 - alpha) * --st-text-fade.
+// The fade is 1 by default, which is exactly the declared alpha; a light
+// theme lowers it so its captions stay readable (see src/theme/soulMark.ts).
+const fadedText = (rgbVar) =>
+  `rgb(var(${rgbVar}) / calc(1 - (1 - <alpha-value>) * var(--st-text-fade, 1)))`;
+// Faded elements (opacity-40 ... opacity-90, mostly captions) follow the same
+// fade. 0, 100 and the decorative 5-30 steps stay exact: they show, hide and
+// animate things.
+const fadedOpacity = Object.fromEntries(
+  [40, 50, 60, 70, 75, 80, 90].map((n) => [
+    n,
+    `calc(1 - (1 - ${n / 100}) * var(--st-text-fade, 1))`,
+  ]),
+);
+// Text in the palette's status colours (text-red-400 errors, amber BETA
+// badges ...) reads --st-<family>-<shade>-rgb, which only a theme sets; until
+// then the fallback is Tailwind's own colour. Must match src/theme/meaning.ts.
+const MEANING_FAMILIES = [
+  "rose", "indigo", "red", "blue", "orange", "amber", "green",
+  "emerald", "teal", "cyan", "yellow", "pink", "purple",
+];
+const MEANING_SHADES = [200, 300, 400, 500, 600];
+const COLOR_DEFAULTS = { red: "#D33242", blue: "#2E70FF", green: "#308752" };
+const triplet = (hex) =>
+  [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(" ");
+const meaningText = Object.fromEntries(
+  MEANING_FAMILIES.map((family) => [
+    family,
+    {
+      ...colors[family],
+      ...(COLOR_DEFAULTS[family] ? { DEFAULT: COLOR_DEFAULTS[family] } : {}),
+      ...Object.fromEntries(
+        MEANING_SHADES.map((shade) => [
+          shade,
+          `rgb(var(--st-${family}-${shade}-rgb, ${triplet(colors[family][shade])}) / <alpha-value>)`,
+        ]),
+      ),
+    },
+  ]),
+);
+const accentFor = (rgbVar) => ({
+  ...primaryScale,
+  DEFAULT: `rgb(var(${rgbVar}) / <alpha-value>)`,
+});
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -18,6 +82,34 @@ module.exports = {
   ],
   theme: {
     extend: {
+      opacity: fadedOpacity,
+      textColor: {
+        ...meaningText,
+        white: fadedText("--st-white-rgb"),
+        "base-fg": fadedText("--st-fg-rgb"),
+        primary: accentFor("--st-accent-text-rgb"),
+        "brand-primary": accentFor("--st-accent-text-rgb"),
+      },
+      ringColor: {
+        primary: accentFor("--st-accent-line-rgb"),
+        "brand-primary": accentFor("--st-accent-line-rgb"),
+      },
+      borderColor: {
+        primary: accentFor("--st-accent-line-rgb"),
+        "brand-primary": accentFor("--st-accent-line-rgb"),
+      },
+      outlineColor: {
+        primary: accentFor("--st-accent-line-rgb"),
+        "brand-primary": accentFor("--st-accent-line-rgb"),
+      },
+      fill: {
+        primary: accentFor("--st-accent-line-rgb"),
+        "brand-primary": accentFor("--st-accent-line-rgb"),
+      },
+      stroke: {
+        primary: accentFor("--st-accent-line-rgb"),
+        "brand-primary": accentFor("--st-accent-line-rgb"),
+      },
       fontFamily: {
         mono: [
           "Geist Mono",
@@ -53,9 +145,12 @@ module.exports = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      white: colors.white,
+      // Themeable (see src/theme/): "white" is the ink every surface is drawn
+      // against and "black" the deepest surface, so a theme swaps them as a
+      // pair. The default values are exactly Tailwind's white and black.
+      white: "rgb(var(--st-white-rgb) / <alpha-value>)",
       gray: colors.gray,
-      black: colors.black,
+      black: "rgb(var(--st-black-rgb) / <alpha-value>)",
       rose: colors.rose,
       indigo: colors.indigo,
       red: { ...colors.red, DEFAULT: "#D33242" },
@@ -69,20 +164,7 @@ module.exports = {
       yellow: colors.yellow,
       pink: colors.pink,
       purple: colors.purple,
-      primary: {
-        DEFAULT: "#2d81ff",
-        50: "#eef6ff",
-        100: "#d9ebff",
-        200: "#bcdcff",
-        300: "#8ec7ff",
-        400: "#59a7ff",
-        500: "#2d81ff",
-        600: "#1b63f5",
-        700: "#144ee1",
-        800: "#173fb6",
-        900: "#19398f",
-        950: "#142457",
-      },
+      primary: primaryScale,
       danger: {
         // copper rust — aligned with artcraft app's tailwind.config.ts
         DEFAULT: "#8f4951",
@@ -98,20 +180,7 @@ module.exports = {
         900: "#64373f",
         950: "#361b1e",
       },
-      "brand-primary": {
-        DEFAULT: "#2d81ff",
-        50: "#eef6ff",
-        100: "#d9ebff",
-        200: "#bcdcff",
-        300: "#8ec7ff",
-        400: "#59a7ff",
-        500: "#2d81ff",
-        600: "#1b63f5",
-        700: "#144ee1",
-        800: "#173fb6",
-        900: "#19398f",
-        950: "#142457",
-      },
+      "brand-primary": primaryScale,
       "brand-secondary": {
         DEFAULT: "#3E3E41",
         50: "#f6f6f6",
@@ -168,7 +237,7 @@ module.exports = {
         900: "#3d3d3d",
         950: "#3E3E41",
       },
-      "base-fg": "rgb(242 241 238 / <alpha-value>)",
+      "base-fg": "rgb(var(--st-fg-rgb) / <alpha-value>)",
       sidebar: {
         DEFAULT: "var(--sidebar-bg)",
         foreground: "var(--sidebar-fg)",
@@ -180,19 +249,19 @@ module.exports = {
       ui: {
         // Brutalist system: near-black surfaces with white/15 hairline
         // borders, aligned with artcraft-website + artcraft-website-next.
-        background: "#121316",
-        panel: "#101014",
-        "panel-border": "rgb(255 255 255 / 0.15)",
-        border: "rgb(255 255 255 / 0.15)",
+        background: "rgb(var(--st-bg-rgb) / <alpha-value>)",
+        panel: "rgb(var(--st-panel-rgb) / <alpha-value>)",
+        "panel-border": "rgb(var(--st-white-rgb) / 0.15)",
+        border: "rgb(var(--st-white-rgb) / 0.15)",
         // Raised controls stay distinct from the website-matched panel surface.
-        controls: "#1e1f22",
-        "controls-button": "#1e1f22",
-        "controls-border": "rgb(255 255 255 / 0.15)",
-        divider: "rgb(255 255 255 / 0.15)",
-        modal: "#101014",
-        ink: "#f2f1ee",
-        "accent-ink": "#74aaff",
-        sunken: "#060607",
+        controls: "rgb(var(--st-controls-rgb) / <alpha-value>)",
+        "controls-button": "rgb(var(--st-controls-rgb) / <alpha-value>)",
+        "controls-border": "rgb(var(--st-white-rgb) / 0.15)",
+        divider: "rgb(var(--st-white-rgb) / 0.15)",
+        modal: "rgb(var(--st-panel-rgb) / <alpha-value>)",
+        ink: "rgb(var(--st-fg-rgb) / <alpha-value>)",
+        "accent-ink": "rgb(var(--st-accent-ink-rgb) / <alpha-value>)",
+        sunken: "rgb(var(--st-sunken-rgb) / <alpha-value>)",
       },
       "axis-x": "#D33242",
       "axis-y": "#308752",
