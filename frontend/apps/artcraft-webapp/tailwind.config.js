@@ -39,8 +39,19 @@ const fadedOpacity = Object.fromEntries(
 // badges ...) reads --st-<family>-<shade>-rgb, which only a theme sets; until
 // then the fallback is Tailwind's own colour.
 const MEANING_FAMILIES = [
-  "rose", "indigo", "red", "blue", "orange", "amber", "green",
-  "emerald", "teal", "cyan", "yellow", "pink", "purple",
+  "rose",
+  "indigo",
+  "red",
+  "blue",
+  "orange",
+  "amber",
+  "green",
+  "emerald",
+  "teal",
+  "cyan",
+  "yellow",
+  "pink",
+  "purple",
 ];
 const MEANING_SHADES = [200, 300, 400, 500, 600];
 const COLOR_DEFAULTS = { red: "#D33242", blue: "#2E70FF", green: "#308752" };
@@ -101,7 +112,9 @@ const keepDark = ({ addComponents }) =>
     ".st-keep-dark": KEEP_DARK,
     // Text that sets no colour of its own inherits the page's, which was
     // worked out before the reset above, so the island sets it again.
-    ':root[data-theme]:not([data-theme="default"]) .st-keep-dark': {
+    // :where() keeps this at zero specificity, so a card's own background
+    // and text colour (bg-[#1b1b20], .website-plan-card) still win.
+    ':where(:root[data-theme]:not([data-theme="default"]) .st-keep-dark)': {
       backgroundColor: "rgb(18 19 22)",
       color: "rgb(242 241 238)",
       colorScheme: "dark",
