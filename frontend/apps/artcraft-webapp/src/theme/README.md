@@ -81,13 +81,13 @@ saturated mid-tones.
 
 The background generates the whole family of surfaces the app uses:
 
-| Surface   | Made by                                  | Used for                     |
-|-----------|------------------------------------------|------------------------------|
-| page      | the background itself                    | behind everything            |
+| Surface   | Made by                                   | Used for                     |
+|-----------|-------------------------------------------|------------------------------|
+| page      | the background itself                     | behind everything            |
 | panel     | background, stepped 11% away from the ink | top bar, side panels, modals |
 | controls  | background, stepped 5% toward the ink     | buttons, prompt box, sidebar |
 | sunken    | background, stepped 67% away from the ink | text fields                  |
-| hover     | controls with 10% ink over them          | hovered rows                 |
+| hover     | controls with 10% ink over them           | hovered rows                 |
 
 The percentages are measured from ArtCraft's own default theme, so a Soul Mark
 has the same structure as the app's normal look. *Tint* scales all the steps
