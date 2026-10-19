@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { CheckIcon, CopyIcon, InfoIcon, ShieldCheckIcon, TriangleAlertIcon, WandIcon } from "lucide-react";
+import {
+  CheckIcon,
+  CopyIcon,
+  InfoIcon,
+  ShieldCheckIcon,
+  TriangleAlertIcon,
+  WandIcon,
+} from "lucide-react";
 import { Switch } from "@storyteller/ui-switch";
 import { twMerge } from "tailwind-merge";
 import { isHex, type Hex, toHsl } from "../../theme/contrast";
@@ -13,8 +20,17 @@ import {
   type SoulMarkNote,
   type SoulMarkSeeds,
 } from "../../theme/soul-mark";
-import { ACCENTS, BOLD_BACKGROUNDS, DEEP_BACKGROUNDS, LIGHT_BACKGROUNDS } from "../../theme/presets";
-import { type ThemeMode, useSoulMark, useThemeStore } from "../../theme/theme-store";
+import {
+  ACCENTS,
+  BOLD_BACKGROUNDS,
+  DEEP_BACKGROUNDS,
+  LIGHT_BACKGROUNDS,
+} from "../../theme/presets";
+import {
+  type ThemeMode,
+  useSoulMark,
+  useThemeStore,
+} from "../../theme/theme-store";
 
 const CHARACTERS: [Character, string][] = [
   ["soft", "Soft"],
@@ -40,7 +56,11 @@ export function AppearanceSection() {
             onSelect={setMode}
             title="ArtCraft"
             subtitle="The standard look"
-            swatch={[DEFAULT_TOKENS.bg, DEFAULT_TOKENS.controls, DEFAULT_TOKENS.accent]}
+            swatch={[
+              DEFAULT_TOKENS.bg,
+              DEFAULT_TOKENS.controls,
+              DEFAULT_TOKENS.accent,
+            ]}
           />
           <SoulMarkCard active={mode === "soul-mark"} onSelect={setMode} />
         </div>
@@ -50,7 +70,13 @@ export function AppearanceSection() {
   );
 }
 
-function SoulMarkCard({ active, onSelect }: { active: boolean; onSelect: (m: ThemeMode) => void }) {
+function SoulMarkCard({
+  active,
+  onSelect,
+}: {
+  active: boolean;
+  onSelect: (m: ThemeMode) => void;
+}) {
   const { tokens, seeds } = useSoulMark();
   return (
     <ModeCard
@@ -58,7 +84,11 @@ function SoulMarkCard({ active, onSelect }: { active: boolean; onSelect: (m: The
       active={active}
       onSelect={onSelect}
       title="Soul Mark"
-      subtitle={seeds.guard ? "Your own colours, always readable" : "Your own colours, exactly as picked"}
+      subtitle={
+        seeds.guard
+          ? "Your own colours, always readable"
+          : "Your own colours, exactly as picked"
+      }
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
     />
   );
@@ -86,7 +116,9 @@ function ModeCard({
       onClick={() => onSelect(mode)}
       className={twMerge(
         "flex items-center gap-3 border p-2.5 text-left transition-colors",
-        active ? "border-primary bg-white/10" : "border-white/15 hover:bg-white/[0.06]",
+        active
+          ? "border-primary bg-white/10"
+          : "border-white/15 hover:bg-white/[0.06]",
       )}
     >
       <span className="flex h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/15">
@@ -98,7 +130,9 @@ function ModeCard({
         <span className="text-sm font-medium text-white">{title}</span>
         <span className="truncate text-xs text-white/60">{subtitle}</span>
       </span>
-      {active && <CheckIcon className="ms-auto h-4 w-4 shrink-0 text-primary" />}
+      {active && (
+        <CheckIcon className="ms-auto h-4 w-4 shrink-0 text-primary" />
+      )}
     </button>
   );
 }
@@ -109,7 +143,11 @@ function SoulMarkControls() {
   const resetSeeds = useThemeStore((s) => s.resetSeeds);
   const { notes, shortfalls } = useSoulMark();
   const guard = seeds.guard !== false;
-  const hardBackgrounds = useHardColours(guard ? [] : BOLD_BACKGROUNDS, seeds, "background");
+  const hardBackgrounds = useHardColours(
+    guard ? [] : BOLD_BACKGROUNDS,
+    seeds,
+    "background",
+  );
   const hardAccents = useHardColours(guard ? [] : ACCENTS, seeds, "accent");
 
   return (
@@ -122,7 +160,9 @@ function SoulMarkControls() {
         presets={[
           ["Light", LIGHT_BACKGROUNDS],
           ["Deep", DEEP_BACKGROUNDS],
-          ...(guard ? [] : ([["Bold", BOLD_BACKGROUNDS]] as [string, [string, Hex][]][])),
+          ...(guard
+            ? []
+            : ([["Bold", BOLD_BACKGROUNDS]] as [string, [string, Hex][]][])),
         ]}
         hard={hardBackgrounds}
         onChange={(background) => setSeeds({ background })}
@@ -136,7 +176,10 @@ function SoulMarkControls() {
         onChange={(accent) => setSeeds({ accent })}
       />
       <div className="flex flex-col gap-2">
-        <Label title="Panel tint" hint="How strongly panels and controls step off the background." />
+        <Label
+          title="Panel tint"
+          hint="How strongly panels and controls step off the background."
+        />
         <div className="flex items-center gap-3">
           <span className="text-xs text-white/60">Subtle</span>
           <input
@@ -152,7 +195,10 @@ function SoulMarkControls() {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Label title="Text tone" hint="The colour of text is always chosen for you, so it can be read. This sets its tone." />
+        <Label
+          title="Text tone"
+          hint="The colour of text is always chosen for you, so it can be read. This sets its tone."
+        />
         <div className="flex gap-2">
           {CHARACTERS.map(([id, label]) => (
             <button
@@ -217,7 +263,11 @@ function ColourField({
       <Label title={title} hint={hint} />
       {presets.map(([rowLabel, row]) => (
         <div key={rowLabel} className="flex items-center gap-2">
-          {rowLabel && <span className="w-9 shrink-0 text-xs text-white/60">{rowLabel}</span>}
+          {rowLabel && (
+            <span className="w-9 shrink-0 text-xs text-white/60">
+              {rowLabel}
+            </span>
+          )}
           <div className="flex flex-wrap gap-1.5">
             {row.map(([name, hex]) => {
               const isHard = hard?.has(hex) ?? false;
@@ -232,7 +282,8 @@ function ColourField({
                   onClick={() => onChange(hex)}
                   className={twMerge(
                     "relative h-7 w-7 rounded-full border border-white/15",
-                    value === hex && "ring-2 ring-primary ring-offset-2 ring-offset-ui-panel",
+                    value === hex &&
+                      "ring-2 ring-primary ring-offset-2 ring-offset-ui-panel",
                   )}
                   style={{ background: hex }}
                 >
@@ -274,11 +325,18 @@ function ColourField({
  * The colours in `list` that the guard would change, under the current
  * seeds: the ones that are hard to read with the guard off.
  */
-function useHardColours(list: [string, Hex][], seeds: SoulMarkSeeds, field: "background" | "accent"): Set<Hex> {
+function useHardColours(
+  list: [string, Hex][],
+  seeds: SoulMarkSeeds,
+  field: "background" | "accent",
+): Set<Hex> {
   const { background, accent, tint, character } = seeds;
   // A background's fit never depends on the accent, so changing the accent
   // does not recompute the background marks.
-  const key = field === "background" ? `${tint}|${character}` : `${background}|${tint}|${character}`;
+  const key =
+    field === "background"
+      ? `${tint}|${character}`
+      : `${background}|${tint}|${character}`;
   return useMemo(() => {
     const base = { background, accent, tint, character, guard: true };
     return new Set(
@@ -293,7 +351,13 @@ function useHardColours(list: [string, Hex][], seeds: SoulMarkSeeds, field: "bac
   }, [list, field, key]);
 }
 
-function GuardSwitch({ guard, setGuard }: { guard: boolean; setGuard: (on: boolean) => void }) {
+function GuardSwitch({
+  guard,
+  setGuard,
+}: {
+  guard: boolean;
+  setGuard: (on: boolean) => void;
+}) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-start justify-between gap-4">
@@ -305,12 +369,17 @@ function GuardSwitch({ guard, setGuard }: { guard: boolean; setGuard: (on: boole
               : "Off: your colours are used exactly as picked, and nothing is nudged. Some text may be hard to read, for you or for others using this screen. Turn it back on any time."
           }
         />
-        <Switch enabled={guard} setEnabled={setGuard} offClassName="bg-white/20" />
+        <Switch
+          enabled={guard}
+          setEnabled={setGuard}
+          offClassName="bg-white/20"
+        />
       </div>
       {!guard && (
         <p className="flex items-center gap-2 text-xs text-white/80">
           <TriangleAlertIcon className="h-3.5 w-3.5 shrink-0" />
-          Colours marked with this sign are hard to read on their own. The Bold row shows the hardest.
+          Colours marked with this sign are hard to read on their own. The Bold
+          row shows the hardest.
         </p>
       )}
     </div>
@@ -334,10 +403,16 @@ function Shortfalls({ shortfalls }: { shortfalls: Shortfall[] }) {
       />
       <ul className="flex flex-col border border-white/15">
         {shortfalls.map((f) => (
-          <li key={f.label} className="flex items-center justify-between gap-3 border-b border-white/15 px-2 py-1.5 text-xs last:border-b-0">
+          <li
+            key={f.label}
+            className="flex items-center justify-between gap-3 border-b border-white/15 px-2 py-1.5 text-xs last:border-b-0"
+          >
             <span className="text-white/80">{f.label}</span>
             <span className="font-mono text-white">
-              {f.ratio.toFixed(1)} : 1 <span className="text-white/60">(needs {f.floor.toFixed(1)})</span>
+              {f.ratio.toFixed(1)} : 1{" "}
+              <span className="text-white/60">
+                (needs {f.floor.toFixed(1)})
+              </span>
             </span>
           </li>
         ))}
@@ -360,13 +435,22 @@ function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
   return (
     <div className="flex flex-col gap-2">
       {guard ? (
-        <Label title="Readability" hint="What Soul Mark did so your colours stay easy to read." />
+        <Label
+          title="Readability"
+          hint="What Soul Mark did so your colours stay easy to read."
+        />
       ) : (
-        <Label title="With the guard on" hint="What the readability guard would change. Your colours are used as picked." />
+        <Label
+          title="With the guard on"
+          hint="What the readability guard would change. Your colours are used as picked."
+        />
       )}
       <ul className="flex flex-col gap-1.5">
         {notes.map((n, i) => (
-          <li key={i} className="flex items-start gap-2 border border-white/15 bg-white/[0.03] p-2 text-xs">
+          <li
+            key={i}
+            className="flex items-start gap-2 border border-white/15 bg-white/[0.03] p-2 text-xs"
+          >
             {n.kind === "warning" ? (
               <TriangleAlertIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white" />
             ) : (
@@ -377,16 +461,23 @@ function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
               {n.alternative && (
                 <button
                   type="button"
-                  onClick={() => n.alternative && setSeeds({ background: n.alternative })}
+                  onClick={() =>
+                    n.alternative && setSeeds({ background: n.alternative })
+                  }
                   className="flex h-7 items-center gap-1.5 border border-white/15 px-2 text-white/80 hover:bg-white/[0.06]"
                 >
                   <Chip hex={n.alternative} />
-                  {toHsl(n.alternative)[2] > toHsl(n.used)[2] ? "Use a lighter shade instead" : "Use a deeper shade instead"}
+                  {toHsl(n.alternative)[2] > toHsl(n.used)[2]
+                    ? "Use a lighter shade instead"
+                    : "Use a deeper shade instead"}
                 </button>
               )}
             </span>
             {n.chosen !== n.used && (
-              <span className="flex shrink-0 items-center gap-1" title={`${n.chosen} → ${n.used}`}>
+              <span
+                className="flex shrink-0 items-center gap-1"
+                title={`${n.chosen} → ${n.used}`}
+              >
                 <Chip hex={n.chosen} />
                 <span className="text-white/60">→</span>
                 <Chip hex={n.used} />
@@ -400,7 +491,12 @@ function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
 }
 
 function Chip({ hex }: { hex: Hex }) {
-  return <span className="h-4 w-4 rounded-full border border-white/15" style={{ background: hex }} />;
+  return (
+    <span
+      className="h-4 w-4 rounded-full border border-white/15"
+      style={{ background: hex }}
+    />
+  );
 }
 
 function ThemeCode() {
@@ -413,7 +509,10 @@ function ThemeCode() {
 
   return (
     <div className="flex flex-col gap-2">
-      <Label title="Theme code" hint="Share your Soul Mark, or paste someone else's." />
+      <Label
+        title="Theme code"
+        hint="Share your Soul Mark, or paste someone else's."
+      />
       <div className="flex items-center gap-2">
         <code className="flex h-8 items-center border border-white/15 bg-ui-sunken px-2 font-mono text-xs text-white">
           {code}
@@ -428,7 +527,11 @@ function ThemeCode() {
           }}
           className="flex h-8 items-center gap-1.5 border border-white/15 px-2.5 text-xs text-white/70 hover:bg-white/[0.06]"
         >
-          {copied ? <CheckIcon className="h-3.5 w-3.5" /> : <CopyIcon className="h-3.5 w-3.5" />}
+          {copied ? (
+            <CheckIcon className="h-3.5 w-3.5" />
+          ) : (
+            <CopyIcon className="h-3.5 w-3.5" />
+          )}
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
@@ -453,7 +556,9 @@ function ThemeCode() {
         >
           Use code
         </button>
-        {pasted && !decoded && <span className="text-xs text-white/60">Not a Soul Mark code</span>}
+        {pasted && !decoded && (
+          <span className="text-xs text-white/60">Not a Soul Mark code</span>
+        )}
       </div>
     </div>
   );
@@ -462,7 +567,9 @@ function ThemeCode() {
 function Label({ title, hint }: { title: string; hint: string }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">{title}</p>
+      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+        {title}
+      </p>
       <p className="text-xs opacity-70">{hint}</p>
     </div>
   );

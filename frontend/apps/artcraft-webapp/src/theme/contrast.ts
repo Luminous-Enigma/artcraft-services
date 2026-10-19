@@ -40,7 +40,11 @@ function luminanceOfRgb([r, g, b]: Rgb): number {
 }
 
 /** Contrast between `ink` drawn at `opacity` over `surface` and the surface itself. */
-export function contrastOfOverlay(surface: Hex, ink: Hex, opacity: number): number {
+export function contrastOfOverlay(
+  surface: Hex,
+  ink: Hex,
+  opacity: number,
+): number {
   return overlayContrast(channels(surface), channels(ink), opacity);
 }
 
@@ -50,7 +54,8 @@ export function overlayContrast(s: Rgb, i: Rgb, opacity: number): number {
   const r = Math.round(s[0] * keep + i[0] * opacity);
   const g = Math.round(s[1] * keep + i[1] * opacity);
   const b = Math.round(s[2] * keep + i[2] * opacity);
-  const ls = 0.2126 * LINEAR[s[0]] + 0.7152 * LINEAR[s[1]] + 0.0722 * LINEAR[s[2]];
+  const ls =
+    0.2126 * LINEAR[s[0]] + 0.7152 * LINEAR[s[1]] + 0.0722 * LINEAR[s[2]];
   const ld = 0.2126 * LINEAR[r] + 0.7152 * LINEAR[g] + 0.0722 * LINEAR[b];
   return ls > ld ? (ls + 0.05) / (ld + 0.05) : (ld + 0.05) / (ls + 0.05);
 }
@@ -115,7 +120,11 @@ export function toHsl(hex: Hex): [number, number, number] {
   const d = max - min;
   const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
   const h =
-    max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    max === r
+      ? (g - b) / d + (g < b ? 6 : 0)
+      : max === g
+        ? (b - r) / d + 2
+        : (r - g) / d + 4;
   return [h / 6, s, l];
 }
 
@@ -137,13 +146,17 @@ export function fromHsl(h: number, s: number, l: number): Hex {
 export type Rgb = [number, number, number];
 
 export function channels(hex: Hex): Rgb {
-  return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)) as Rgb;
+  return [1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16)) as Rgb;
 }
 
 function hexOf(rgb: Rgb): Hex {
   return ("#" +
     rgb
-      .map((v) => Math.round(Math.min(255, Math.max(0, v))).toString(16).padStart(2, "0"))
+      .map((v) =>
+        Math.round(Math.min(255, Math.max(0, v)))
+          .toString(16)
+          .padStart(2, "0"),
+      )
       .join("")
       .toUpperCase()) as Hex;
 }
