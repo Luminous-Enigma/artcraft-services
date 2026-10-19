@@ -30,7 +30,12 @@ import {
   rgbTriplet,
   toHsl,
 } from "./contrast";
-import { bandEdges, fitMeaningInks, type MeaningInk, meaningVariables } from "./meaning";
+import {
+  bandEdges,
+  fitMeaningInks,
+  type MeaningInk,
+  meaningVariables,
+} from "./meaning";
 
 export const SOUL_MARK_STARTER: SoulMarkSeeds = {
   background: "#FDF2F7",
@@ -67,7 +72,9 @@ export const DEFAULT_TOKENS: SoulMarkTokens = {
  * The opacities the app draws text at, as a colour (text-white/60) or on the
  * element (opacity-60). Below 40% it is decoration.
  */
-export const TEXT_OPACITIES = [1, 0.9, 0.8, 0.75, 0.7, 0.6, 0.55, 0.5, 0.45, 0.4] as const;
+export const TEXT_OPACITIES = [
+  1, 0.9, 0.8, 0.75, 0.7, 0.6, 0.55, 0.5, 0.45, 0.4,
+] as const;
 
 /** The lowest text fade a theme may use: 40% text then draws at 76%, still lighter than full text. */
 export const MIN_TEXT_FADE = 0.4;
@@ -83,7 +90,9 @@ export const NON_TEXT = 3;
 export const BUTTON_EDGE_MIN = 1.5;
 
 /** Every text opacity has the same floor: AA. */
-const TEXT_FLOORS: Record<number, number> = Object.fromEntries(TEXT_OPACITIES.map((o) => [o, AA]));
+const TEXT_FLOORS: Record<number, number> = Object.fromEntries(
+  TEXT_OPACITIES.map((o) => [o, AA]),
+);
 
 /** Button labels are small bold caps, not large text, so they get the text floor. */
 const ACCENT_FILL_FLOOR = AA;
@@ -179,12 +188,20 @@ export interface Measurement {
 /** Turns stored or typed seeds into valid ones; anything unusable falls back to the starter. */
 export function sanitizeSeeds(raw: unknown): SoulMarkSeeds {
   const r = (raw ?? {}) as Partial<Record<keyof SoulMarkSeeds, unknown>>;
-  const tint = typeof r.tint === "number" && Number.isFinite(r.tint) ? r.tint : SOUL_MARK_STARTER.tint;
+  const tint =
+    typeof r.tint === "number" && Number.isFinite(r.tint)
+      ? r.tint
+      : SOUL_MARK_STARTER.tint;
   return {
-    background: isHex(r.background) ? (r.background.toUpperCase() as Hex) : SOUL_MARK_STARTER.background,
-    accent: isHex(r.accent) ? (r.accent.toUpperCase() as Hex) : SOUL_MARK_STARTER.accent,
+    background: isHex(r.background)
+      ? (r.background.toUpperCase() as Hex)
+      : SOUL_MARK_STARTER.background,
+    accent: isHex(r.accent)
+      ? (r.accent.toUpperCase() as Hex)
+      : SOUL_MARK_STARTER.accent,
     tint: Math.min(1, Math.max(0, tint)),
-    character: r.character === "warm" || r.character === "cool" ? r.character : "soft",
+    character:
+      r.character === "warm" || r.character === "cool" ? r.character : "soft",
     guard: r.guard !== false,
   };
 }
@@ -196,13 +213,23 @@ export function sanitizeSeeds(raw: unknown): SoulMarkSeeds {
  */
 export function encodeSeeds(seeds: SoulMarkSeeds): string {
   const s = sanitizeSeeds(seeds);
-  const parts = ["SM1", s.background.slice(1), s.accent.slice(1), Math.round(s.tint * 100), s.character];
+  const parts = [
+    "SM1",
+    s.background.slice(1),
+    s.accent.slice(1),
+    Math.round(s.tint * 100),
+    s.character,
+  ];
   return [...parts, ...(s.guard ? [] : ["open"])].join("-");
 }
 
 /** The seeds in a code from encodeSeeds, or null when it is not one. */
 export function decodeSeeds(code: string): SoulMarkSeeds | null {
-  const m = code.trim().match(/^SM1-([0-9a-f]{6})-([0-9a-f]{6})-(\d{1,3})-(soft|warm|cool)(-open)?$/i);
+  const m = code
+    .trim()
+    .match(
+      /^SM1-([0-9a-f]{6})-([0-9a-f]{6})-(\d{1,3})-(soft|warm|cool)(-open)?$/i,
+    );
   if (!m) return null;
   return sanitizeSeeds({
     background: `#${m[1]}`,
@@ -229,7 +256,8 @@ export function composeSoulMark(rawSeeds: SoulMarkSeeds): SoulMark {
       seed: "text",
       chosen: ground.bg,
       used: ground.bg,
-      message: "Faded text (captions, hints) drawn a little stronger so it stays readable on this background.",
+      message:
+        "Faded text (captions, hints) drawn a little stronger so it stays readable on this background.",
     });
   }
   if (ground.bg !== seeds.background) {
@@ -245,7 +273,10 @@ export function composeSoulMark(rawSeeds: SoulMarkSeeds): SoulMark {
 
   const accent = fitAccent(seeds.accent, ground, notes);
   const tokens: SoulMarkTokens = { ...ground.tokens, ...accent };
-  const meaning = fitMeaningInks(textSurfaces(tokens).map(([, s]) => s), () => AA);
+  const meaning = fitMeaningInks(
+    textSurfaces(tokens).map(([, s]) => s),
+    () => AA,
+  );
   return { seeds, tokens, meaning, notes, shortfalls: [] };
 }
 
@@ -285,7 +316,8 @@ function composeOpen(seeds: SoulMarkSeeds): SoulMark {
       seed: "background",
       chosen: seeds.background,
       used: guarded.tokens.bg,
-      message: "With the guard on, this background would be adjusted to the shade shown, so text on it reads.",
+      message:
+        "With the guard on, this background would be adjusted to the shade shown, so text on it reads.",
     });
   }
   if (guarded.tokens.accent !== seeds.accent) {
@@ -294,17 +326,24 @@ function composeOpen(seeds: SoulMarkSeeds): SoulMark {
       seed: "accent",
       chosen: seeds.accent,
       used: guarded.tokens.accent,
-      message: "With the guard on, buttons in this accent would use the shade shown, so their labels read.",
+      message:
+        "With the guard on, buttons in this accent would use the shade shown, so their labels read.",
     });
   }
   return { seeds, tokens, meaning, notes, shortfalls, guarded: guarded.tokens };
 }
 
 /** Every measurement below its floor, grouped into the kinds of text a person would recognise. */
-function describeShortfalls(t: SoulMarkTokens, meaning: MeaningInk[]): Shortfall[] {
+function describeShortfalls(
+  t: SoulMarkTokens,
+  meaning: MeaningInk[],
+): Shortfall[] {
   const groups: [string, (what: string) => boolean][] = [
     ["Body text", (w) => /^(white|fg)\/(100|90|80) /.test(w)],
-    ["Faded captions and hints", (w) => /^(white|fg)\/(75|70|60|55|50|45|40) /.test(w)],
+    [
+      "Faded captions and hints",
+      (w) => /^(white|fg)\/(75|70|60|55|50|45|40) /.test(w),
+    ],
     ["Text over pictures", (w) => w === "white on black"],
     ["Button labels", (w) => w.startsWith("white on accent")],
     ["Accent-coloured text", (w) => /^accent(Text|Ink|300|400) /.test(w)],
@@ -314,14 +353,25 @@ function describeShortfalls(t: SoulMarkTokens, meaning: MeaningInk[]): Shortfall
   const all = [
     ...measureText(t),
     ...measureAccent(t),
-    ...meaning.map((m) => ({ what: `status ${m.variable}`, ratio: m.ratio, floor: AA })),
+    ...meaning.map((m) => ({
+      what: `status ${m.variable}`,
+      ratio: m.ratio,
+      floor: AA,
+    })),
   ];
-  groups.push(["Error, warning and badge colours", (w) => w.startsWith("status ")]);
+  groups.push([
+    "Error, warning and badge colours",
+    (w) => w.startsWith("status "),
+  ]);
   const out: Shortfall[] = [];
   for (const [label, belongs] of groups) {
-    const short = all.filter((m) => belongs(m.what) && m.ratio < m.floor - 1e-9);
+    const short = all.filter(
+      (m) => belongs(m.what) && m.ratio < m.floor - 1e-9,
+    );
     if (!short.length) continue;
-    const worst = short.reduce((x, y) => (y.ratio / y.floor < x.ratio / x.floor ? y : x));
+    const worst = short.reduce((x, y) =>
+      y.ratio / y.floor < x.ratio / x.floor ? y : x,
+    );
     out.push({ label, ratio: worst.ratio, floor: worst.floor });
   }
   return out;
@@ -335,7 +385,10 @@ function describeShortfalls(t: SoulMarkTokens, meaning: MeaningInk[]): Shortfall
 export function measureText(t: SoulMarkTokens): Measurement[] {
   const out: Measurement[] = [];
   for (const [surfaceName, surface] of textSurfaces(t)) {
-    for (const [inkName, ink] of [["white", t.white], ["fg", t.fg]] as const) {
+    for (const [inkName, ink] of [
+      ["white", t.white],
+      ["fg", t.fg],
+    ] as const) {
       for (const opacity of TEXT_OPACITIES) {
         const drawn = 1 - (1 - opacity) * t.textFade;
         out.push({
@@ -347,7 +400,11 @@ export function measureText(t: SoulMarkTokens): Measurement[] {
     }
   }
   // Text on scrims over media (text-white on bg-black/60).
-  out.push({ what: "white on black", ratio: contrastRatio(t.white, t.black), floor: AA });
+  out.push({
+    what: "white on black",
+    ratio: contrastRatio(t.white, t.black),
+    floor: AA,
+  });
   return out;
 }
 
@@ -357,25 +414,64 @@ export function measureText(t: SoulMarkTokens): Measurement[] {
  */
 export function measureAccent(t: SoulMarkTokens): Measurement[] {
   const out: Measurement[] = [
-    { what: "white on accent", ratio: contrastRatio(t.white, t.accent), floor: ACCENT_FILL_FLOOR },
-    { what: "white on accent600", ratio: contrastRatio(t.white, t.accent600), floor: ACCENT_FILL_FLOOR },
-    { what: "white on accent700", ratio: contrastRatio(t.white, t.accent700), floor: ACCENT_FILL_FLOOR },
+    {
+      what: "white on accent",
+      ratio: contrastRatio(t.white, t.accent),
+      floor: ACCENT_FILL_FLOOR,
+    },
+    {
+      what: "white on accent600",
+      ratio: contrastRatio(t.white, t.accent600),
+      floor: ACCENT_FILL_FLOOR,
+    },
+    {
+      what: "white on accent700",
+      ratio: contrastRatio(t.white, t.accent700),
+      floor: ACCENT_FILL_FLOOR,
+    },
   ];
   for (const [surfaceName, surface] of textSurfaces(t)) {
-    out.push({ what: `button edge on ${surfaceName}`, ratio: contrastRatio(t.accent, surface), floor: BUTTON_EDGE_MIN });
-    out.push({ what: `accentText on ${surfaceName}`, ratio: contrastRatio(t.accentText, surface), floor: AA });
-    out.push({ what: `accentLine on ${surfaceName}`, ratio: contrastRatio(t.accentLine, surface), floor: NON_TEXT });
-    out.push({ what: `accent400 on ${surfaceName}`, ratio: contrastRatio(t.accent400, surface), floor: AA });
-    out.push({ what: `accent300 on ${surfaceName}`, ratio: contrastRatio(t.accent300, surface), floor: AA });
-    out.push({ what: `accentInk on ${surfaceName}`, ratio: contrastRatio(t.accentInk, surface), floor: AA });
+    out.push({
+      what: `button edge on ${surfaceName}`,
+      ratio: contrastRatio(t.accent, surface),
+      floor: BUTTON_EDGE_MIN,
+    });
+    out.push({
+      what: `accentText on ${surfaceName}`,
+      ratio: contrastRatio(t.accentText, surface),
+      floor: AA,
+    });
+    out.push({
+      what: `accentLine on ${surfaceName}`,
+      ratio: contrastRatio(t.accentLine, surface),
+      floor: NON_TEXT,
+    });
+    out.push({
+      what: `accent400 on ${surfaceName}`,
+      ratio: contrastRatio(t.accent400, surface),
+      floor: AA,
+    });
+    out.push({
+      what: `accent300 on ${surfaceName}`,
+      ratio: contrastRatio(t.accent300, surface),
+      floor: AA,
+    });
+    out.push({
+      what: `accentInk on ${surfaceName}`,
+      ratio: contrastRatio(t.accentInk, surface),
+      floor: AA,
+    });
   }
   return out;
 }
 
 /** The CSS variables a theme sets on <html>, matching the defaults in styles.css. */
-export function cssVariables(mark: Pick<SoulMark, "tokens" | "meaning">): Record<string, string> {
+export function cssVariables(
+  mark: Pick<SoulMark, "tokens" | "meaning">,
+): Record<string, string> {
   const t = mark.tokens;
-  const rgb = (name: string, hex: Hex) => [`--st-${name}-rgb`, rgbTriplet(hex)] as const;
+  const rgb = (name: string, hex: Hex) =>
+    [`--st-${name}-rgb`, rgbTriplet(hex)] as const;
   return Object.fromEntries([
     rgb("white", t.white),
     rgb("black", t.black),
@@ -398,7 +494,10 @@ export function cssVariables(mark: Pick<SoulMark, "tokens" | "meaning">): Record
     ["--st-text-fade", String(Math.round(t.textFade * 1000) / 1000)],
     ["--st-icon-filter", t.scheme === "dark" ? "invert(1)" : "none"],
     // The white wordmark image: flipped to dark on light grounds, blue kept blue.
-    ["--st-wordmark-filter", t.scheme === "dark" ? "none" : "invert(1) hue-rotate(180deg)"],
+    [
+      "--st-wordmark-filter",
+      t.scheme === "dark" ? "none" : "invert(1) hue-rotate(180deg)",
+    ],
     ...meaningVariables(mark.meaning),
     // The desktop app's names, which shared libs (Moodboard, the lightbox,
     // PageDraw's history) read with fallbacks of their own. Left unset by
@@ -437,17 +536,39 @@ interface Inks {
 }
 
 const INKS: Record<Character, Inks> = {
-  soft: { light: { fg: "#F2F1EE", white: "#FFFFFF" }, dark: { fg: "#1A1712", white: "#0B0B0C" } },
-  warm: { light: { fg: "#F7EDE2", white: "#FFFAF3" }, dark: { fg: "#2A1D14", white: "#140D08" } },
-  cool: { light: { fg: "#EEF3F8", white: "#F7FBFF" }, dark: { fg: "#141B24", white: "#070B12" } },
+  soft: {
+    light: { fg: "#F2F1EE", white: "#FFFFFF" },
+    dark: { fg: "#1A1712", white: "#0B0B0C" },
+  },
+  warm: {
+    light: { fg: "#F7EDE2", white: "#FFFAF3" },
+    dark: { fg: "#2A1D14", white: "#140D08" },
+  },
+  cool: {
+    light: { fg: "#EEF3F8", white: "#F7FBFF" },
+    dark: { fg: "#141B24", white: "#070B12" },
+  },
 };
 
 /** How far each surface steps off the background at tint 0.5, measured from the default theme. */
-const STEPS = { panel: 0.11, sunken: 0.67, controls: 0.05, scrollTrack: 0.4, scrollThumb: 0.1 };
+const STEPS = {
+  panel: 0.11,
+  sunken: 0.67,
+  controls: 0.05,
+  scrollTrack: 0.4,
+  scrollThumb: 0.1,
+};
 
 type Ground = Omit<
   SoulMarkTokens,
-  "accent" | "accent300" | "accent400" | "accent600" | "accent700" | "accentInk" | "accentText" | "accentLine"
+  | "accent"
+  | "accent300"
+  | "accent400"
+  | "accent600"
+  | "accent700"
+  | "accentInk"
+  | "accentText"
+  | "accentLine"
 >;
 
 interface FittedGround {
@@ -483,16 +604,32 @@ function fitGround(seeds: SoulMarkSeeds): FittedGround {
     const move = Math.abs(toHsl(fit.hex)[2] - seedL);
     // On a tie, the pole that needs less fade change looks most like the app, then the safer one.
     const margin = tokens.textFade + textMargin(tokens) / 1000;
-    if (!best || move < best.move - 1e-9 || (Math.abs(move - best.move) < 1e-9 && margin > best.margin)) {
+    if (
+      !best ||
+      move < best.move - 1e-9 ||
+      (Math.abs(move - best.move) < 1e-9 && margin > best.margin)
+    ) {
       if (best) other = best.bg;
-      best = { bg: fit.hex, lighter: toHsl(fit.hex)[2] > seedL, tokens, move, margin };
+      best = {
+        bg: fit.hex,
+        lighter: toHsl(fit.hex)[2] > seedL,
+        tokens,
+        move,
+        margin,
+      };
     } else {
       other = fit.hex;
     }
   }
   if (best && other && other !== best.bg) best.alternative = other;
   // Pure black always carries light text, so one pole always passes.
-  return best ?? { bg: "#000000", lighter: false, tokens: buildGround("#000000", "light", seeds, 1) };
+  return (
+    best ?? {
+      bg: "#000000",
+      lighter: false,
+      tokens: buildGround("#000000", "light", seeds, 1),
+    }
+  );
 }
 
 /** The ground with the highest text fade (closest to the app's own look) at which all text clears. */
@@ -511,7 +648,12 @@ function withBestFade(g: Ground): Ground {
   return at(Math.floor(lo * 1000) / 1000);
 }
 
-function buildGround(bg: Hex, pole: "light" | "dark", seeds: SoulMarkSeeds, textFade: number): Ground {
+function buildGround(
+  bg: Hex,
+  pole: "light" | "dark",
+  seeds: SoulMarkSeeds,
+  textFade: number,
+): Ground {
   const ink = INKS[seeds.character][pole];
   // "black" is the far end from the ink: the deepest surface, scrims, media letterbox.
   const deep: Hex = pole === "light" ? "#000000" : "#FFFFFF";
@@ -561,7 +703,9 @@ function textMargin(t: Ground): number {
   return worst;
 }
 
-function textSurfaces(t: Pick<SoulMarkTokens, "bg" | "panel" | "controls" | "sunken" | "white">) {
+function textSurfaces(
+  t: Pick<SoulMarkTokens, "bg" | "panel" | "controls" | "sunken" | "white">,
+) {
   return [
     ["page", t.bg],
     ["panel", t.panel],
@@ -576,26 +720,45 @@ function textSurfaces(t: Pick<SoulMarkTokens, "bg" | "panel" | "controls" | "sun
 
 type AccentTokens = Pick<
   SoulMarkTokens,
-  "accent" | "accent300" | "accent400" | "accent600" | "accent700" | "accentInk" | "accentText" | "accentLine"
+  | "accent"
+  | "accent300"
+  | "accent400"
+  | "accent600"
+  | "accent700"
+  | "accentInk"
+  | "accentText"
+  | "accentLine"
 >;
 
-function fitAccent(seed: Hex, ground: FittedGround, notes: SoulMarkNote[]): AccentTokens {
+function fitAccent(
+  seed: Hex,
+  ground: FittedGround,
+  notes: SoulMarkNote[],
+): AccentTokens {
   const g = ground.tokens;
   const surfaces = textSurfaces(g).map(([, s]) => s);
-  const worstOn = (c: Hex) => Math.min(...surfaces.map((s) => contrastRatio(c, s)));
+  const worstOn = (c: Hex) =>
+    Math.min(...surfaces.map((s) => contrastRatio(c, s)));
 
   // The fill carries "white" text (always readable, first) and should stand
   // out from the panels (3:1, when this hue allows). Buttons take the same ink
   // as the page, so on some grounds the two pull opposite ways: then the label
   // wins and the shade with the most edge is used.
   const labelReads = (c: Hex) => contrastRatio(g.white, c) >= ACCENT_FILL_FLOOR;
-  let fill = nearestLightness(seed, (c) => labelReads(c) && worstOn(c) >= NON_TEXT, () => 0);
+  let fill = nearestLightness(
+    seed,
+    (c) => labelReads(c) && worstOn(c) >= NON_TEXT,
+    () => 0,
+  );
   if (!fill.passed) {
     // No shade has a full 3:1 edge: the nearest one whose label reads and whose edge is visible.
     fill = nearestLightness(
       seed,
       (c) => labelReads(c) && worstOn(c) >= BUTTON_EDGE_MIN,
-      (c) => (labelReads(c) ? 1 + worstOn(c) : contrastRatio(g.white, c) / ACCENT_FILL_FLOOR),
+      (c) =>
+        labelReads(c)
+          ? 1 + worstOn(c)
+          : contrastRatio(g.white, c) / ACCENT_FILL_FLOOR,
     );
   }
   if (!fill.passed || worstOn(fill.hex) < NON_TEXT) {
@@ -605,10 +768,9 @@ function fitAccent(seed: Hex, ground: FittedGround, notes: SoulMarkNote[]): Acce
       seed: "accent",
       chosen: seed,
       used: fill.hex,
-      message:
-        blends
-          ? "On this background, buttons in this accent barely stand out from the page. Their labels stay readable; another accent, or a darker or lighter background, gives them an edge."
-          : "Buttons in this accent stand out from the page a little less than usual. Their labels stay readable.",
+      message: blends
+        ? "On this background, buttons in this accent barely stand out from the page. Their labels stay readable; another accent, or a darker or lighter background, gives them an edge."
+        : "Buttons in this accent stand out from the page a little less than usual. Their labels stay readable.",
     });
   } else if (fill.hex !== seed) {
     notes.push({
@@ -616,7 +778,8 @@ function fitAccent(seed: Hex, ground: FittedGround, notes: SoulMarkNote[]): Acce
       seed: "accent",
       chosen: seed,
       used: fill.hex,
-      message: "Accent shade adjusted so button text on it stays readable. Same hue.",
+      message:
+        "Accent shade adjusted so button text on it stays readable. Same hue.",
     });
   }
   if (sameFamily(fill.hex, g.bg)) {
@@ -625,7 +788,8 @@ function fitAccent(seed: Hex, ground: FittedGround, notes: SoulMarkNote[]): Acce
       seed: "accent",
       chosen: seed,
       used: fill.hex,
-      message: "Accent and background are the same colour family, so buttons stand out by brightness only.",
+      message:
+        "Accent and background are the same colour family, so buttons stand out by brightness only.",
     });
   }
 
@@ -635,7 +799,8 @@ function fitAccent(seed: Hex, ground: FittedGround, notes: SoulMarkNote[]): Acce
   const accent700 = mix(fill.hex, away, 0.24);
 
   // Accent as text and as lines: same hue, moved until it reads on every surface.
-  const fitted = (c: Hex, floor: number) => nearestLightness(c, (x) => worstOn(x) >= floor, worstOn).hex;
+  const fitted = (c: Hex, floor: number) =>
+    nearestLightness(c, (x) => worstOn(x) >= floor, worstOn).hex;
   const accentText = fitted(seed, AA);
   return {
     accent: fill.hex,

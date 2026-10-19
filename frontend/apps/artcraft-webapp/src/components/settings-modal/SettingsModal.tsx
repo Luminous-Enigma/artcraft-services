@@ -21,7 +21,13 @@ import { AppearanceSection } from "./AppearanceSection";
 import { ApiKeySection } from "./ApiKeySection";
 import { BillingSection } from "./BillingSection";
 
-type Tab = "general" | "appearance" | "keybinds" | "account" | "billing" | "apiKeys";
+type Tab =
+  | "general"
+  | "appearance"
+  | "keybinds"
+  | "account"
+  | "billing"
+  | "apiKeys";
 
 interface SettingsModalProps {
   isOpen: boolean;
