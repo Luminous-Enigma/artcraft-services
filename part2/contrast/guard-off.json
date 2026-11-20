@@ -1,0 +1,2893 @@
+{
+  "label": "guard-off",
+  "results": [
+    {
+      "page": "login",
+      "path": "/login",
+      "shortfalls": 7,
+      "worst": 1.29,
+      "found": [
+        {
+          "target": ".leading-relaxed",
+          "html": "<p class=\"text-sm leading-relaxed text-white/60\">Log in to your creative workspace.</p>",
+          "ratio": 4.32,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".space-y-2:nth-child(1) > label",
+          "html": "<label class=\"block font-mono text-[11px] font-semibold leading-4 uppercase tracking-[0.12em] text-white/70\">Email or Us",
+          "ratio": 4.44,
+          "needed": "4.5:1",
+          "fg": "#fdf5f6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > label",
+          "html": "<label class=\"block font-mono text-[11px] font-semibold leading-4 uppercase tracking-[0.12em] text-white/70\">Password</l",
+          "ratio": 4.44,
+          "needed": "4.5:1",
+          "fg": "#fdf5f6",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"forgot-password\"]",
+          "html": "<a class=\"text-xs text-primary hover:text-primary-400 transition-colors\" href=\"/forgot-password\">Forgot password?</a>",
+          "ratio": 1.29,
+          "needed": "4.5:1",
+          "fg": "#2d81ff",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".text-white\\/40",
+          "html": "<span class=\"font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40\">or</span>",
+          "ratio": 4.12,
+          "needed": "4.5:1",
+          "fg": "#fceaee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".mt-8",
+          "html": "<div class=\"mt-8 text-center text-sm text-white/60\">Don't have an account? <a class=\"font-semibold text-primary transiti",
+          "ratio": 4.32,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"signup\"]",
+          "html": "<a class=\"font-semibold text-primary transition-colors hover:text-primary-400\" href=\"/signup\">Sign up</a>",
+          "ratio": 1.29,
+          "needed": "4.5:1",
+          "fg": "#2d81ff",
+          "bg": "#de2046"
+        }
+      ]
+    },
+    {
+      "page": "signup",
+      "path": "/signup",
+      "shortfalls": 6,
+      "worst": 1.29,
+      "found": [
+        {
+          "target": ".leading-relaxed",
+          "html": "<p class=\"text-sm leading-relaxed text-white/60\">Create your account and start crafting.</p>",
+          "ratio": 4.32,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".space-y-2:nth-child(1) > label",
+          "html": "<label class=\"block font-mono text-[11px] font-semibold leading-4 uppercase tracking-[0.12em] text-white/70\">Email</labe",
+          "ratio": 4.44,
+          "needed": "4.5:1",
+          "fg": "#fdf5f6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > label",
+          "html": "<label class=\"block font-mono text-[11px] font-semibold leading-4 uppercase tracking-[0.12em] text-white/70\">Password</l",
+          "ratio": 4.44,
+          "needed": "4.5:1",
+          "fg": "#fdf5f6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".text-white\\/40",
+          "html": "<span class=\"font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40\">or</span>",
+          "ratio": 4.12,
+          "needed": "4.5:1",
+          "fg": "#fceaee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".mt-8",
+          "html": "<div class=\"mt-8 text-center text-sm text-white/60\">Already have an account? <a class=\"font-semibold text-primary transi",
+          "ratio": 4.32,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".text-primary",
+          "html": "<a class=\"font-semibold text-primary transition-colors hover:text-primary-400\" href=\"/login\">Log in</a>",
+          "ratio": 1.29,
+          "needed": "4.5:1",
+          "fg": "#2d81ff",
+          "bg": "#de2046"
+        }
+      ]
+    },
+    {
+      "page": "home",
+      "path": "/",
+      "shortfalls": 52,
+      "worst": 1.6,
+      "found": [
+        {
+          "target": "a[data-active=\"true\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 4.38,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#e13255"
+        },
+        {
+          "target": ".p-2.flex-col[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-image\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-video\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-audio\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-object\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-world\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.flex-col[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"edit-3d\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"video-editor\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"video-editor\"][data-active=\"false\"] > .py-0\\.5.border-amber-400\\/40.text-amber-300",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"background-change\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"moodboard\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"moodboard\"][data-active=\"false\"] > .py-0\\.5.border-amber-400\\/40.text-amber-300",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"frame-extractor\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40.text-purple-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between.items-center > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"library\"][data-active=\"false\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.flex-col[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.flex-col[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener noreferrer\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".mb-4.hud-label.text-ui-accent-ink",
+          "html": "<p class=\"hud-label mb-4 text-ui-accent-ink\">Your creative workspace</p>",
+          "ratio": 1.67,
+          "needed": "4.5:1",
+          "fg": "#5095fc",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "h1 > .text-ui-accent-ink",
+          "html": "<span class=\"text-ui-accent-ink\">craft</span>",
+          "ratio": 1.67,
+          "needed": "3:1",
+          "fg": "#5095fc",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".mt-4",
+          "html": "<p class=\"mt-4 max-w-xl text-sm leading-relaxed text-base-fg/70 sm:text-base\">Start with an idea. Choose a tool to bring",
+          "ratio": 4.11,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "h2",
+          "html": "<h2 class=\"hud-label text-base-fg/70 mb-4\" style=\"opacity: 1; transform: none;\">Create</h2>",
+          "ratio": 4.11,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".hover\\:border-blue-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Image</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-blue-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Generate images from prompts and references.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-purple-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Video</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-purple-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Generate cinematic clips from text or images.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-pink-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Audio</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-pink-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Generate songs and sound effects from prompts.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-cyan-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">3D Object</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-cyan-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Turn a prompt or image into a 3D model.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-teal-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">3D World</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-teal-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Turn a prompt or image into an explorable world.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-amber-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Edit 3D</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-amber-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Compose 3D scenes and render with AI cameras.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-emerald-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Background Change</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-emerald-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Swap or remove backgrounds with AI VFX.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-rose-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Edit Video</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-rose-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > .border-primary\\/30.tracking-wider.py-1",
+          "html": "<span class=\"shrink-0 border border-primary/30 px-1.5 py-1 font-mono text-[9px] font-medium tracking-wider leading-none ",
+          "ratio": 1.6,
+          "needed": "4.5:1",
+          "fg": "#5095fc",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-rose-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Trim, arrange, and edit clips on a timeline.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-indigo-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Moodboard</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-indigo-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > .border-primary\\/30.tracking-wider.py-1",
+          "html": "<span class=\"shrink-0 border border-primary/30 px-1.5 py-1 font-mono text-[9px] font-medium tracking-wider leading-none ",
+          "ratio": 1.6,
+          "needed": "4.5:1",
+          "fg": "#5095fc",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-indigo-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Collect references and ideas to steer a generation.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-orange-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > h3",
+          "html": "<h3 class=\"text-base font-bold uppercase tracking-tight text-ui-ink\">Frame Extractor</h3>",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-orange-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .justify-between.gap-2.items-center > .flex-wrap.min-w-0.gap-2 > .border-primary\\/30.tracking-wider.py-1",
+          "html": "<span class=\"shrink-0 border border-primary/30 px-1.5 py-1 font-mono text-[9px] font-medium tracking-wider leading-none ",
+          "ratio": 1.6,
+          "needed": "4.5:1",
+          "fg": "#5095fc",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".hover\\:border-orange-400\\/60 > .items-start.gap-4.relative > .flex-1.min-w-0 > .mt-2.leading-relaxed",
+          "html": "<p class=\"mt-2 text-sm text-base-fg/70 leading-relaxed\">Grab a still frame from any video.</p>",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        }
+      ]
+    },
+    {
+      "page": "create-image",
+      "path": "/create-image",
+      "shortfalls": 27,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button[href=\"/\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[data-active=\"true\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 4.38,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#e13255"
+        },
+        {
+          "target": "a[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"library\"][data-active=\"false\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener noreferrer\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "p",
+          "html": "<p class=\"mt-4 max-w-xl text-pretty text-sm leading-relaxed text-white/60 sm:text-base\">Describe anything. See it in sec",
+          "ratio": 4.45,
+          "needed": "4.5:1",
+          "fg": "#fdf0f3",
+          "bg": "#dc183f"
+        },
+        {
+          "target": "textarea",
+          "html": "<textarea rows=\"1\" placeholder=\"Describe what you want in the image...\" class=\"promptbox-scrollbar min-h-[2.5em] w-full ",
+          "ratio": 4.23,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de1f46"
+        }
+      ]
+    },
+    {
+      "page": "create-video",
+      "path": "/create-video",
+      "shortfalls": 27,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button[href=\"/\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[data-active=\"true\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 4.38,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#e13255"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"library\"][data-active=\"false\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener noreferrer\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "p",
+          "html": "<p class=\"mt-4 max-w-xl text-pretty text-sm leading-relaxed text-white/60 sm:text-base\">Describe a scene. See it in moti",
+          "ratio": 4.45,
+          "needed": "4.5:1",
+          "fg": "#fdf0f3",
+          "bg": "#dc183f"
+        },
+        {
+          "target": "textarea",
+          "html": "<textarea rows=\"1\" placeholder=\"Describe the video you want to generate...\" class=\"promptbox-scrollbar min-h-[2.5em] w-f",
+          "ratio": 4.23,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de1f46"
+        }
+      ]
+    },
+    {
+      "page": "library",
+      "path": "/library",
+      "shortfalls": 35,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button[href=\"/\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4.group-data-\\[collapsible\\=icon\\]\\:-mt-8",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-image\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"create-video\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4.group-data-\\[collapsible\\=icon\\]\\:-mt-8",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4.group-data-\\[collapsible\\=icon\\]\\:-mt-8",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[data-active=\"true\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 4.38,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#e13255"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"folderless\"][data-active=\"false\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4.group-data-\\[collapsible\\=icon\\]\\:-mt-8",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener noreferrer\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".sm\\:py-1\\.5.text-white\\/60[href$=\"folders\"] > .z-10:nth-child(2)",
+          "html": "<span class=\"relative z-10\">Folders</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": ".sm\\:py-1\\.5.text-white\\/60[href$=\"folderless\"] > .z-10:nth-child(2)",
+          "html": "<span class=\"relative z-10\">Unfoldered</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": "a[href$=\"tags\"] > .z-10:nth-child(2)",
+          "html": "<span class=\"relative z-10\">Tags</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": ".px-2\\.5.sm\\:gap-2.sm\\:py-1\\.5:nth-child(2) > .sm\\:inline.hidden.z-10",
+          "html": "<span class=\"relative z-10 hidden sm:inline\">Images</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": ".px-2\\.5.sm\\:gap-2.sm\\:py-1\\.5:nth-child(3) > .sm\\:inline.hidden.z-10",
+          "html": "<span class=\"relative z-10 hidden sm:inline\">Videos</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": ".px-2\\.5.sm\\:gap-2.sm\\:py-1\\.5:nth-child(4) > .sm\\:inline.hidden.z-10",
+          "html": "<span class=\"relative z-10 hidden sm:inline\">Audio</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": ".px-2\\.5.sm\\:gap-2.sm\\:py-1\\.5:nth-child(5) > .sm\\:inline.hidden.z-10",
+          "html": "<span class=\"relative z-10 hidden sm:inline\">Meshes</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": ".px-2\\.5.sm\\:gap-2.sm\\:py-1\\.5:nth-child(6) > .sm\\:inline.hidden.z-10",
+          "html": "<span class=\"relative z-10 hidden sm:inline\">Splats</span>",
+          "ratio": 4.36,
+          "needed": "4.5:1",
+          "fg": "#fdf1f3",
+          "bg": "#de1d44"
+        },
+        {
+          "target": "p",
+          "html": "<p class=\"text-white/40 text-sm mb-4\">No items yet.</p>",
+          "ratio": 4.28,
+          "needed": "4.5:1",
+          "fg": "#fce9ed",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".bg-white\\/5",
+          "html": "<button class=\"w-fit rounded-[3px] ...\">",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        }
+      ]
+    },
+    {
+      "page": "pricing",
+      "path": "/pricing",
+      "shortfalls": 51,
+      "worst": 1.35,
+      "found": [
+        {
+          "target": ".peer\\/menu-button.text-left[href=\"/\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"library\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .w-full.text-sm[data-sidebar=\"group-content\"] > .gap-0\\.5[data-sidebar=\"menu\"] > .group\\/menu-item.relative[data-sidebar=\"menu-item\"]:nth-child(1) > .peer\\/menu-button[target=\"_blank\"][rel=\"noopener noreferrer\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".gap-x-6 > .font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-2 font-bold\">",
+          "ratio": 3.68,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#2d81ff"
+        },
+        {
+          "target": ".gap-x-6 > p:nth-child(2)",
+          "html": "<p class=\"text-sm\">Save 20% on every plan, monthly or yearly — lock in the lowest price today.</p>",
+          "ratio": 3.68,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#2d81ff"
+        },
+        {
+          "target": "section:nth-child(2) > .border-x.mx-auto.max-w-\\[1280px\\] > .border-b.py-3.md\\:px-10 > p:nth-child(1)",
+          "html": "<p><span class=\"text-white/40\">01 / </span>Pricing</p>",
+          "ratio": 3.7,
+          "needed": "4.5:1",
+          "fg": "#f9d5dc",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "section:nth-child(2) > .border-x.mx-auto.max-w-\\[1280px\\] > .border-b.py-3.md\\:px-10 > p:nth-child(1) > .text-white\\/40",
+          "html": "<span class=\"text-white/40\">01 / </span>",
+          "ratio": 4.28,
+          "needed": "4.5:1",
+          "fg": "#fce9ed",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "section:nth-child(2) > .border-x.mx-auto.max-w-\\[1280px\\] > .border-b.py-3.md\\:px-10 > .sm\\:block.hidden.text-white\\/40",
+          "html": "<p class=\"hidden text-white/40 sm:block\">Free &amp; open source · Subscriptions optional†</p>",
+          "ratio": 4.28,
+          "needed": "4.5:1",
+          "fg": "#fce9ed",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".max-w-xl",
+          "html": "<p class=\"mt-5 max-w-xl text-lg leading-relaxed text-white/55\">Get a ton of generations and invest in a tool you'll alwa",
+          "ratio": 3.7,
+          "needed": "4.5:1",
+          "fg": "#f9d5dc",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "#plans > .border-x.mx-auto.max-w-\\[1280px\\] > .border-b.py-3.md\\:px-10 > p:nth-child(1)",
+          "html": "<p><span class=\"text-white/40\">02 / </span>Choose your plan</p>",
+          "ratio": 3.7,
+          "needed": "4.5:1",
+          "fg": "#f9d5dc",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "#plans > .border-x.mx-auto.max-w-\\[1280px\\] > .border-b.py-3.md\\:px-10 > p:nth-child(1) > .text-white\\/40",
+          "html": "<span class=\"text-white/40\">02 / </span>",
+          "ratio": 4.28,
+          "needed": "4.5:1",
+          "fg": "#fce9ed",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "#plans > .border-x.mx-auto.max-w-\\[1280px\\] > .border-b.py-3.md\\:px-10 > .sm\\:block.hidden.text-white\\/40",
+          "html": "<p class=\"hidden text-white/40 sm:block\">Every paid plan includes video credits</p>",
+          "ratio": 4.28,
+          "needed": "4.5:1",
+          "fg": "#fce9ed",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "#headlessui-tabs-tab-\\:rr\\:",
+          "html": "<button class=\"relative z-20 mx-0.5...\" id=\"headlessui-tabs-tab-...\" role=\"tab\" type=\"button\" aria-selected=\"false\" tabi",
+          "ratio": 3.94,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de1f46"
+        },
+        {
+          "target": ".pricing-sale-badge",
+          "html": "<span class=\"pricing-hud pricing-sale-badge bg-primary px-2 py-1 text-white\">20% off · ends soon</span>",
+          "ratio": 3.68,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#2d81ff"
+        },
+        {
+          "target": ".sm\\:block.text-primary.hidden",
+          "html": "<p class=\"pricing-hud hidden text-primary sm:block\">2 months free</p>",
+          "ratio": 1.35,
+          "needed": "4.5:1",
+          "fg": "#2d81ff",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".py-4.border-b.flex-wrap > .sm\\:block.hidden.text-white\\/40",
+          "html": "<p class=\"pricing-hud hidden text-white/40 sm:block\">Signed in as Visual Compare</p>",
+          "ratio": 4.28,
+          "needed": "4.5:1",
+          "fg": "#fce9ed",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".plan-green > .md\\:px-8.py-2\\.5.gap-4 > .gap-1\\.5.font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-1.5 font-bold\">Plan</p>",
+          "ratio": 3.06,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-green > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">01</p>",
+          "ratio": 2.2,
+          "needed": "4.5:1",
+          "fg": "#b3e5d5",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-green > .md\\:p-8.p-6.flex-1 > .gap-3.justify-between > .py-1.bg-\\[var\\(--plan\\)\\].hover\\:bg-\\[var\\(--plan\\)\\]",
+          "html": "<span class=\"pricing-hud bg-[var(--plan)] hover:bg-[var(--plan)] px-2 py-1 font-bold text-white\">20% off</span>",
+          "ratio": 3.06,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-green > .md\\:p-8.p-6.flex-1 > .h-11.hover\\:opacity-90.mt-6",
+          "html": "<button class=\"font-mono uppercase ...\" type=\"button\">",
+          "ratio": 3.06,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-purple > .md\\:px-8.py-2\\.5.gap-4 > .gap-1\\.5.font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-1.5 font-bold\">",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-purple > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">02</p>",
+          "ratio": 2.85,
+          "needed": "4.5:1",
+          "fg": "#e2c9ff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-purple > .md\\:p-8.p-6.flex-1 > .gap-3.justify-between > .py-1.bg-\\[var\\(--plan\\)\\].hover\\:bg-\\[var\\(--plan\\)\\]",
+          "html": "<span class=\"pricing-hud bg-[var(--plan)] hover:bg-[var(--plan)] px-2 py-1 font-bold text-white\">20% off</span>",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-purple > .md\\:p-8.p-6.flex-1 > .h-11.hover\\:opacity-90.mt-6",
+          "html": "<button class=\"font-mono uppercase ...\" type=\"button\">",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-orange > .md\\:px-8.py-2\\.5.gap-4 > .gap-1\\.5.font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-1.5 font-bold\">",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".plan-orange > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">03</p>",
+          "ratio": 2.29,
+          "needed": "4.5:1",
+          "fg": "#f4d6b3",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".plan-orange > .md\\:p-8.p-6.flex-1 > .gap-3.justify-between > .py-1.bg-\\[var\\(--plan\\)\\].hover\\:bg-\\[var\\(--plan\\)\\]",
+          "html": "<span class=\"pricing-hud bg-[var(--plan)] hover:bg-[var(--plan)] px-2 py-1 font-bold text-white\">20% off</span>",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".plan-orange > .md\\:p-8.p-6.flex-1 > .h-11.hover\\:opacity-90.mt-6",
+          "html": "<button class=\"font-mono uppercase ...\" type=\"button\">",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": "#enterprise > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">04</p>",
+          "ratio": 3.46,
+          "needed": "4.5:1",
+          "fg": "#c2d2ef",
+          "bg": "#3568c9"
+        }
+      ]
+    },
+    {
+      "page": "support",
+      "path": "/support",
+      "shortfalls": 26,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button.text-left[href=\"/\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"library\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > .gap-0\\.5[data-sidebar=\"menu\"] > .group\\/menu-item[data-sidebar=\"menu-item\"]:nth-child(1) > .peer\\/menu-button[target=\"_blank\"][rel=\"noopener noreferrer\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"][target=\"_blank\"][rel=\"noopener noreferrer\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "p",
+          "html": "<p class=\"text-[15px] sm:text-base text-white/60 max-w-xl\">Find answers, join the community, or reach us directly. We’re",
+          "ratio": 4.49,
+          "needed": "4.5:1",
+          "fg": "#fdf0f3",
+          "bg": "#dc143c"
+        }
+      ]
+    },
+    {
+      "page": "edit-image",
+      "path": "/edit-image",
+      "shortfalls": 29,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button[href=\"/\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[data-active=\"true\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 4.38,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#e13255"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.px-1\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.px-1\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"library\"][data-active=\"false\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener noreferrer\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "h2",
+          "html": "<h2 class=\"text-lg font-semibold text-base-fg\">Edit Image</h2>",
+          "ratio": 4.41,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "p",
+          "html": "<p class=\"mt-1 text-sm text-base-fg/60\">Click to upload or drag and drop an image here to edit</p>",
+          "ratio": 4,
+          "needed": "4.5:1",
+          "fg": "#f1e3e3",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".border-ui-controls-border.bg-ui-controls.hover\\:bg-ui-controls\\/80:nth-child(1)",
+          "html": "<button type=\"button\" class=\"flex items-center gap-2 border border-ui-controls-border bg-ui-controls px-3 py-2 font-mono",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-ui-controls-border.bg-ui-controls.hover\\:bg-ui-controls\\/80:nth-child(2)",
+          "html": "<button type=\"button\" class=\"flex items-center gap-2 border border-ui-controls-border bg-ui-controls px-3 py-2 font-mono",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        }
+      ]
+    },
+    {
+      "page": "moodboard",
+      "path": "/moodboard",
+      "shortfalls": 33,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button[href=\"/\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[data-active=\"true\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 4.38,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#e13255"
+        },
+        {
+          "target": "a[data-active=\"true\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#e13255"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button[href$=\"library\"][data-active=\"false\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener noreferrer\"][data-active=\"false\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".mb-5",
+          "html": "<span class=\"mb-5 rounded-full border border-ui-divider px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] tex",
+          "ratio": 3.88,
+          "needed": "4.5:1",
+          "fg": "#f0dfe0",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "p",
+          "html": "<p class=\"mt-3 text-sm leading-relaxed text-base-fg/55\">Drag images in, paste from anywhere, or pull from your library. ",
+          "ratio": 3.29,
+          "needed": "4.5:1",
+          "fg": "#eec9ce",
+          "bg": "#dc143c"
+        },
+        {
+          "target": ".bg-white\\/5",
+          "html": "<button class=\"w-fit font-mono uppe...\">",
+          "ratio": 4.22,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".max-w-\\[180px\\] > .truncate",
+          "html": "<span class=\"truncate\">Untitled board</span>",
+          "ratio": 3.94,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de1f46"
+        },
+        {
+          "target": ".bg-base-fg\\/15.px-3\\.5.rounded-xl",
+          "html": "<button type=\"button\" class=\"flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-sm font-medium transition-colors dura",
+          "ratio": 3.64,
+          "needed": "4.5:1",
+          "fg": "#f2f1ee",
+          "bg": "#e1405f"
+        },
+        {
+          "target": ".left-3 > .text-base-fg\\/55.px-3\\.5.rounded-xl",
+          "html": "<button type=\"button\" class=\"flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-sm font-medium transition-colors dura",
+          "ratio": 3.2,
+          "needed": "4.5:1",
+          "fg": "#eecbd0",
+          "bg": "#de2046"
+        },
+        {
+          "target": "button[title=\"Save board\"]",
+          "html": "<button type=\"button\" title=\"Save board\" aria-label=\"Save board\" class=\"flex items-center gap-2 rounded-xl px-3.5 py-1.5",
+          "ratio": 3.2,
+          "needed": "4.5:1",
+          "fg": "#eecbd0",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".lg\\:flex",
+          "html": "<a class=\"hidden lg:flex h-8 items-center gap-1.5 px-3 rounded-[3px] font-mono text-[11px] font-semibold uppercase track",
+          "ratio": 4.42,
+          "needed": "4.5:1",
+          "fg": "#fdf4f6",
+          "bg": "#de1f46"
+        }
+      ]
+    },
+    {
+      "page": "media",
+      "path": "/media",
+      "shortfalls": 25,
+      "worst": 2.69,
+      "found": [
+        {
+          "target": ".peer\\/menu-button.text-left[href=\"/\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.py-0\\.5",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"library\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sm.w-full[data-sidebar=\"group-content\"] > ul > li:nth-child(1) > .peer\\/menu-button[target=\"_blank\"][rel=\"noopener noreferrer\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        }
+      ]
+    },
+    {
+      "page": "welcome",
+      "path": "/welcome",
+      "shortfalls": 31,
+      "worst": 1.35,
+      "found": [
+        {
+          "target": ".peer\\/menu-button.text-left[href=\"/\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Home</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(2) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"create-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"create-video\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-audio\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Audio</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-object\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D Object</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"create-world\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">3D World</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(3) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"edit-image\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Image</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"edit-3d\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit 3D</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Edit Video</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"video-editor\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"background-change\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">BG Change</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Moodboard</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"moodboard\"] > .border-amber-400\\/40.text-amber-300.text-\\[9px\\]",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 3.3,
+          "needed": "4.5:1",
+          "fg": "#fcd34d",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"frame-extractor\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden:nth-child(2)",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Frame Extract</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".border-purple-400\\/40",
+          "html": "<span class=\"ml-auto border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] leading-none gr",
+          "ratio": 2.69,
+          "needed": "4.5:1",
+          "fg": "#d8b4fe",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".justify-between.items-center > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".peer\\/menu-button.text-left[href$=\"library\"] > span",
+          "html": "<span>Library</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"folderless\"] > span",
+          "html": "<span>Unfoldered</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".\\[\\&\\.folder-drag-over\\]\\:bg-primary\\/20 > span",
+          "html": "<span>Folders</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .text-sidebar-foreground\\/50.transition-\\[margin\\,opacity\\].\\[\\&\\>svg\\]\\:size-4",
+          "html": "<div data-sidebar=\"group-label\" class=\"flex h-8 shrink-0 it...\">",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".p-2.min-w-0[data-sidebar=\"group\"]:nth-child(5) > .w-full.text-sm[data-sidebar=\"group-content\"] > .gap-0\\.5[data-sidebar=\"menu\"] > .group\\/menu-item[data-sidebar=\"menu-item\"]:nth-child(1) > .peer\\/menu-button[target=\"_blank\"][rel=\"noopener noreferrer\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">Tutorials</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"news\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">News</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "a[href$=\"faq\"] > .group-data-\\[collapsible\\=icon\\]\\:hidden",
+          "html": "<span class=\"group-data-[collapsible=icon]:hidden\">FAQ</span>",
+          "ratio": 3.04,
+          "needed": "4.5:1",
+          "fg": "#f6c1cb",
+          "bg": "#de2046"
+        },
+        {
+          "target": "h1 > .text-primary",
+          "html": "<span class=\"text-primary\">ArtCraft</span>",
+          "ratio": 1.35,
+          "needed": "3:1",
+          "fg": "#2d81ff",
+          "bg": "#dc143c"
+        },
+        {
+          "target": "#headlessui-tabs-tab-\\:rr\\:",
+          "html": "<button class=\"relative z-20 mx-0.5...\" id=\"headlessui-tabs-tab-...\" role=\"tab\" type=\"button\" aria-selected=\"false\" tabi",
+          "ratio": 3.93,
+          "needed": "4.5:1",
+          "fg": "#f1e7e6",
+          "bg": "#de2046"
+        },
+        {
+          "target": ".relative:nth-child(2) > .inset-x-0.bottom-\\[calc\\(100\\%_-_1\\.75rem\\)\\].z-0",
+          "html": "<div class=\"absolute inset-x-0 bottom-[calc(100%_-_1.75rem)] z-0 flex items-center justify-center gap-1.5 pt-2 pb-8 text",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".hover\\:bg-\\[\\#8633f2\\]",
+          "html": "<button class=\"rounded-[3px] font-m...\">",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".relative:nth-child(3) > .inset-x-0.bottom-\\[calc\\(100\\%_-_1\\.75rem\\)\\].z-0",
+          "html": "<div class=\"absolute inset-x-0 bottom-[calc(100%_-_1.75rem)] z-0 flex items-center justify-center gap-1.5 pt-2 pb-8 text",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".hover\\:bg-\\[\\#b86400\\]",
+          "html": "<button class=\"rounded-[3px] font-m...\">",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        }
+      ]
+    }
+  ]
+}

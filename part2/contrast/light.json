@@ -1,0 +1,211 @@
+{
+  "label": "light",
+  "results": [
+    {
+      "page": "login",
+      "path": "/login",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "signup",
+      "path": "/signup",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "home",
+      "path": "/",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "create-image",
+      "path": "/create-image",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "create-video",
+      "path": "/create-video",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "library",
+      "path": "/library",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "pricing",
+      "path": "/pricing",
+      "shortfalls": 13,
+      "worst": 2.2,
+      "found": [
+        {
+          "target": ".plan-green > .md\\:px-8.py-2\\.5.gap-4 > .gap-1\\.5.font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-1.5 font-bold\">Plan</p>",
+          "ratio": 3.06,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-green > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">01</p>",
+          "ratio": 2.2,
+          "needed": "4.5:1",
+          "fg": "#b3e5d5",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-green > .md\\:p-8.p-6.flex-1 > .gap-3.justify-between > .py-1.bg-\\[var\\(--plan\\)\\].hover\\:bg-\\[var\\(--plan\\)\\]",
+          "html": "<span class=\"pricing-hud bg-[var(--plan)] hover:bg-[var(--plan)] px-2 py-1 font-bold text-white\">20% off</span>",
+          "ratio": 3.06,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-green > .md\\:p-8.p-6.flex-1 > .h-11.hover\\:opacity-90.mt-6",
+          "html": "<button class=\"font-mono uppercase ...\" type=\"button\">",
+          "ratio": 3.06,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#00a873"
+        },
+        {
+          "target": ".plan-purple > .md\\:px-8.py-2\\.5.gap-4 > .gap-1\\.5.font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-1.5 font-bold\">",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-purple > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">02</p>",
+          "ratio": 2.85,
+          "needed": "4.5:1",
+          "fg": "#e2c9ff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-purple > .md\\:p-8.p-6.flex-1 > .gap-3.justify-between > .py-1.bg-\\[var\\(--plan\\)\\].hover\\:bg-\\[var\\(--plan\\)\\]",
+          "html": "<span class=\"pricing-hud bg-[var(--plan)] hover:bg-[var(--plan)] px-2 py-1 font-bold text-white\">20% off</span>",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-purple > .md\\:p-8.p-6.flex-1 > .h-11.hover\\:opacity-90.mt-6",
+          "html": "<button class=\"font-mono uppercase ...\" type=\"button\">",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".plan-orange > .md\\:px-8.py-2\\.5.gap-4 > .gap-1\\.5.font-bold.pricing-hud",
+          "html": "<p class=\"pricing-hud flex items-center gap-1.5 font-bold\">",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".plan-orange > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">03</p>",
+          "ratio": 2.29,
+          "needed": "4.5:1",
+          "fg": "#f4d6b3",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".plan-orange > .md\\:p-8.p-6.flex-1 > .gap-3.justify-between > .py-1.bg-\\[var\\(--plan\\)\\].hover\\:bg-\\[var\\(--plan\\)\\]",
+          "html": "<span class=\"pricing-hud bg-[var(--plan)] hover:bg-[var(--plan)] px-2 py-1 font-bold text-white\">20% off</span>",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": ".plan-orange > .md\\:p-8.p-6.flex-1 > .h-11.hover\\:opacity-90.mt-6",
+          "html": "<button class=\"font-mono uppercase ...\" type=\"button\">",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        },
+        {
+          "target": "#enterprise > .md\\:px-8.py-2\\.5.gap-4 > .opacity-70.pricing-hud",
+          "html": "<p class=\"pricing-hud opacity-70\">04</p>",
+          "ratio": 3.46,
+          "needed": "4.5:1",
+          "fg": "#c2d2ef",
+          "bg": "#3568c9"
+        }
+      ]
+    },
+    {
+      "page": "support",
+      "path": "/support",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "edit-image",
+      "path": "/edit-image",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "moodboard",
+      "path": "/moodboard",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "media",
+      "path": "/media",
+      "shortfalls": 0,
+      "worst": null,
+      "found": []
+    },
+    {
+      "page": "welcome",
+      "path": "/welcome",
+      "shortfalls": 2,
+      "worst": 3.18,
+      "found": [
+        {
+          "target": ".hover\\:bg-\\[\\#8633f2\\]",
+          "html": "<button class=\"rounded-[3px] font-m...\">",
+          "ratio": 4.27,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#9d4cff"
+        },
+        {
+          "target": ".hover\\:bg-\\[\\#b86400\\]",
+          "html": "<button class=\"rounded-[3px] font-m...\">",
+          "ratio": 3.18,
+          "needed": "4.5:1",
+          "fg": "#ffffff",
+          "bg": "#d97700"
+        }
+      ]
+    }
+  ]
+}

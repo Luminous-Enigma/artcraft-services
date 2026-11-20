@@ -1,0 +1,315 @@
+[
+  {
+    "name": "--st-accent-300-rgb",
+    "declaredValue": "142 199 255",
+    "liveValue": "142 199 255",
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-400-rgb",
+    "declaredValue": "89 167 255",
+    "liveValue": "89 167 255",
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-600-rgb",
+    "declaredValue": "27 99 245",
+    "liveValue": "27 99 245",
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-700-rgb",
+    "declaredValue": "20 78 225",
+    "liveValue": "20 78 225",
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-ink-rgb",
+    "declaredValue": "116 170 255",
+    "liveValue": "116 170 255",
+    "uses": 3,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-line-rgb",
+    "declaredValue": "45 129 255",
+    "liveValue": "45 129 255",
+    "uses": 0,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-rgb",
+    "declaredValue": "45 129 255",
+    "liveValue": "45 129 255",
+    "uses": 3,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-accent-text-rgb",
+    "declaredValue": "45 129 255",
+    "liveValue": "45 129 255",
+    "uses": 0,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-bg",
+    "declaredValue": null,
+    "liveValue": null,
+    "uses": 2,
+    "usesWithInlineFallback": 2,
+    "fallbacks": [
+      "hsl(0 0% 9%)"
+    ],
+    "files": [
+      "libs/components/moodboard/src/lib/MoodboardWorkspace.tsx",
+      "libs/components/moodboard/src/lib/grid/BoardGridView.tsx"
+    ],
+    "status": "unset on purpose; every use has its own fallback"
+  },
+  {
+    "name": "--st-bg-rgb",
+    "declaredValue": "18 19 22",
+    "liveValue": "18 19 22",
+    "uses": 2,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-black-rgb",
+    "declaredValue": "0 0 0",
+    "liveValue": "0 0 0",
+    "uses": 2,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-color-scheme",
+    "declaredValue": null,
+    "liveValue": null,
+    "uses": 1,
+    "usesWithInlineFallback": 1,
+    "fallbacks": [
+      "dark"
+    ],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css"
+    ],
+    "status": "unset on purpose; every use has its own fallback"
+  },
+  {
+    "name": "--st-control-rgb",
+    "declaredValue": "30 31 34",
+    "liveValue": "30 31 34",
+    "uses": 3,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-controls-rgb",
+    "declaredValue": null,
+    "liveValue": null,
+    "uses": 3,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "libs/components/lightbox-modal/src/lib/lightbox-modal.tsx"
+    ],
+    "status": "MISSING: used without a value or fallback"
+  },
+  {
+    "name": "--st-divider",
+    "declaredValue": null,
+    "liveValue": null,
+    "uses": 4,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "libs/components/pagedraw/src/lib/HistoryStack.tsx"
+    ],
+    "status": "MISSING: used without a value or fallback"
+  },
+  {
+    "name": "--st-fg",
+    "declaredValue": null,
+    "liveValue": null,
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "libs/components/pagedraw/src/lib/HistoryStack.tsx"
+    ],
+    "status": "MISSING: used without a value or fallback"
+  },
+  {
+    "name": "--st-icon-filter",
+    "declaredValue": "invert(1)",
+    "liveValue": "invert(1)",
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-panel-rgb",
+    "declaredValue": "16 16 20",
+    "liveValue": "16 16 20",
+    "uses": 5,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-scroll-thumb-rgb",
+    "declaredValue": "44 44 47",
+    "liveValue": "44 44 47",
+    "uses": 2,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-scroll-track-rgb",
+    "declaredValue": "11 11 12",
+    "liveValue": "11 11 12",
+    "uses": 4,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-sunken-rgb",
+    "declaredValue": "6 6 7",
+    "liveValue": "6 6 7",
+    "uses": 1,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-text-fade",
+    "declaredValue": "1",
+    "liveValue": "1",
+    "uses": 2,
+    "usesWithInlineFallback": 2,
+    "fallbacks": [
+      "1"
+    ],
+    "files": [
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-text-rgb",
+    "declaredValue": "242 241 238",
+    "liveValue": "242 241 238",
+    "uses": 9,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-white-rgb",
+    "declaredValue": "255 255 255",
+    "liveValue": "255 255 255",
+    "uses": 48,
+    "usesWithInlineFallback": 0,
+    "fallbacks": [],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css",
+      "apps/artcraft-webapp/tailwind.config.js"
+    ],
+    "status": "always set on :root"
+  },
+  {
+    "name": "--st-wordmark-filter",
+    "declaredValue": null,
+    "liveValue": null,
+    "uses": 1,
+    "usesWithInlineFallback": 1,
+    "fallbacks": [
+      "none"
+    ],
+    "files": [
+      "apps/artcraft-webapp/src/styles.css"
+    ],
+    "status": "unset on purpose; every use has its own fallback"
+  }
+]
