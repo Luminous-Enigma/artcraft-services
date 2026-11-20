@@ -82,6 +82,16 @@ export const NON_TEXT = 3;
  */
 export const BUTTON_EDGE_MIN = 1.5;
 
+/** Every text opacity has the same floor: AA. */
+const TEXT_FLOORS: Record<number, number> = Object.fromEntries(TEXT_OPACITIES.map((o) => [o, AA]));
+
+/** Button labels are small bold caps, not large text, so they get the text floor. */
+const ACCENT_FILL_FLOOR = AA;
+
+/** The furthest each status colour can reach in its band, for light text and for dark. */
+const BAND_EDGES_LIGHT = bandEdges(true);
+const BAND_EDGES_DARK = bandEdges(false);
+
 export type Character = "soft" | "warm" | "cool";
 
 export interface SoulMarkSeeds {
@@ -646,15 +656,3 @@ function sameFamily(a: Hex, b: Hex): boolean {
   const d = Math.abs(ha - hb);
   return Math.min(d, 1 - d) < 0.04;
 }
-
-// ── Floors, measured once from the default theme ───────────────────────────
-
-// ── Floors ─────────────────────────────────────────────────────────────────
-
-const TEXT_FLOORS: Record<number, number> = Object.fromEntries(TEXT_OPACITIES.map((o) => [o, AA]));
-
-/** Button labels are small bold caps, not large text, so they get the text floor. */
-const ACCENT_FILL_FLOOR = AA;
-
-const BAND_EDGES_LIGHT = bandEdges(true);
-const BAND_EDGES_DARK = bandEdges(false);

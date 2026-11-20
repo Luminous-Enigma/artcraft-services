@@ -7,7 +7,7 @@ import {
   SOUL_MARK_STARTER,
   type SoulMark,
   type SoulMarkSeeds,
-} from "./soulMark";
+} from "./soul-mark";
 
 export type ThemeMode = "default" | "soul-mark";
 
