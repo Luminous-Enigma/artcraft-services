@@ -2,7 +2,7 @@
 // exactly as shown, at every tint and text tone (soul-mark.spec.ts checks it);
 // any other colour can still be picked, and is fitted if it needs to be.
 
-import type { Hex } from "./contrast";
+import { type Hex, mix } from "./contrast";
 import { DEFAULT_TOKENS } from "./soul-mark";
 
 export const LIGHT_BACKGROUNDS: [string, Hex][] = [
@@ -40,6 +40,47 @@ export const ACCENTS: [string, Hex][] = [
   ["Green", "#10B981"],
   ["Teal", "#1CB6BE"],
   ["Ink", "#111111"],
+];
+
+/**
+ * The painter's colour wheel as accents: the primaries red, yellow and blue,
+ * the secondaries mixed from them (orange, green, violet), and the six
+ * tertiaries between each pair. Like any accent, the readability guard fits
+ * each one to the background.
+ */
+export const WHEEL: [string, Hex][] = [
+  ["Red", "#FE2712"],
+  ["Red-orange", "#FC600A"],
+  ["Orange", "#FB9902"],
+  ["Yellow-orange", "#FCCC1A"],
+  ["Yellow", "#FEFE33"],
+  ["Yellow-green", "#B2D732"],
+  ["Green", "#66B032"],
+  ["Blue-green", "#347C98"],
+  ["Blue", "#0247FE"],
+  ["Blue-violet", "#4424D6"],
+  ["Violet", "#8601AF"],
+  ["Red-violet", "#C21460"],
+];
+
+/** Each wheel colour lighter: a tint, 45% of the way to white. */
+export const WHEEL_LIGHT: [string, Hex][] = WHEEL.map(([name, hex]) => [
+  `Light ${name.toLowerCase()}`,
+  mix(hex, "#FFFFFF", 0.45),
+]);
+
+/** Each wheel colour deeper: a shade, 40% of the way to black. */
+export const WHEEL_DEEP: [string, Hex][] = WHEEL.map(([name, hex]) => [
+  `Deep ${name.toLowerCase()}`,
+  mix(hex, "#000000", 0.4),
+]);
+
+/** Every ready-made accent, in the order the picker shows them. */
+export const ALL_ACCENTS: [string, Hex][] = [
+  ...ACCENTS,
+  ...WHEEL,
+  ...WHEEL_LIGHT,
+  ...WHEEL_DEEP,
 ];
 
 /**

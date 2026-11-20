@@ -1,9 +1,13 @@
 import { contrastRatio, fromHsl, type Hex, mix, toHsl } from "./contrast";
 import { MEANING_LIGHTNESS } from "./meaning";
 import {
+  ALL_ACCENTS,
   BOLD_BACKGROUNDS,
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
+  WHEEL,
+  WHEEL_DEEP,
+  WHEEL_LIGHT,
 } from "./presets";
 import {
   type Character,
@@ -374,6 +378,61 @@ describe("every combination", () => {
     },
     SWEEP_TIMEOUT,
   );
+
+  it(
+    "fits every ready-made accent, the colour wheel included, to every ready-made background and a wide sample of others",
+    async () => {
+      // Every ready-made background, the troublemakers, and every 6th colour
+      // of the sweep: 44 accents on all of them would take minutes.
+      const sample = [
+        ...TROUBLEMAKERS,
+        ...[...LIGHT_BACKGROUNDS, ...DEEP_BACKGROUNDS].map(([, hex]) => hex),
+        ...backgrounds.filter((_, i) => i % 6 === 0),
+      ];
+      const bad: string[] = [];
+      for (const background of sample)
+        for (const [name, accent] of ALL_ACCENTS) {
+          await breathe();
+          const seeds: SoulMarkSeeds = {
+            background,
+            accent,
+            tint: 0.5,
+            character: "soft",
+          };
+          const mark = composeSoulMark(seeds);
+          for (const f of failures(measureText(mark.tokens)))
+            bad.push(`${name} on ${describeSeeds(seeds)}: ${f}`);
+          for (const f of failures(measureAccent(mark.tokens)))
+            bad.push(`${name} on ${describeSeeds(seeds)}: ${f}`);
+        }
+      expect(bad.slice(0, 20)).toEqual([]);
+    },
+    SWEEP_TIMEOUT,
+  );
+});
+
+describe("the colour wheel", () => {
+  it("has the 12 painter's hues, each with a lighter and a deeper version", () => {
+    expect(WHEEL).toHaveLength(12);
+    expect(WHEEL_LIGHT).toHaveLength(12);
+    expect(WHEEL_DEEP).toHaveLength(12);
+    expect(ALL_ACCENTS).toHaveLength(8 + 36);
+  });
+
+  it("mixes the light and deep versions as VidScripter does", () => {
+    // Values from VidScripter 0.19.1, which mixes with rounding to the nearest.
+    expect(WHEEL_LIGHT[0]).toEqual(["Light red", mix("#FE2712", "#FFFFFF", 0.45)]);
+    expect(WHEEL_DEEP[8]).toEqual(["Deep blue", mix("#0247FE", "#000000", 0.4)]);
+    expect(WHEEL_LIGHT[0][1]).toBe("#FE887D");
+    expect(WHEEL_DEEP[8][1]).toBe("#012B98");
+  });
+
+  it("keeps each light version lighter and each deep version darker", () => {
+    WHEEL.forEach(([, hex], i) => {
+      expect(toHsl(WHEEL_LIGHT[i][1])[2]).toBeGreaterThan(toHsl(hex)[2]);
+      expect(toHsl(WHEEL_DEEP[i][1])[2]).toBeLessThan(toHsl(hex)[2]);
+    });
+  });
 });
 
 // The sweeps are long; yielding now and then keeps the test worker responsive.

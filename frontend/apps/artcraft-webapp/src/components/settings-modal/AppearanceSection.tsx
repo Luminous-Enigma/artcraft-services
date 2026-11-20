@@ -22,9 +22,13 @@ import {
 } from "../../theme/soul-mark";
 import {
   ACCENTS,
+  ALL_ACCENTS,
   BOLD_BACKGROUNDS,
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
+  WHEEL,
+  WHEEL_DEEP,
+  WHEEL_LIGHT,
 } from "../../theme/presets";
 import {
   type ThemeMode,
@@ -148,7 +152,11 @@ function SoulMarkControls() {
     seeds,
     "background",
   );
-  const hardAccents = useHardColours(guard ? [] : ACCENTS, seeds, "accent");
+  const hardAccents = useHardColours(
+    guard ? [] : ALL_ACCENTS,
+    seeds,
+    "accent",
+  );
 
   return (
     <div className="space-y-5 border-t border-white/15 pt-4">
@@ -171,7 +179,12 @@ function SoulMarkControls() {
         title="Accent"
         hint="Buttons like Generate, selections and highlights."
         value={seeds.accent}
-        presets={[["", ACCENTS]]}
+        presets={[
+          ["", ACCENTS],
+          ["Wheel", WHEEL],
+          ["Light", WHEEL_LIGHT],
+          ["Deep", WHEEL_DEEP],
+        ]}
         hard={hardAccents}
         onChange={(accent) => setSeeds({ accent })}
       />
