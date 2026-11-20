@@ -10,8 +10,10 @@ import { setToastDelegate } from "@storyteller/ui-toaster";
 import { toast } from "./components/toast/toast";
 import { captureLoginBridgeContext, LOGIN_BRIDGE_PATH } from "./lib/login-bridge-context";
 import "./lib/account-caches";
+import { startTheming } from "./theme/themeStore";
 
 captureLoginBridgeContext();
+startTheming();
 const isLoginBridge = window.location.pathname === LOGIN_BRIDGE_PATH;
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
