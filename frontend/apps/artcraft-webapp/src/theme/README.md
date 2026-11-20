@@ -181,8 +181,9 @@ With the guard **off**:
   the text is whichever of the light and dark inks reads better, and faded
   text is made as strong as it needs to be (ArtCraft's own 40% captions
   never reach 4.5 : 1, on any background, without that);
-- the panel shows a **Bold** row of the hardest mid-tones (red, bright royal
-  blue, violet, grey, emerald, orange, hot pink, teal), and marks every
+- the panel shows a **Bold** row of the hardest mid-tones (red, crimson,
+  burnt orange, bright royal blue, violet, grey, emerald, orange, hot pink,
+  teal), and marks every
   swatch the guard would change with a ⚠ "hard to read" sign;
 - it lists what falls **below the readability line** in plain words
   ("Faded captions and hints: 2.4 : 1, needs 4.5") and shows what the
