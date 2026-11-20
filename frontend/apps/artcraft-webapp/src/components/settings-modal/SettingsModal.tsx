@@ -4,6 +4,7 @@ import {
   CreditCardIcon,
   KeyIcon,
   KeyboardIcon,
+  PaletteIcon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
@@ -16,10 +17,11 @@ import { useEnterToGenerateStore } from "../../lib/enter-to-generate-store";
 import { useLightboxSoundStore } from "../../lib/lightbox-sound-store";
 import { useSession } from "../../lib/session";
 import { AccountSection } from "./AccountSection";
+import { AppearanceSection } from "./AppearanceSection";
 import { ApiKeySection } from "./ApiKeySection";
 import { BillingSection } from "./BillingSection";
 
-type Tab = "general" | "keybinds" | "account" | "billing" | "apiKeys";
+type Tab = "general" | "appearance" | "keybinds" | "account" | "billing" | "apiKeys";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -28,6 +30,7 @@ interface SettingsModalProps {
 
 const TABS: { id: Tab; label: string; icon: typeof SettingsIcon }[] = [
   { id: "general", label: "General", icon: SettingsIcon },
+  { id: "appearance", label: "Appearance", icon: PaletteIcon },
   { id: "keybinds", label: "Keybinds", icon: KeyboardIcon },
   { id: "account", label: "Account", icon: UserIcon },
   { id: "billing", label: "Billing", icon: CreditCardIcon },
@@ -88,6 +91,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </div>
             <div className="h-full p-4 text-sm sm:p-3 sm:ps-0">
               {tab === "general" && <GeneralPanel />}
+              {tab === "appearance" && (
+                <div className="pb-4">
+                  <AppearanceSection />
+                </div>
+              )}
               {tab === "keybinds" && (
                 <div className="pb-4">
                   <KeybindsSettings />
