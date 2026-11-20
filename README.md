@@ -132,9 +132,12 @@ There are no charts: the web app uses no chart library. What draws colour:
 
 ## Part 2: Soul Mark
 
-Updated onto main of today; adds the painter's colour wheel (12 hues, each also lighter and deeper:
-36 more accents). 26 tests pass, including a sweep of all 44 ready-made accents over every ready-made
-background.
+Updated onto main of today; adds the painter's colour wheel: 12 hues as accents, each also lighter
+and deeper (36 more accents), and the same 12 hues as a Primaries row of backgrounds. No colour
+appears in more than one row. The tests pass, including a sweep of every ready-made background with
+every ready-made accent at every panel tint and text tone: 12,672 combinations, all text readable.
+With the guard on, Soul Mark keeps each primary's hue and moves its shade where text would not read
+(only Yellow reads as it is); with the guard off they are used exactly and marked where they fall short.
 
 **Theme off, the app is unchanged.**
 
