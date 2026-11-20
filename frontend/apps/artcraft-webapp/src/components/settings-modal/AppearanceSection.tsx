@@ -182,7 +182,7 @@ function SoulMarkControls() {
         hint="Buttons like Generate, selections and highlights."
         value={seeds.accent}
         presets={[
-          ["", ACCENTS],
+          ["Classic", ACCENTS],
           ["Wheel", WHEEL],
           ["Light", WHEEL_LIGHT],
           ["Deep", WHEEL_DEEP],
@@ -279,7 +279,7 @@ function ColourField({
       {presets.map(([rowLabel, row]) => (
         <div key={rowLabel} className="flex items-center gap-2">
           {rowLabel && (
-            <span className="w-9 shrink-0 text-xs text-white/60">
+            <span className="w-16 shrink-0 text-xs text-white/60">
               {rowLabel}
             </span>
           )}
