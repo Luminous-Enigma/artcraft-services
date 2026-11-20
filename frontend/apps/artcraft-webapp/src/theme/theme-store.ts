@@ -26,7 +26,8 @@ export const useThemeStore = create<ThemeStore>()(
       mode: "default",
       seeds: SOUL_MARK_STARTER,
       setMode: (mode) => set({ mode }),
-      setSeeds: (seeds) => set((s) => ({ seeds: sanitizeSeeds({ ...s.seeds, ...seeds }) })),
+      setSeeds: (seeds) =>
+        set((s) => ({ seeds: sanitizeSeeds({ ...s.seeds, ...seeds }) })),
       resetSeeds: () => set({ seeds: SOUL_MARK_STARTER }),
     }),
     {
@@ -85,6 +86,7 @@ export function startTheming() {
   const { mode, seeds } = useThemeStore.getState();
   applyTheme(mode, seeds);
   useThemeStore.subscribe((s, prev) => {
-    if (s.mode !== prev.mode || s.seeds !== prev.seeds) applyTheme(s.mode, s.seeds);
+    if (s.mode !== prev.mode || s.seeds !== prev.seeds)
+      applyTheme(s.mode, s.seeds);
   });
 }
