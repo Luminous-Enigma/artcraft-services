@@ -26,6 +26,7 @@ import {
   BOLD_BACKGROUNDS,
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
+  PRIMARY_BACKGROUNDS,
   WHEEL,
   WHEEL_DEEP,
   WHEEL_LIGHT,
@@ -148,7 +149,7 @@ function SoulMarkControls() {
   const { notes, shortfalls } = useSoulMark();
   const guard = seeds.guard !== false;
   const hardBackgrounds = useHardColours(
-    guard ? [] : BOLD_BACKGROUNDS,
+    guard ? [] : [...PRIMARY_BACKGROUNDS, ...BOLD_BACKGROUNDS],
     seeds,
     "background",
   );
@@ -166,6 +167,7 @@ function SoulMarkControls() {
         hint="The colour behind everything. Panels and fields are built from it."
         value={seeds.background}
         presets={[
+          ["Primaries", PRIMARY_BACKGROUNDS],
           ["Light", LIGHT_BACKGROUNDS],
           ["Deep", DEEP_BACKGROUNDS],
           ...(guard

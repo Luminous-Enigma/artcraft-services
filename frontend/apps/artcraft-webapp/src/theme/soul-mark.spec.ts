@@ -5,6 +5,7 @@ import {
   BOLD_BACKGROUNDS,
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
+  PRIMARY_BACKGROUNDS,
   WHEEL,
   WHEEL_DEEP,
   WHEEL_LIGHT,
@@ -408,6 +409,64 @@ describe("every combination", () => {
       expect(bad.slice(0, 20)).toEqual([]);
     },
     SWEEP_TIMEOUT,
+  );
+});
+
+describe("background primaries", () => {
+  it("list every ready-made background once, across Primaries, Light, Deep and Bold", () => {
+    const all = [
+      ...PRIMARY_BACKGROUNDS,
+      ...LIGHT_BACKGROUNDS,
+      ...DEEP_BACKGROUNDS,
+      ...BOLD_BACKGROUNDS,
+    ].map(([, hex]) => hex.toUpperCase());
+    const twice = all.filter((hex, i) => all.indexOf(hex) !== i);
+    expect(twice).toEqual([]);
+    expect(PRIMARY_BACKGROUNDS).toHaveLength(12);
+  });
+
+  it("keep their hue when the guard moves their shade", () => {
+    const drift: string[] = [];
+    for (const [name, background] of PRIMARY_BACKGROUNDS)
+      for (const tint of [0, 0.5, 1])
+        for (const character of ["soft", "warm", "cool"] as const) {
+          const bg = composeSoulMark({ background, accent: "#2D81FF", tint, character }).tokens.bg;
+          const [h1] = toHsl(background);
+          const [h2, s2] = toHsl(bg);
+          const turn = Math.min(Math.abs(h1 - h2), 1 - Math.abs(h1 - h2));
+          if (s2 > 0.05 && turn > 0.02) drift.push(`${name} at ${tint}, ${character}: ${background} -> ${bg}`);
+        }
+    expect(drift).toEqual([]);
+  });
+
+  it(
+    "every ready-made background with every ready-made accent, at every tint and text tone: all text reads",
+    async () => {
+      const bad: string[] = [];
+      let combos = 0;
+      for (const [bgName, background] of [
+        ...PRIMARY_BACKGROUNDS,
+        ...LIGHT_BACKGROUNDS,
+        ...DEEP_BACKGROUNDS,
+      ])
+        for (const [acName, accent] of ALL_ACCENTS)
+          for (const tint of [0, 0.5, 1])
+            for (const character of ["soft", "warm", "cool"] as const) {
+              combos++;
+              await breathe();
+              const seeds: SoulMarkSeeds = { background, accent, tint, character };
+              const mark = composeSoulMark(seeds);
+              const where = `${bgName} + ${acName} (${describeSeeds(seeds)})`;
+              for (const f of failures(measureText(mark.tokens))) bad.push(`${where}: ${f}`);
+              for (const f of failures(measureAccent(mark.tokens))) bad.push(`${where}: ${f}`);
+              for (const m of mark.meaning)
+                if (m.ratio < m.floor - 1e-9)
+                  bad.push(`${where}: ${m.variable} ${m.ratio.toFixed(2)} < ${m.floor.toFixed(2)}`);
+            }
+      expect(combos).toBe((12 + LIGHT_BACKGROUNDS.length + DEEP_BACKGROUNDS.length) * ALL_ACCENTS.length * 9);
+      expect(bad.slice(0, 20)).toEqual([]);
+    },
+    SWEEP_TIMEOUT * 2,
   );
 });
 

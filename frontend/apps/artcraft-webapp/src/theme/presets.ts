@@ -1,6 +1,7 @@
-// Soul Mark's ready-made colours. Each background here is one Soul Mark uses
-// exactly as shown, at every tint and text tone (soul-mark.spec.ts checks it);
-// any other colour can still be picked, and is fitted if it needs to be.
+// Soul Mark's ready-made colours. Each Light and Deep background is one Soul
+// Mark uses exactly as shown, at every tint and text tone (soul-mark.spec.ts
+// checks it); the Primaries are fitted where they need to be, like any other
+// colour someone picks. No colour appears in more than one row.
 
 import { type Hex, mix } from "./contrast";
 import { DEFAULT_TOKENS } from "./soul-mark";
@@ -62,6 +63,15 @@ export const WHEEL: [string, Hex][] = [
   ["Violet", "#8601AF"],
   ["Red-violet", "#C21460"],
 ];
+
+/**
+ * The same twelve wheel hues as backgrounds, the first row of the Background
+ * picker. Unlike the Light and Deep rows, some of these sit in the middle of
+ * the lightness range where not every text reads on them: with the guard on,
+ * Soul Mark keeps the hue and moves the shade, and says so; with it off, they
+ * are used exactly as picked and marked hard to read where they fall short.
+ */
+export const PRIMARY_BACKGROUNDS: [string, Hex][] = WHEEL;
 
 /** Each wheel colour lighter: a tint, 45% of the way to white. */
 export const WHEEL_LIGHT: [string, Hex][] = WHEEL.map(([name, hex]) => [
