@@ -130,6 +130,18 @@ for (const f of appFiles) {
     }
   });
 }
+// Text colours in tailwind.config.js's MEANING_FAMILIES / MEANING_SHADES already read
+// --st-<family>-<shade>-rgb, so a theme fits them: they are not hard-coded.
+const tw = fs.readFileSync(path.join(APP, "tailwind.config.js"), "utf8");
+const fam = new Set((tw.match(/MEANING_FAMILIES = \[([^\]]*)\]/)?.[1] ?? "").match(/[a-z]+/g) ?? []);
+const shades = new Set((tw.match(/MEANING_SHADES = \[([^\]]*)\]/)?.[1] ?? "").match(/\d+/g) ?? []);
+for (const h of hard) {
+  const m = h.value.match(/^(\w+)-([a-z]+)-(\d+)/);
+  if (h.kind !== "Tailwind palette class") h.group = "literal colour";
+  else if (m[1] === "text" && fam.has(m[2]) && shades.has(m[3])) h.group = "themed text";
+  else if (m[1] === "text") h.group = "text outside the themed families or shades";
+  else h.group = "background or border tint";
+}
 fs.writeFileSync(path.join(OUT, "hardcoded.json"), JSON.stringify(hard, null, 2));
 
 // --- Markdown summaries (space-padded, per the repo's Markdown rule) ---------
@@ -145,8 +157,14 @@ fs.writeFileSync(path.join(OUT, "variables.md"),
     rows.map((r) => [`\`${r.name}\``, r.declaredValue ?? "(not set)", r.liveValue ?? "(empty)", r.uses, r.status])) + "\n");
 const byFile = {};
 for (const h of hard) (byFile[h.file] ??= []).push(h);
+const groups = {};
+for (const h of hard) (groups[h.group] ??= []).push(h);
+const groupTable = table(["Group", "Places", "Examples"], Object.entries(groups).map(([g, hs]) =>
+  [g, hs.length, [...new Set(hs.map((h) => h.value))].slice(0, 4).join(" ")]));
 fs.writeFileSync(path.join(OUT, "hardcoded.md"),
-  `# Colours still written into the webapp's code\n\n${hard.length} places in ${Object.keys(byFile).length} files.\n\n` +
+  `# Colours written into the webapp's code\n\n${hard.length} places in ${Object.keys(byFile).length} files. ` +
+  `"Themed text" already reads a theme variable (tailwind.config.js, MEANING_FAMILIES); the rest do not.\n\n` +
+  groupTable + "\n\n## By file\n\n" +
   table(["File", "Hex", "rgb()/hsl()", "Palette classes", "Examples"],
     Object.entries(byFile).sort((a, b) => b[1].length - a[1].length).map(([f, hs]) => [
       `\`${f.replace("apps/artcraft-webapp/src/", "")}\``,
@@ -156,4 +174,5 @@ fs.writeFileSync(path.join(OUT, "hardcoded.md"),
 
 console.log(`${rows.length} variables; ${missing.length} missing a value or fallback.`);
 for (const r of missing) console.log("  MISSING", r.name, r.files.join(", "));
-console.log(`${hard.length} hard-coded colour uses in ${Object.keys(byFile).length} webapp files.`);
+console.log(`${hard.length} colour uses in ${Object.keys(byFile).length} webapp files:`);
+for (const [g, hs] of Object.entries(groups)) console.log(`  ${g}: ${hs.length}`);

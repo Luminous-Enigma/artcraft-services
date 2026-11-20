@@ -103,16 +103,21 @@ the web app never sets them, so the Edit Image history dividers and spinner ring
 button backgrounds are drawn with no colour. This predates #166 and #166 does not change it; part 2
 should give them values.
 
-## Hard-coded colours left for part 2
+## Colours still written into the code
 
-199 places in the web app ([`audit/hardcoded.md`](audit/hardcoded.md)), in four groups:
+199 places in the web app ([`audit/hardcoded.md`](audit/hardcoded.md), by file). #166 already sends
+text in the palette's status colours through variables (`MEANING_FAMILIES` in `tailwind.config.js`),
+so those are themed; part 2 fits them to each theme without changing their hue.
 
-| Group                                                          | About | What part 2 should do                                       |
-|----------------------------------------------------------------|-------|-------------------------------------------------------------|
-| Status colours: red errors, green success, amber               |   150 | Theme variables, so they stay readable on light backgrounds |
-| Per-tool tints on Home, the sidebar, scene cards               |    35 | Keep the hues; the readability guard adjusts them           |
-| Leftover surfaces: `#0b0b0c`, `#000000`, `rgba(255,255,255,…)` |    12 | Move onto the existing variables                            |
-| Brand colours of other companies: Google, Discord              |     6 | Leave alone                                                 |
+| Group                                         | Places | Examples                              | For part 2                                          |
+|-----------------------------------------------|-------:|---------------------------------------|-----------------------------------------------------|
+| Text in a themed family and shade             |     66 | `text-red-500` `text-amber-300`       | Already themed                                      |
+| Background or border tints                    |    109 | `bg-red-500/10` `border-red-500/20`   | See-through over themed surfaces; can stay          |
+| Text outside the themed families or shades    |      5 | `text-violet-400` `text-amber-100`    | Add `violet` and shade 100 to the themed set        |
+| Literal colours                               |     19 | `#0b0b0c` `#000000` Google, Discord   | Near-blacks onto the variables; brand colours stay  |
+
+The status variables, `--st-<family>-<shade>-rgb`, are built in `tailwind.config.js` and every use
+carries Tailwind's own colour as its fallback.
 
 ## Third-party components
 

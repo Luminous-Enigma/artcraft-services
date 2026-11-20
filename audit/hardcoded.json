@@ -3,1194 +3,1393 @@
     "file": "apps/artcraft-webapp/src/components/auth/GoogleLoginButton.tsx",
     "line": 98,
     "kind": "hex",
-    "value": "#4285F4"
+    "value": "#4285F4",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/components/auth/GoogleLoginButton.tsx",
     "line": 102,
     "kind": "hex",
-    "value": "#34A853"
+    "value": "#34A853",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/components/auth/GoogleLoginButton.tsx",
     "line": 106,
     "kind": "hex",
-    "value": "#FBBC05"
+    "value": "#FBBC05",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/components/auth/GoogleLoginButton.tsx",
     "line": 110,
     "kind": "hex",
-    "value": "#EA4335"
+    "value": "#EA4335",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/components/auth/signup-form.tsx",
     "line": 119,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/auth/signup-form.tsx",
     "line": 119,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/auth/signup-form.tsx",
     "line": 119,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/LightboxDetails.tsx",
     "line": 529,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/LightboxDetails.tsx",
     "line": 529,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/20"
+    "value": "bg-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/LightboxDetails.tsx",
     "line": 529,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/LightboxDetails.tsx",
     "line": 529,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/lightbox.tsx",
     "line": 587,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/lightbox.tsx",
     "line": 587,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/20"
+    "value": "bg-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/lightbox/lightbox.tsx",
     "line": 587,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/prompt-box/CharactersModal.tsx",
     "line": 474,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500"
+    "value": "bg-red-500",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/prompt-box/CharactersModal.tsx",
     "line": 896,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500"
+    "value": "bg-red-500",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/prompt-box/MediaReferenceRow.tsx",
     "line": 401,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/prompt-box/PromptBox.tsx",
     "line": 938,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/prompt-box/PromptBoxDropZone.tsx",
     "line": 250,
     "kind": "Tailwind palette class",
-    "value": "border-red-400/80"
+    "value": "border-red-400/80",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/prompt-box/PromptFullscreen.tsx",
     "line": 141,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/settings-modal/AccountSection.tsx",
     "line": 526,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/settings-modal/ApiKeySection.tsx",
     "line": 379,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/settings-modal/ApiKeySection.tsx",
     "line": 564,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/sidebar/app-sidebar.tsx",
     "line": 178,
     "kind": "Tailwind palette class",
-    "value": "border-purple-400/40"
+    "value": "border-purple-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/sidebar/app-sidebar.tsx",
     "line": 178,
     "kind": "Tailwind palette class",
-    "value": "text-purple-300"
+    "value": "text-purple-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/sidebar/app-sidebar.tsx",
     "line": 179,
     "kind": "Tailwind palette class",
-    "value": "border-amber-400/40"
+    "value": "border-amber-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/sidebar/app-sidebar.tsx",
     "line": 179,
     "kind": "Tailwind palette class",
-    "value": "text-amber-300"
+    "value": "text-amber-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/sidebar/library-folders-nav.tsx",
     "line": 239,
     "kind": "Tailwind palette class",
-    "value": "text-amber-400"
+    "value": "text-amber-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/sidebar/library-tags-nav.tsx",
     "line": 110,
     "kind": "Tailwind palette class",
-    "value": "text-violet-400"
+    "value": "text-violet-400",
+    "group": "text outside the themed families or shades"
   },
   {
     "file": "apps/artcraft-webapp/src/components/signup-cta-modal.tsx",
     "line": 108,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/signup-cta-modal.tsx",
     "line": 108,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/signup-cta-modal.tsx",
     "line": 108,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/toast/toast.tsx",
     "line": 95,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500"
+    "value": "bg-green-500",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/toast/toast.tsx",
     "line": 95,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500"
+    "value": "bg-red-500",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/TopBarActions.tsx",
     "line": 145,
     "kind": "hex",
-    "value": "#0b0b0c"
+    "value": "#0b0b0c",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/TopBarActions.tsx",
     "line": 238,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/TopBarActions.tsx",
     "line": 239,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/TopBarActions.tsx",
     "line": 239,
     "kind": "Tailwind palette class",
-    "value": "text-red-300"
+    "value": "text-red-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 205,
     "kind": "Tailwind palette class",
-    "value": "text-green-400"
+    "value": "text-green-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 419,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 420,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 434,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/15"
+    "value": "bg-red-500/15",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 434,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 460,
     "kind": "Tailwind palette class",
-    "value": "text-red-400/80"
+    "value": "text-red-400/80",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 460,
     "kind": "Tailwind palette class",
-    "value": "decoration-red-400/30"
+    "value": "decoration-red-400/30",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 777,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/10"
+    "value": "bg-green-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 777,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/20"
+    "value": "bg-green-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 777,
     "kind": "Tailwind palette class",
-    "value": "text-green-500"
+    "value": "text-green-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 796,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/10"
+    "value": "bg-orange-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 796,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/20"
+    "value": "bg-orange-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 796,
     "kind": "Tailwind palette class",
-    "value": "text-orange-500"
+    "value": "text-orange-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 815,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 815,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/20"
+    "value": "bg-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 815,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 835,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 835,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/20"
+    "value": "bg-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 835,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1068,
     "kind": "Tailwind palette class",
-    "value": "text-red-400/70"
+    "value": "text-red-400/70",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1072,
     "kind": "Tailwind palette class",
-    "value": "text-red-400/70"
+    "value": "text-red-400/70",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1072,
     "kind": "Tailwind palette class",
-    "value": "text-red-300"
+    "value": "text-red-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1133,
     "kind": "hex",
-    "value": "#0b0b0c"
+    "value": "#0b0b0c",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1189,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/10"
+    "value": "bg-green-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1189,
     "kind": "Tailwind palette class",
-    "value": "text-green-500"
+    "value": "text-green-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1189,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/20"
+    "value": "bg-green-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1196,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/10"
+    "value": "bg-orange-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1196,
     "kind": "Tailwind palette class",
-    "value": "text-orange-500"
+    "value": "text-orange-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1196,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/20"
+    "value": "bg-orange-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1203,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1203,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1203,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/20"
+    "value": "bg-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1210,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1210,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/components/topbar/task-queue.tsx",
     "line": 1210,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/20"
+    "value": "bg-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/checkout/success.tsx",
     "line": 91,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/10"
+    "value": "bg-green-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/checkout/success.tsx",
     "line": 92,
     "kind": "Tailwind palette class",
-    "value": "text-green-400"
+    "value": "text-green-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/checkout/success.tsx",
     "line": 187,
     "kind": "hex",
-    "value": "#431407"
+    "value": "#431407",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/checkout/success.tsx",
     "line": 187,
     "kind": "Tailwind palette class",
-    "value": "border-orange-900/50"
+    "value": "border-orange-900/50",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/checkout/success.tsx",
     "line": 187,
     "kind": "Tailwind palette class",
-    "value": "text-orange-200"
+    "value": "text-orange-200",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/checkout/success.tsx",
     "line": 188,
     "kind": "Tailwind palette class",
-    "value": "text-orange-400"
+    "value": "text-orange-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-audio/create-audio.tsx",
     "line": 882,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1533,
     "kind": "Tailwind palette class",
-    "value": "border-amber-500/40"
+    "value": "border-amber-500/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1533,
     "kind": "Tailwind palette class",
-    "value": "text-amber-100"
+    "value": "text-amber-100",
+    "group": "text outside the themed families or shades"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1534,
     "kind": "Tailwind palette class",
-    "value": "text-amber-400"
+    "value": "text-amber-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1769,
     "kind": "Tailwind palette class",
-    "value": "border-yellow-500/40"
+    "value": "border-yellow-500/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1769,
     "kind": "Tailwind palette class",
-    "value": "text-yellow-200"
+    "value": "text-yellow-200",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1770,
     "kind": "Tailwind palette class",
-    "value": "text-yellow-400"
+    "value": "text-yellow-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1778,
     "kind": "Tailwind palette class",
-    "value": "border-amber-500/40"
+    "value": "border-amber-500/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1778,
     "kind": "Tailwind palette class",
-    "value": "text-amber-100"
+    "value": "text-amber-100",
+    "group": "text outside the themed families or shades"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/create-video/create-video.tsx",
     "line": 1779,
     "kind": "Tailwind palette class",
-    "value": "text-amber-400"
+    "value": "text-amber-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/forgot-password.tsx",
     "line": 70,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/forgot-password.tsx",
     "line": 70,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/forgot-password.tsx",
     "line": 70,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/forgot-password.tsx",
     "line": 107,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/10"
+    "value": "bg-green-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/forgot-password.tsx",
     "line": 107,
     "kind": "Tailwind palette class",
-    "value": "text-green-500"
+    "value": "text-green-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 150,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 150,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 150,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 170,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 202,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 236,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 270,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/10"
+    "value": "bg-green-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/forgot-password/verify-reset.tsx",
     "line": 270,
     "kind": "Tailwind palette class",
-    "value": "text-green-500"
+    "value": "text-green-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 35,
     "kind": "Tailwind palette class",
-    "value": "border-blue-400/40"
+    "value": "border-blue-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 35,
     "kind": "Tailwind palette class",
-    "value": "bg-blue-500/20"
+    "value": "bg-blue-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 35,
     "kind": "Tailwind palette class",
-    "value": "text-blue-300"
+    "value": "text-blue-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 36,
     "kind": "Tailwind palette class",
-    "value": "border-blue-400/60"
+    "value": "border-blue-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 36,
     "kind": "Tailwind palette class",
-    "value": "bg-blue-500/10"
+    "value": "bg-blue-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 43,
     "kind": "Tailwind palette class",
-    "value": "border-purple-400/40"
+    "value": "border-purple-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 43,
     "kind": "Tailwind palette class",
-    "value": "bg-purple-500/20"
+    "value": "bg-purple-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 43,
     "kind": "Tailwind palette class",
-    "value": "text-purple-300"
+    "value": "text-purple-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 44,
     "kind": "Tailwind palette class",
-    "value": "border-purple-400/60"
+    "value": "border-purple-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 44,
     "kind": "Tailwind palette class",
-    "value": "bg-purple-500/10"
+    "value": "bg-purple-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 51,
     "kind": "Tailwind palette class",
-    "value": "border-pink-400/40"
+    "value": "border-pink-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 51,
     "kind": "Tailwind palette class",
-    "value": "bg-pink-500/20"
+    "value": "bg-pink-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 51,
     "kind": "Tailwind palette class",
-    "value": "text-pink-300"
+    "value": "text-pink-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 52,
     "kind": "Tailwind palette class",
-    "value": "border-pink-400/60"
+    "value": "border-pink-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 52,
     "kind": "Tailwind palette class",
-    "value": "bg-pink-500/10"
+    "value": "bg-pink-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 59,
     "kind": "Tailwind palette class",
-    "value": "border-cyan-400/40"
+    "value": "border-cyan-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 59,
     "kind": "Tailwind palette class",
-    "value": "bg-cyan-500/20"
+    "value": "bg-cyan-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 59,
     "kind": "Tailwind palette class",
-    "value": "text-cyan-300"
+    "value": "text-cyan-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 60,
     "kind": "Tailwind palette class",
-    "value": "border-cyan-400/60"
+    "value": "border-cyan-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 60,
     "kind": "Tailwind palette class",
-    "value": "bg-cyan-500/10"
+    "value": "bg-cyan-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 67,
     "kind": "Tailwind palette class",
-    "value": "border-teal-400/40"
+    "value": "border-teal-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 67,
     "kind": "Tailwind palette class",
-    "value": "bg-teal-500/20"
+    "value": "bg-teal-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 67,
     "kind": "Tailwind palette class",
-    "value": "text-teal-300"
+    "value": "text-teal-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 68,
     "kind": "Tailwind palette class",
-    "value": "border-teal-400/60"
+    "value": "border-teal-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 68,
     "kind": "Tailwind palette class",
-    "value": "bg-teal-500/10"
+    "value": "bg-teal-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 75,
     "kind": "Tailwind palette class",
-    "value": "border-amber-400/40"
+    "value": "border-amber-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 75,
     "kind": "Tailwind palette class",
-    "value": "bg-amber-500/20"
+    "value": "bg-amber-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 75,
     "kind": "Tailwind palette class",
-    "value": "text-amber-300"
+    "value": "text-amber-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 76,
     "kind": "Tailwind palette class",
-    "value": "border-amber-400/60"
+    "value": "border-amber-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 76,
     "kind": "Tailwind palette class",
-    "value": "bg-amber-500/10"
+    "value": "bg-amber-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 83,
     "kind": "Tailwind palette class",
-    "value": "border-emerald-400/40"
+    "value": "border-emerald-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 83,
     "kind": "Tailwind palette class",
-    "value": "bg-emerald-500/20"
+    "value": "bg-emerald-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 83,
     "kind": "Tailwind palette class",
-    "value": "text-emerald-300"
+    "value": "text-emerald-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 84,
     "kind": "Tailwind palette class",
-    "value": "border-emerald-400/60"
+    "value": "border-emerald-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 84,
     "kind": "Tailwind palette class",
-    "value": "bg-emerald-500/10"
+    "value": "bg-emerald-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 91,
     "kind": "Tailwind palette class",
-    "value": "border-rose-400/40"
+    "value": "border-rose-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 91,
     "kind": "Tailwind palette class",
-    "value": "bg-rose-500/20"
+    "value": "bg-rose-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 91,
     "kind": "Tailwind palette class",
-    "value": "text-rose-300"
+    "value": "text-rose-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 92,
     "kind": "Tailwind palette class",
-    "value": "border-rose-400/60"
+    "value": "border-rose-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 92,
     "kind": "Tailwind palette class",
-    "value": "bg-rose-500/10"
+    "value": "bg-rose-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 100,
     "kind": "Tailwind palette class",
-    "value": "border-indigo-400/40"
+    "value": "border-indigo-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 100,
     "kind": "Tailwind palette class",
-    "value": "bg-indigo-500/20"
+    "value": "bg-indigo-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 100,
     "kind": "Tailwind palette class",
-    "value": "text-indigo-300"
+    "value": "text-indigo-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 101,
     "kind": "Tailwind palette class",
-    "value": "border-indigo-400/60"
+    "value": "border-indigo-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 101,
     "kind": "Tailwind palette class",
-    "value": "bg-indigo-500/10"
+    "value": "bg-indigo-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 109,
     "kind": "Tailwind palette class",
-    "value": "border-orange-400/40"
+    "value": "border-orange-400/40",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 109,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/20"
+    "value": "bg-orange-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 109,
     "kind": "Tailwind palette class",
-    "value": "text-orange-300"
+    "value": "text-orange-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 110,
     "kind": "Tailwind palette class",
-    "value": "border-orange-400/60"
+    "value": "border-orange-400/60",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/home/home.tsx",
     "line": 110,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/10"
+    "value": "bg-orange-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1570,
     "kind": "Tailwind palette class",
-    "value": "text-violet-400"
+    "value": "text-violet-400",
+    "group": "text outside the themed families or shades"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1624,
     "kind": "rgb()/hsl()",
-    "value": "rgba(255,255,255,0.05)"
+    "value": "rgba(255,255,255,0.05)",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1624,
     "kind": "rgb()/hsl()",
-    "value": "rgba(255,255,255,0.1)"
+    "value": "rgba(255,255,255,0.1)",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1624,
     "kind": "rgb()/hsl()",
-    "value": "rgba(255,255,255,0.05)"
+    "value": "rgba(255,255,255,0.05)",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1636,
     "kind": "rgb()/hsl()",
-    "value": "rgba(255,255,255,0.04)"
+    "value": "rgba(255,255,255,0.04)",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1636,
     "kind": "rgb()/hsl()",
-    "value": "rgba(255,255,255,0.09)"
+    "value": "rgba(255,255,255,0.09)",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1636,
     "kind": "rgb()/hsl()",
-    "value": "rgba(255,255,255,0.04)"
+    "value": "rgba(255,255,255,0.04)",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1804,
     "kind": "Tailwind palette class",
-    "value": "text-amber-400"
+    "value": "text-amber-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/library/library.tsx",
     "line": 1979,
     "kind": "Tailwind palette class",
-    "value": "text-violet-400"
+    "value": "text-violet-400",
+    "group": "text outside the themed families or shades"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/login/login.tsx",
     "line": 89,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/login/login.tsx",
     "line": 89,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/login/login.tsx",
     "line": 89,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/onboarding/onboarding.tsx",
     "line": 305,
     "kind": "Tailwind palette class",
-    "value": "bg-green-500/10"
+    "value": "bg-green-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/onboarding/onboarding.tsx",
     "line": 306,
     "kind": "Tailwind palette class",
-    "value": "text-green-400"
+    "value": "text-green-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/onboarding/onboarding.tsx",
     "line": 366,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/onboarding/onboarding.tsx",
     "line": 366,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/onboarding/onboarding.tsx",
     "line": 366,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagedraw/pagedraw.tsx",
     "line": 31,
     "kind": "hex",
-    "value": "#0b0b0c"
+    "value": "#0b0b0c",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagescene/pagescene.tsx",
     "line": 389,
     "kind": "Tailwind palette class",
-    "value": "border-amber-400/30"
+    "value": "border-amber-400/30",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagescene/pagescene.tsx",
     "line": 389,
     "kind": "Tailwind palette class",
-    "value": "bg-amber-500/25"
+    "value": "bg-amber-500/25",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagescene/pagescene.tsx",
     "line": 389,
     "kind": "Tailwind palette class",
-    "value": "text-amber-300"
+    "value": "text-amber-300",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagescene/splash/example-scenes.ts",
     "line": 30,
     "kind": "Tailwind palette class",
-    "value": "bg-orange-500/15"
+    "value": "bg-orange-500/15",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagescene/splash/example-scenes.ts",
     "line": 38,
     "kind": "Tailwind palette class",
-    "value": "bg-teal-500/15"
+    "value": "bg-teal-500/15",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/pagescene/splash/example-scenes.ts",
     "line": 46,
     "kind": "Tailwind palette class",
-    "value": "bg-amber-500/15"
+    "value": "bg-amber-500/15",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/referrals/referrals.tsx",
     "line": 190,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/referrals/referrals.tsx",
     "line": 190,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/referrals/referrals.tsx",
     "line": 190,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/referrals/referrals.tsx",
     "line": 246,
     "kind": "Tailwind palette class",
-    "value": "text-red-400"
+    "value": "text-red-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/referrals/referrals.tsx",
     "line": 334,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/85"
+    "value": "bg-red-500/85",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/referrals/referrals.tsx",
     "line": 334,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500"
+    "value": "bg-red-500",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/set-password/set-password.tsx",
     "line": 90,
     "kind": "Tailwind palette class",
-    "value": "bg-red-500/10"
+    "value": "bg-red-500/10",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/set-password/set-password.tsx",
     "line": 90,
     "kind": "Tailwind palette class",
-    "value": "border-red-500/20"
+    "value": "border-red-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/set-password/set-password.tsx",
     "line": 90,
     "kind": "Tailwind palette class",
-    "value": "text-red-500"
+    "value": "text-red-500",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/support/support.tsx",
     "line": 24,
     "kind": "hex",
-    "value": "#5865F2"
+    "value": "#5865F2",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/support/support.tsx",
     "line": 24,
     "kind": "hex",
-    "value": "#5865F2"
+    "value": "#5865F2",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/components/VideoProjectCard.tsx",
     "line": 22,
     "kind": "Tailwind palette class",
-    "value": "bg-blue-600/20"
+    "value": "bg-blue-600/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/components/VideoProjectCard.tsx",
     "line": 23,
     "kind": "Tailwind palette class",
-    "value": "bg-purple-600/20"
+    "value": "bg-purple-600/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/components/VideoProjectCard.tsx",
     "line": 24,
     "kind": "hex",
-    "value": "#00AABA"
+    "value": "#00AABA",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/components/VideoProjectCard.tsx",
     "line": 25,
     "kind": "Tailwind palette class",
-    "value": "bg-pink-500/15"
+    "value": "bg-pink-500/15",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/components/VideoProjectCard.tsx",
     "line": 26,
     "kind": "Tailwind palette class",
-    "value": "bg-indigo-500/20"
+    "value": "bg-indigo-500/20",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/components/VideoProjectCard.tsx",
     "line": 27,
     "kind": "Tailwind palette class",
-    "value": "bg-sky-500/15"
+    "value": "bg-sky-500/15",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/video-editor/video-editor.tsx",
     "line": 55,
     "kind": "hex",
-    "value": "#000000"
+    "value": "#000000",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/welcome/welcome.tsx",
     "line": 33,
     "kind": "Tailwind palette class",
-    "value": "text-green-400"
+    "value": "text-green-400",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/welcome/welcome.tsx",
     "line": 176,
     "kind": "hex",
-    "value": "#431407"
+    "value": "#431407",
+    "group": "literal colour"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/welcome/welcome.tsx",
     "line": 176,
     "kind": "Tailwind palette class",
-    "value": "border-orange-900/50"
+    "value": "border-orange-900/50",
+    "group": "background or border tint"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/welcome/welcome.tsx",
     "line": 176,
     "kind": "Tailwind palette class",
-    "value": "text-orange-200"
+    "value": "text-orange-200",
+    "group": "themed text"
   },
   {
     "file": "apps/artcraft-webapp/src/pages/welcome/welcome.tsx",
     "line": 177,
     "kind": "Tailwind palette class",
-    "value": "text-orange-400"
+    "value": "text-orange-400",
+    "group": "themed text"
   }
 ]

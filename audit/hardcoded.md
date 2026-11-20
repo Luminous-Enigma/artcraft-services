@@ -1,6 +1,15 @@
-# Colours still written into the webapp's code
+# Colours written into the webapp's code
 
-199 places in 36 files.
+199 places in 36 files. "Themed text" already reads a theme variable (tailwind.config.js, MEANING_FAMILIES); the rest do not.
+
+| Group                                      | Places | Examples                                                 |
+|--------------------------------------------|--------|----------------------------------------------------------|
+| literal colour                             | 19     | #4285F4 #34A853 #FBBC05 #EA4335                          |
+| background or border tint                  | 109    | bg-red-500/10 border-red-500/20 bg-red-500/20 bg-red-500 |
+| themed text                                | 66     | text-red-500 text-red-400 text-purple-300 text-amber-300 |
+| text outside the themed families or shades | 5      | text-violet-400 text-amber-100                           |
+
+## By file
 
 | File                                                 | Hex | rgb()/hsl() | Palette classes | Examples                                                     |
 |------------------------------------------------------|-----|-------------|-----------------|--------------------------------------------------------------|
