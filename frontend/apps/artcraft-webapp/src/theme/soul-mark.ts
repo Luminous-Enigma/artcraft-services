@@ -104,6 +104,9 @@ const BAND_EDGES_DARK = bandEdges(false);
 
 export type Character = "soft" | "warm" | "cool";
 
+/** Which way a gradient runs: top to bottom, or a wide ellipse glowing down from the top edge. */
+export type GradientShape = "vertical" | "elliptical";
+
 export interface SoulMarkSeeds {
   background: Hex;
   accent: Hex;
@@ -112,6 +115,24 @@ export interface SoulMarkSeeds {
   character: Character;
   /** The readability guard, on unless set to false. Off means every color is used exactly as picked. */
   guard?: boolean;
+  /**
+   * Set to make the background a gradient: the background is color 1 at the
+   * top, this is color 2 (what it fades to). Never the same as the background.
+   */
+  color2?: Hex;
+  /** An optional third color, after color 2: a three-color gradient. */
+  color3?: Hex;
+  /** Vertical unless set. */
+  shape?: GradientShape;
+}
+
+/** A gradient background: its colors as used (after the guard), top first. */
+export interface SoulMarkGradient {
+  shape: GradientShape;
+  /** The page's colors. */
+  stops: Hex[];
+  /** Panels, menus and dialogs: the same gradient, one step off the page like a solid panel. */
+  panelStops: Hex[];
 }
 
 export interface SoulMarkTokens {
@@ -153,7 +174,7 @@ export interface SoulMarkTokens {
 export interface SoulMarkNote {
   /** adjusted: a color was moved to stay readable. info: worth knowing. warning: worth changing. */
   kind: "adjusted" | "info" | "warning";
-  seed: "background" | "accent" | "text";
+  seed: "background" | "accent" | "text" | "gradient";
   chosen: Hex;
   used: Hex;
   message: string;
@@ -171,6 +192,8 @@ export interface SoulMark {
   shortfalls: Shortfall[];
   /** With the guard off: the theme the guard would have made from the same seeds. */
   guarded?: SoulMarkTokens;
+  /** Present when the background is a gradient. tokens.bg is its first color. */
+  gradient?: SoulMarkGradient;
 }
 
 /** One kind of text below the readability line, at its worst. */
@@ -193,10 +216,11 @@ export function sanitizeSeeds(raw: unknown): SoulMarkSeeds {
     typeof r.tint === "number" && Number.isFinite(r.tint)
       ? r.tint
       : SOUL_MARK_STARTER.tint;
+  const background = isHex(r.background)
+    ? (r.background.toUpperCase() as Hex)
+    : SOUL_MARK_STARTER.background;
   return {
-    background: isHex(r.background)
-      ? (r.background.toUpperCase() as Hex)
-      : SOUL_MARK_STARTER.background,
+    background,
     accent: isHex(r.accent)
       ? (r.accent.toUpperCase() as Hex)
       : SOUL_MARK_STARTER.accent,
@@ -204,7 +228,34 @@ export function sanitizeSeeds(raw: unknown): SoulMarkSeeds {
     character:
       r.character === "warm" || r.character === "cool" ? r.character : "soft",
     guard: r.guard !== false,
+    ...sanitizeGradient(r, background),
   };
+}
+
+/** The gradient fields, only when they make a gradient: color 2 must differ from the background. */
+function sanitizeGradient(
+  r: Partial<Record<keyof SoulMarkSeeds, unknown>>,
+  background: Hex,
+): Pick<SoulMarkSeeds, "color2" | "color3" | "shape"> {
+  if (!isHex(r.color2)) return {};
+  const color2 = r.color2.toUpperCase() as Hex;
+  if (color2 === background) return {};
+  const color3 = isHex(r.color3) ? (r.color3.toUpperCase() as Hex) : undefined;
+  return {
+    color2,
+    ...(color3 ? { color3 } : {}),
+    shape: r.shape === "elliptical" ? "elliptical" : "vertical",
+  };
+}
+
+/** The gradient's colors as picked, top first, or null for a solid background. */
+export function gradientColors(seeds: SoulMarkSeeds): Hex[] | null {
+  if (!seeds.color2) return null;
+  return [
+    seeds.background,
+    seeds.color2,
+    ...(seeds.color3 ? [seeds.color3] : []),
+  ];
 }
 
 /**
@@ -214,6 +265,20 @@ export function sanitizeSeeds(raw: unknown): SoulMarkSeeds {
  */
 export function encodeSeeds(seeds: SoulMarkSeeds): string {
   const s = sanitizeSeeds(seeds);
+  if (s.color2) {
+    // SM2-<color 1>-<color 2>[-<color 3>]-<v|e>-<accent>-<tint>-<character>[-open]
+    const parts = [
+      "SM2",
+      s.background.slice(1),
+      s.color2.slice(1),
+      ...(s.color3 ? [s.color3.slice(1)] : []),
+      s.shape === "elliptical" ? "e" : "v",
+      s.accent.slice(1),
+      Math.round(s.tint * 100),
+      s.character,
+    ];
+    return [...parts, ...(s.guard ? [] : ["open"])].join("-");
+  }
   const parts = [
     "SM1",
     s.background.slice(1),
@@ -226,6 +291,24 @@ export function encodeSeeds(seeds: SoulMarkSeeds): string {
 
 /** The seeds in a code from encodeSeeds, or null when it is not one. */
 export function decodeSeeds(code: string): SoulMarkSeeds | null {
+  const g = code
+    .trim()
+    .match(
+      /^SM2-([0-9a-f]{6})-([0-9a-f]{6})(?:-([0-9a-f]{6}))?-(v|e)-([0-9a-f]{6})-(\d{1,3})-(soft|warm|cool)(-open)?$/i,
+    );
+  if (g) {
+    if (g[1].toLowerCase() === g[2].toLowerCase()) return null;
+    return sanitizeSeeds({
+      background: `#${g[1]}`,
+      color2: `#${g[2]}`,
+      color3: g[3] ? `#${g[3]}` : undefined,
+      shape: g[4].toLowerCase() === "e" ? "elliptical" : "vertical",
+      accent: `#${g[5]}`,
+      tint: Number(g[6]) / 100,
+      character: g[7].toLowerCase(),
+      guard: !g[8],
+    });
+  }
   const m = code
     .trim()
     .match(
@@ -247,6 +330,7 @@ export function decodeSeeds(code: string): SoulMarkSeeds | null {
  */
 export function composeSoulMark(rawSeeds: SoulMarkSeeds): SoulMark {
   const seeds = sanitizeSeeds(rawSeeds);
+  if (seeds.color2) return composeGradient(seeds);
   if (!seeds.guard) return composeOpen(seeds);
   const notes: SoulMarkNote[] = [];
 
@@ -468,6 +552,32 @@ export function measureAccent(t: SoulMarkTokens): Measurement[] {
 
 /** The CSS variables a theme sets on <html>, matching the defaults in styles.css. */
 export function cssVariables(
+  mark: Pick<SoulMark, "tokens" | "meaning" | "gradient">,
+): Record<string, string> {
+  return {
+    ...solidVariables(mark),
+    ...(mark.gradient ? gradientVariables(mark.gradient) : {}),
+  };
+}
+
+/** The CSS gradient for a list of colors. Built from hex values only. */
+export function gradientCss(shape: GradientShape, stops: Hex[]): string {
+  const list = stops
+    .map((c, i) => `${c} ${Math.round((i / (stops.length - 1)) * 100)}%`)
+    .join(", ");
+  return shape === "elliptical"
+    ? `radial-gradient(ellipse 150% 110% at 50% 0%, ${list})`
+    : `linear-gradient(180deg, ${list})`;
+}
+
+function gradientVariables(g: SoulMarkGradient): Record<string, string> {
+  return {
+    "--st-gradient-page": gradientCss(g.shape, g.stops),
+    "--st-gradient-panel": gradientCss(g.shape, g.panelStops),
+  };
+}
+
+function solidVariables(
   mark: Pick<SoulMark, "tokens" | "meaning">,
 ): Record<string, string> {
   const t = mark.tokens;
@@ -735,9 +845,11 @@ function fitAccent(
   seed: Hex,
   ground: FittedGround,
   notes: SoulMarkNote[],
+  /** For a gradient: every other surface the accent must read on. */
+  moreSurfaces: Hex[] = [],
 ): AccentTokens {
   const g = ground.tokens;
-  const surfaces = textSurfaces(g).map(([, s]) => s);
+  const surfaces = [...textSurfaces(g).map(([, s]) => s), ...moreSurfaces];
   const worstOn = (c: Hex) =>
     Math.min(...surfaces.map((s) => contrastRatio(c, s)));
 
@@ -821,4 +933,205 @@ function sameFamily(a: Hex, b: Hex): boolean {
   if (sa < 0.15 || sb < 0.15) return false;
   const d = Math.abs(ha - hb);
   return Math.min(d, 1 - d) < 0.04;
+}
+
+// ── Gradients ───────────────────────────────────────────────────────────────
+
+/** Where between two gradient colors text is also checked, besides the colors themselves. */
+const BETWEEN = [0.25, 0.5, 0.75];
+
+/**
+ * A gradient background. Text must read at every point of it, so each color
+ * is checked, and so are the blends between neighbors (the gradient passes
+ * through them). With the guard on, each color is moved in lightness only,
+ * as little as possible, until that holds, using whichever text ink (light
+ * or dark) needs the smaller moves overall. With it off, the colors are used
+ * exactly as picked, and what falls short is measured at the worst point.
+ */
+function composeGradient(seeds: SoulMarkSeeds): SoulMark {
+  const chosen = gradientColors(seeds) as Hex[];
+  const shape = seeds.shape ?? "vertical";
+  const notes: SoulMarkNote[] = [];
+
+  let pole: "light" | "dark";
+  let stops: Hex[];
+  if (seeds.guard) {
+    const fits = (["light", "dark"] as const)
+      .map((p) => ({ p, fit: fitStops(chosen, p, seeds) }))
+      .filter((x) => x.fit)
+      .sort((a, b) => a.fit!.move - b.fit!.move);
+    // Pure black carries light text, so the light ink always finds a fit.
+    const best = fits[0] ?? {
+      p: "light" as const,
+      fit: { stops: chosen.map(() => "#000000" as Hex), move: 1 },
+    };
+    pole = best.p;
+    stops = best.fit!.stops;
+    stops.forEach((used, i) => {
+      if (used === chosen[i]) return;
+      const lighter = toHsl(used)[2] > toHsl(chosen[i])[2];
+      notes.push({
+        kind: "adjusted",
+        seed: i === 0 ? "background" : "gradient",
+        chosen: chosen[i],
+        used,
+        message: `${i === 0 ? "Background" : `Gradient color ${i + 1}`} ${lighter ? "lightened" : "deepened"} so text reads across the whole gradient. Same hue.`,
+      });
+    });
+  } else {
+    stops = chosen;
+    pole = (["light", "dark"] as const)
+      .map((p) => ({ p, m: worstMargin(samples(stops), p, seeds) }))
+      .reduce((a, b) => (b.m > a.m ? b : a)).p;
+  }
+
+  // One text fade for the whole gradient: the strongest any point needs.
+  const points = samples(stops);
+  const textFade = Math.min(
+    ...points.map((c) => withBestFade(buildGround(c, pole, seeds, 1)).textFade),
+  );
+  const groundAt = (c: Hex) => buildGround(c, pole, seeds, textFade);
+  const grounds = points.map(groundAt);
+  const first = groundAt(stops[0]);
+  if (textFade < 1) {
+    notes.push({
+      kind: "adjusted",
+      seed: "text",
+      chosen: first.bg,
+      used: first.bg,
+      message:
+        "Faded text (captions, hints) drawn a little stronger so it stays readable across the gradient.",
+    });
+  }
+  const surfaces = grounds.flatMap((g) => textSurfaces(g).map(([, s]) => s));
+  const fitted: FittedGround = { bg: stops[0], lighter: false, tokens: first };
+
+  let accent: AccentTokens;
+  if (seeds.guard) {
+    accent = fitAccent(seeds.accent, fitted, notes, surfaces);
+  } else {
+    const a = seeds.accent;
+    const away: Hex = first.scheme === "dark" ? "#000000" : "#FFFFFF";
+    accent = {
+      accent: a,
+      accent600: mix(a, away, 0.12),
+      accent700: mix(a, away, 0.24),
+      accentText: a,
+      accentLine: a,
+      accent400: mix(a, first.fg, 0.12),
+      accent300: mix(a, first.fg, 0.25),
+      accentInk: mix(a, first.fg, 0.18),
+    };
+  }
+  const tokens: SoulMarkTokens = { ...first, ...accent };
+  const meaning = fitMeaningInks(surfaces, () => (seeds.guard ? AA : 0));
+  const gradient: SoulMarkGradient = {
+    shape,
+    stops,
+    panelStops: stops.map((c) => groundAt(c).panel),
+  };
+  if (seeds.guard) {
+    return { seeds, tokens, meaning, notes, shortfalls: [], gradient };
+  }
+
+  // Guard off: measure every point of the gradient, report the worst of each kind.
+  const guarded = composeGradient({ ...seeds, guard: true });
+  const shortfalls = mergeShortfalls(
+    grounds.map((g) => describeShortfalls({ ...g, ...accent }, meaning)),
+  );
+  guarded.gradient!.stops.forEach((used, i) => {
+    if (used === chosen[i]) return;
+    notes.push({
+      kind: "warning",
+      seed: i === 0 ? "background" : "gradient",
+      chosen: chosen[i],
+      used,
+      message: `With the guard on, ${i === 0 ? "the background" : `gradient color ${i + 1}`} would be adjusted to the shade shown, so text reads across the whole gradient.`,
+    });
+  });
+  return {
+    seeds,
+    tokens,
+    meaning,
+    notes,
+    shortfalls,
+    guarded: guarded.tokens,
+    gradient,
+  };
+}
+
+/**
+ * Each gradient color moved as little as possible (lightness only) so text
+ * reads on it, on every surface built from it, and on the blends between it
+ * and the color before. Null when some color cannot be fitted for this ink.
+ */
+function fitStops(
+  chosen: Hex[],
+  pole: "light" | "dark",
+  seeds: SoulMarkSeeds,
+): { stops: Hex[]; move: number } | null {
+  const margin = (c: Hex) =>
+    textMargin(buildGround(c, pole, seeds, MIN_TEXT_FADE));
+  const stops: Hex[] = [];
+  let move = 0;
+  for (const c of chosen) {
+    const prev = stops[stops.length - 1];
+    const fit = nearestLightness(
+      c,
+      (x) =>
+        margin(x) >= 1 &&
+        (!prev || BETWEEN.every((t) => margin(mix(prev, x, t)) >= 1)),
+      margin,
+    );
+    if (!fit.passed) return null;
+    stops.push(fit.hex);
+    move += Math.abs(toHsl(fit.hex)[2] - toHsl(c)[2]);
+  }
+  return { stops, move };
+}
+
+/** The gradient's colors plus the blends between neighbors. */
+function samples(stops: Hex[]): Hex[] {
+  const out: Hex[] = [stops[0]];
+  for (let i = 1; i < stops.length; i++) {
+    for (const t of BETWEEN) out.push(mix(stops[i - 1], stops[i], t));
+    out.push(stops[i]);
+  }
+  return out;
+}
+
+function worstMargin(
+  points: Hex[],
+  pole: "light" | "dark",
+  seeds: SoulMarkSeeds,
+): number {
+  return Math.min(
+    ...points.map((c) =>
+      textMargin(withBestFade(buildGround(c, pole, seeds, 1))),
+    ),
+  );
+}
+
+/** One shortfall per kind of text: the worst point of the gradient. */
+function mergeShortfalls(lists: Shortfall[][]): Shortfall[] {
+  const worst = new Map<string, Shortfall>();
+  for (const f of lists.flat()) {
+    const w = worst.get(f.label);
+    if (!w || f.ratio / f.floor < w.ratio / w.floor) worst.set(f.label, f);
+  }
+  return [...worst.values()];
+}
+
+/**
+ * The theme as it stands at every checked point of its gradient (each color
+ * and the blends between): what the tests measure, so a gradient is held to
+ * the same standard as a solid background at every point.
+ */
+export function tokensAcrossGradient(mark: SoulMark): SoulMarkTokens[] {
+  if (!mark.gradient) return [mark.tokens];
+  const pole = mark.tokens.scheme === "dark" ? "light" : "dark";
+  return samples(mark.gradient.stops).map((c) => ({
+    ...mark.tokens,
+    ...buildGround(c, pole, mark.seeds, mark.tokens.textFade),
+  }));
 }

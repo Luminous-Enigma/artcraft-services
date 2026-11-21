@@ -16,6 +16,8 @@ import {
   decodeSeeds,
   DEFAULT_TOKENS,
   encodeSeeds,
+  gradientCss,
+  type GradientShape,
   type Shortfall,
   type SoulMarkNote,
   type SoulMarkSeeds,
@@ -25,8 +27,10 @@ import {
   ALL_ACCENTS,
   BOLD_BACKGROUNDS,
   DEEP_BACKGROUNDS,
+  GRADIENT_FADES,
   LIGHT_BACKGROUNDS,
   PRIMARY_BACKGROUNDS,
+  SIGNATURE_GRADIENTS,
   SIGNATURE_THEMES,
   WHEEL,
   WHEEL_DEEP,
@@ -83,7 +87,7 @@ function SoulMarkCard({
   active: boolean;
   onSelect: (m: ThemeMode) => void;
 }) {
-  const { tokens, seeds } = useSoulMark();
+  const { tokens, seeds, gradient } = useSoulMark();
   return (
     <ModeCard
       mode="soul-mark"
@@ -96,6 +100,9 @@ function SoulMarkCard({
           : "Your own colors, exactly as picked"
       }
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
+      firstSwatch={
+        gradient ? gradientCss("vertical", gradient.stops) : undefined
+      }
     />
   );
 }
@@ -107,6 +114,7 @@ function ModeCard({
   title,
   subtitle,
   swatch,
+  firstSwatch,
 }: {
   mode: ThemeMode;
   active: boolean;
@@ -114,6 +122,8 @@ function ModeCard({
   title: string;
   subtitle: string;
   swatch: Hex[];
+  /** A gradient for the first part of the swatch, when the theme has one. */
+  firstSwatch?: string;
 }) {
   return (
     <button
@@ -129,7 +139,11 @@ function ModeCard({
     >
       <span className="flex h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/15">
         {swatch.map((c, i) => (
-          <span key={i} className="h-full flex-1" style={{ background: c }} />
+          <span
+            key={i}
+            className="h-full flex-1"
+            style={{ background: i === 0 && firstSwatch ? firstSwatch : c }}
+          />
         ))}
       </span>
       <span className="flex min-w-0 flex-col">
@@ -154,18 +168,33 @@ function SoulMarkControls() {
     seeds,
     "background",
   );
-  const hardAccents = useHardColors(
-    guard ? [] : ALL_ACCENTS,
-    seeds,
-    "accent",
-  );
+  const hardAccents = useHardColors(guard ? [] : ALL_ACCENTS, seeds, "accent");
 
   return (
     <div className="space-y-5 border-t border-white/15 pt-4">
       <SignatureThemes
         background={seeds.background}
         accent={seeds.accent}
-        onPick={(background, accent) => setSeeds({ background, accent })}
+        onPick={(background, accent) =>
+          setSeeds({
+            background,
+            accent,
+            color2: undefined,
+            color3: undefined,
+          })
+        }
+      />
+      <SignatureGradients
+        seeds={seeds}
+        onPick={(g) =>
+          setSeeds({
+            background: g.colors[0],
+            color2: g.colors[1],
+            color3: g.colors[2],
+            shape: g.shape,
+            accent: g.accent,
+          })
+        }
       />
       <div className="flex flex-col gap-0.5 border-t border-white/15 pt-4">
         <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
@@ -177,8 +206,12 @@ function SoulMarkControls() {
       </div>
       <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
       <ColorField
-        title="Background"
-        hint="The color behind everything. Panels and fields are built from it."
+        title={seeds.color2 ? "Background: color 1" : "Background"}
+        hint={
+          seeds.color2
+            ? "Where the gradient starts, at the top. Panels and fields are built from it."
+            : "The color behind everything. Panels and fields are built from it."
+        }
         value={seeds.background}
         presets={[
           ["Primaries", PRIMARY_BACKGROUNDS],
@@ -189,8 +222,15 @@ function SoulMarkControls() {
             : ([["Bold", BOLD_BACKGROUNDS]] as [string, [string, Hex][]][])),
         ]}
         hard={hardBackgrounds}
-        onChange={(background) => setSeeds({ background })}
+        onChange={(background) =>
+          setSeeds(
+            background === seeds.color2
+              ? { background, color2: seeds.background }
+              : { background },
+          )
+        }
       />
+      <GradientControls />
       <ColorField
         title="Accent"
         hint="Buttons like Generate, selections and highlights."
@@ -263,6 +303,193 @@ function SoulMarkControls() {
   );
 }
 
+/** The background's whole palette, for a gradient's colors 2 and 3 too. */
+const BACKGROUND_ROWS: [string, [string, Hex][]][] = [
+  ["Primaries", PRIMARY_BACKGROUNDS],
+  ["Light", LIGHT_BACKGROUNDS],
+  ["Deep", DEEP_BACKGROUNDS],
+];
+
+/**
+ * Turns the background into a gradient: color 1 is the background above,
+ * color 2 what it fades to, and an optional color 3 after that.
+ */
+function GradientControls() {
+  const seeds = useThemeStore((s) => s.seeds);
+  const setSeeds = useThemeStore((s) => s.setSeeds);
+  const on = !!seeds.color2;
+  const firstFade =
+    GRADIENT_FADES.find(([, h]) => h !== seeds.background)?.[1] ?? "#000000";
+  return (
+    <div className="flex flex-col gap-4 border-l-2 border-white/15 pl-3">
+      <div className="flex items-start justify-between gap-4">
+        <Label
+          title="Gradient"
+          hint={
+            on
+              ? "The background fades from color 1 into the colors below. Text is checked at every point of it."
+              : "Make the background a gradient: pick what it fades to."
+          }
+        />
+        <Switch
+          enabled={on}
+          setEnabled={(v) =>
+            setSeeds(
+              v
+                ? { color2: firstFade, shape: "vertical" }
+                : { color2: undefined, color3: undefined },
+            )
+          }
+          offClassName="bg-white/20"
+        />
+      </div>
+      {on && (
+        <>
+          <ShapePicker
+            shape={seeds.shape ?? "vertical"}
+            onChange={(shape) => setSeeds({ shape })}
+          />
+          <ColorField
+            title="Color 2"
+            hint="What color 1 fades to. Any color but color 1."
+            value={seeds.color2}
+            quick={GRADIENT_FADES}
+            presets={BACKGROUND_ROWS}
+            exclude={seeds.background}
+            onChange={(color2) => setSeeds({ color2 })}
+          />
+          {seeds.color3 ? (
+            <>
+              <ColorField
+                title="Color 3"
+                hint="Where the gradient ends, after color 2."
+                value={seeds.color3}
+                quick={GRADIENT_FADES}
+                presets={BACKGROUND_ROWS}
+                onChange={(color3) => setSeeds({ color3 })}
+              />
+              <button
+                type="button"
+                onClick={() => setSeeds({ color3: undefined })}
+                className="flex h-8 w-fit items-center border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
+              >
+                Remove color 3
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() =>
+                setSeeds({
+                  color3:
+                    GRADIENT_FADES.find(([, h]) => h !== seeds.color2)?.[1] ??
+                    "#000000",
+                })
+              }
+              className="flex h-8 w-fit items-center border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
+            >
+              Add a third color
+            </button>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+function ShapePicker({
+  shape,
+  onChange,
+}: {
+  shape: GradientShape;
+  onChange: (s: GradientShape) => void;
+}) {
+  const options: [GradientShape, string][] = [
+    ["vertical", "Top to bottom"],
+    ["elliptical", "Elliptical glow"],
+  ];
+  return (
+    <div className="flex flex-col gap-2">
+      <Label title="Shape" hint="How the colors flow." />
+      <div className="flex gap-2">
+        {options.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={shape === id}
+            onClick={() => onChange(id)}
+            className={twMerge(
+              "flex h-8 items-center gap-2 border px-3 text-xs transition-colors",
+              shape === id
+                ? "border-primary bg-white/10 text-white"
+                : "border-white/15 text-white/70 hover:bg-white/[0.06]",
+            )}
+          >
+            <span
+              aria-hidden
+              className="h-4 w-6 border border-white/15"
+              style={{ background: gradientCss(id, ["#1CB6BE", "#101B44"]) }}
+            />
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Ready-made gradients in one tap: colors, shape and accent together. */
+function SignatureGradients({
+  seeds,
+  onPick,
+}: {
+  seeds: SoulMarkSeeds;
+  onPick: (g: (typeof SIGNATURE_GRADIENTS)[number]) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <Label
+        title="Signature gradients"
+        hint="Ready-made gradients. Tap one to use it; change any color after."
+      />
+      <div className="flex flex-wrap gap-2">
+        {SIGNATURE_GRADIENTS.map((g) => {
+          const on =
+            seeds.background === g.colors[0] &&
+            seeds.color2 === g.colors[1] &&
+            seeds.color3 === g.colors[2] &&
+            (seeds.shape ?? "vertical") === g.shape &&
+            seeds.accent === g.accent;
+          return (
+            <button
+              key={g.name}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onPick(g)}
+              className={twMerge(
+                "flex items-center gap-2 rounded-[3px] border border-white/15 py-1.5 pl-1.5 pr-3 text-xs text-white/80 transition-colors hover:bg-white/10",
+                on && "border-primary bg-white/10 text-white",
+              )}
+            >
+              <span
+                aria-hidden
+                className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-white/15"
+                style={{ background: gradientCss(g.shape, g.colors) }}
+              >
+                <span
+                  className="absolute bottom-0 right-0 h-3 w-3 rounded-tl-full"
+                  style={{ background: g.accent }}
+                />
+              </span>
+              {g.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 /** Why Soul Mark exists, in a few words, at the very bottom of the panel. */
 function AboutSoulMark() {
   return (
@@ -271,10 +498,10 @@ function AboutSoulMark() {
         About Soul Mark
       </p>
       <p className="text-xs leading-relaxed opacity-70">
-        Most apps give you black, white or dark blue. Soul Mark puts every
-        solid color back in your hands, so whoever you are, everyday user or
-        creator, ArtCraft can look like you. Every combination is checked so
-        text stays easy to read. Be bold; make it yours.
+        Most apps give you black, white or dark blue. Soul Mark puts every solid
+        color back in your hands, so whoever you are, everyday user or creator,
+        ArtCraft can look like you. Every combination is checked so text stays
+        easy to read. Be bold; make it yours.
       </p>
     </div>
   );
@@ -336,27 +563,56 @@ function ColorField({
   presets,
   hard,
   onChange,
+  exclude,
+  quick,
 }: {
   title: string;
   hint: string;
-  value: Hex;
+  value: Hex | undefined;
   /** Rows of swatches, each with an optional label. */
   presets: [string, [string, Hex][]][];
   /** Swatches to mark as hard to read (only ever filled with the guard off). */
   hard?: Set<Hex>;
   onChange: (hex: Hex) => void;
+  /** A color that can't be picked here (a gradient's color 2 can't repeat color 1). */
+  exclude?: Hex;
+  /** One-tap choices shown above the rows, as labelled buttons. */
+  quick?: [string, Hex][];
 }) {
-  const [draft, setDraft] = useState<string>(value);
-  useEffect(() => setDraft(value), [value]);
+  const [draft, setDraft] = useState<string>(value ?? "");
+  useEffect(() => setDraft(value ?? ""), [value]);
+  const pick = (hex: Hex) => {
+    if (hex !== exclude) onChange(hex);
+  };
   const commit = () => {
     const v = draft.startsWith("#") ? draft : `#${draft}`;
-    if (isHex(v)) onChange(v.toUpperCase() as Hex);
-    else setDraft(value);
+    if (isHex(v) && v.toUpperCase() !== exclude) pick(v.toUpperCase() as Hex);
+    else setDraft(value ?? "");
   };
 
   return (
     <div className="flex flex-col gap-2">
       <Label title={title} hint={hint} />
+      {quick && (
+        <div className="flex flex-wrap gap-1.5">
+          {quick.map(([name, hex]) => (
+            <button
+              key={hex}
+              type="button"
+              disabled={hex === exclude}
+              aria-pressed={value === hex}
+              onClick={() => pick(hex)}
+              className={twMerge(
+                "flex h-8 items-center gap-2 border border-white/15 px-2.5 text-xs text-white/80 transition-colors hover:bg-white/[0.06] disabled:opacity-30",
+                value === hex && "border-primary bg-white/10 text-white",
+              )}
+            >
+              <Chip hex={hex} />
+              Fade to {name.toLowerCase()}
+            </button>
+          ))}
+        </div>
+      )}
       {presets.map(([rowLabel, row]) => (
         <div key={rowLabel} className="flex items-center gap-2">
           {rowLabel && (
@@ -367,7 +623,12 @@ function ColorField({
           <div className="flex flex-wrap gap-1.5">
             {row.map(([name, hex]) => {
               const isHard = hard?.has(hex) ?? false;
-              const label = isHard ? `${name}, hard to read` : name;
+              const taken = hex === exclude;
+              const label = taken
+                ? `${name}, already color 1`
+                : isHard
+                  ? `${name}, hard to read`
+                  : name;
               return (
                 <button
                   key={hex}
@@ -375,9 +636,10 @@ function ColorField({
                   title={label}
                   aria-label={`${title}: ${label}`}
                   aria-pressed={value === hex}
-                  onClick={() => onChange(hex)}
+                  disabled={taken}
+                  onClick={() => pick(hex)}
                   className={twMerge(
-                    "relative h-7 w-7 rounded-full border border-white/15",
+                    "relative h-7 w-7 rounded-full border border-white/15 disabled:cursor-not-allowed disabled:opacity-25",
                     value === hex &&
                       "ring-2 ring-primary ring-offset-2 ring-offset-ui-panel",
                   )}
@@ -397,8 +659,8 @@ function ColorField({
       <div className="flex items-center gap-2">
         <input
           type="color"
-          value={value.toLowerCase()}
-          onChange={(e) => onChange(e.target.value.toUpperCase() as Hex)}
+          value={(value ?? "#000000").toLowerCase()}
+          onChange={(e) => pick(e.target.value.toUpperCase() as Hex)}
           aria-label={`${title}: any color`}
           className="h-8 w-10 cursor-pointer border border-white/15 bg-transparent p-0.5"
         />

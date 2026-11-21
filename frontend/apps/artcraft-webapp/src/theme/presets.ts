@@ -146,3 +146,93 @@ export const SIGNATURE_THEMES: {
   { name: "Reddish brown and Amber", background: "#441E13", accent: "#F59E0B" },
   { name: "Brown and Orange", background: "#34241A", accent: "#FB9902" },
 ];
+
+/**
+ * The quick choices for what a gradient color fades to, shown above the full
+ * palette for colors 2 and 3.
+ */
+export const GRADIENT_FADES: [string, Hex][] = [
+  ["Black", "#000000"],
+  ["White", "#FFFFFF"],
+  ["Gray", "#4A4E55"],
+  ["Midnight", "#101B44"],
+];
+
+/**
+ * Signature gradients: whole looks in one tap, shown first. Each uses colors
+ * from the picker's rows (or the quick fades), so anyone can also make it by
+ * hand. Neon Deep is twentyseven's own look.
+ */
+export const SIGNATURE_GRADIENTS: {
+  name: string;
+  colors: Hex[];
+  shape: "vertical" | "elliptical";
+  accent: Hex;
+}[] = [
+  {
+    name: "Neon Deep",
+    colors: ["#0E1A2E", "#070B14"],
+    shape: "vertical",
+    accent: "#00E5FF",
+  },
+  {
+    name: "Midnight and Teal",
+    colors: ["#101B44", "#000000"],
+    shape: "vertical",
+    accent: "#1CB6BE",
+  },
+  {
+    name: "Royal blue to black",
+    colors: ["#19206A", "#000000"],
+    shape: "vertical",
+    accent: "#1F6FEB",
+  },
+  {
+    name: "Deep red to black",
+    colors: ["#5D101B", "#000000"],
+    shape: "vertical",
+    accent: "#E23E57",
+  },
+  {
+    name: "Deep violet to black",
+    colors: ["#500169", "#000000"],
+    shape: "vertical",
+    accent: "#E86FA6",
+  },
+  {
+    name: "Deep green to black",
+    colors: ["#0C2F1C", "#000000"],
+    shape: "vertical",
+    accent: "#10B981",
+  },
+  {
+    name: "Sky to white",
+    colors: ["#BFDBF1", "#FFFFFF"],
+    shape: "vertical",
+    accent: "#0969DA",
+  },
+  {
+    name: "Rose to white",
+    colors: ["#F9CADE", "#FFFFFF"],
+    shape: "vertical",
+    accent: "#C21460",
+  },
+  {
+    name: "Aurora",
+    colors: ["#0D2661", "#0C2F1C", "#0B0E14"],
+    shape: "vertical",
+    accent: "#1CB6BE",
+  },
+  {
+    name: "Synthwave",
+    colors: ["#391961", "#521232", "#0B0E14"],
+    shape: "vertical",
+    accent: "#E86FA6",
+  },
+  {
+    name: "Event horizon",
+    colors: ["#19206A", "#000000"],
+    shape: "elliptical",
+    accent: "#219FD5",
+  },
+];
