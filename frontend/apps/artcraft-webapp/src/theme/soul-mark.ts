@@ -248,6 +248,22 @@ function sanitizeGradient(
   };
 }
 
+/** The seeds without any gradient: what the solid Soul Mark theme uses. */
+export function solidSeeds(seeds: SoulMarkSeeds): SoulMarkSeeds {
+  const {
+    color2: _c2,
+    color3: _c3,
+    shape: _shape,
+    ...solid
+  } = sanitizeSeeds(seeds);
+  return solid;
+}
+
+/** Which theme a set of seeds belongs to: Gradients when it has a color 2, Soul Mark otherwise. */
+export function themeForSeeds(seeds: SoulMarkSeeds): "soul-mark" | "gradients" {
+  return sanitizeSeeds(seeds).color2 ? "gradients" : "soul-mark";
+}
+
 /** The gradient's colors as picked, top first, or null for a solid background. */
 export function gradientColors(seeds: SoulMarkSeeds): Hex[] | null {
   if (!seeds.color2) return null;

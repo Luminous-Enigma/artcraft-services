@@ -236,3 +236,14 @@ export const SIGNATURE_GRADIENTS: {
     accent: "#219FD5",
   },
 ];
+
+/** What everyone sees the first time they choose Gradients: Neon Deep. */
+export const GRADIENT_STARTER = {
+  background: SIGNATURE_GRADIENTS[0].colors[0],
+  color2: SIGNATURE_GRADIENTS[0].colors[1],
+  shape: SIGNATURE_GRADIENTS[0].shape,
+  accent: SIGNATURE_GRADIENTS[0].accent,
+  tint: 0.5,
+  character: "soft" as const,
+  guard: true,
+};
