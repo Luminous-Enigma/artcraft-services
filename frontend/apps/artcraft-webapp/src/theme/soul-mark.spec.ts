@@ -7,6 +7,7 @@ import {
   LIGHT_BACKGROUNDS,
   PRIMARY_BACKGROUNDS,
   GRADIENT_FADES,
+  GRADIENT_STARTER,
   SIGNATURE_GRADIENTS,
   SIGNATURE_THEMES,
   WHEEL,
@@ -25,6 +26,8 @@ import {
   sanitizeSeeds,
   SOUL_MARK_STARTER,
   type SoulMarkSeeds,
+  solidSeeds,
+  themeForSeeds,
   tokensAcrossGradient,
 } from "./soul-mark";
 
@@ -729,5 +732,34 @@ describe("gradients", () => {
       if (s1 > 0.05) expect(Math.abs(h1 - h2)).toBeLessThan(0.02);
       expect(Math.abs(s1 - s2)).toBeLessThan(0.05);
     }
+  });
+});
+
+describe("Gradients as its own theme", () => {
+  it("starts from Neon Deep, exactly as designed and readable at every point", () => {
+    const mark = composeSoulMark(GRADIENT_STARTER);
+    expect(mark.gradient!.stops).toEqual(SIGNATURE_GRADIENTS[0].colors);
+    expect(SIGNATURE_GRADIENTS[0].name).toBe("Neon Deep");
+    for (const t of tokensAcrossGradient(mark)) {
+      expect(failures(measureText(t))).toEqual([]);
+    }
+  });
+
+  it("keeps Soul Mark solid: its seeds never carry a gradient", () => {
+    const solid = solidSeeds({ ...GRADIENT_STARTER, color3: "#000000" });
+    expect(solid.color2).toBeUndefined();
+    expect(solid.color3).toBeUndefined();
+    expect(solid.shape).toBeUndefined();
+    expect(composeSoulMark(solid).gradient).toBeUndefined();
+    expect(solid.background).toBe(GRADIENT_STARTER.background);
+  });
+
+  it("sends a pasted code to the right theme", () => {
+    expect(themeForSeeds(decodeSeeds(encodeSeeds(GRADIENT_STARTER))!)).toBe(
+      "gradients",
+    );
+    expect(themeForSeeds(decodeSeeds(encodeSeeds(SOUL_MARK_STARTER))!)).toBe(
+      "soul-mark",
+    );
   });
 });

@@ -21,6 +21,7 @@ import {
   type Shortfall,
   type SoulMarkNote,
   type SoulMarkSeeds,
+  themeForSeeds,
 } from "../../theme/soul-mark";
 import {
   ACCENTS,
@@ -38,6 +39,8 @@ import {
 } from "../../theme/presets";
 import {
   type ThemeMode,
+  useGradientMark,
+  useSolidMark,
   useSoulMark,
   useThemeStore,
 } from "../../theme/theme-store";
@@ -59,7 +62,7 @@ export function AppearanceSection() {
           title="Theme"
           hint="Applies instantly, to every screen. Saved on this device."
         />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           <ModeCard
             mode="default"
             active={mode === "default"}
@@ -73,9 +76,11 @@ export function AppearanceSection() {
             ]}
           />
           <SoulMarkCard active={mode === "soul-mark"} onSelect={setMode} />
+          <GradientsCard active={mode === "gradients"} onSelect={setMode} />
         </div>
       </div>
-      {mode === "soul-mark" && <SoulMarkControls />}
+      {mode === "soul-mark" && <SoulMarkControls kind="solid" />}
+      {mode === "gradients" && <SoulMarkControls kind="gradient" />}
     </div>
   );
 }
@@ -87,7 +92,7 @@ function SoulMarkCard({
   active: boolean;
   onSelect: (m: ThemeMode) => void;
 }) {
-  const { tokens, seeds, gradient } = useSoulMark();
+  const { tokens, seeds } = useSolidMark();
   return (
     <ModeCard
       mode="soul-mark"
@@ -98,6 +103,30 @@ function SoulMarkCard({
         seeds.guard
           ? "Your own colors, always readable"
           : "Your own colors, exactly as picked"
+      }
+      swatch={[tokens.bg, tokens.controls, tokens.accent]}
+    />
+  );
+}
+
+function GradientsCard({
+  active,
+  onSelect,
+}: {
+  active: boolean;
+  onSelect: (m: ThemeMode) => void;
+}) {
+  const { tokens, seeds, gradient } = useGradientMark();
+  return (
+    <ModeCard
+      mode="gradients"
+      active={active}
+      onSelect={onSelect}
+      title="Gradients"
+      subtitle={
+        seeds.guard
+          ? "Colors that flow, always readable"
+          : "Colors that flow, exactly as picked"
       }
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
       firstSwatch={
@@ -157,10 +186,21 @@ function ModeCard({
   );
 }
 
-function SoulMarkControls() {
-  const seeds = useThemeStore((s) => s.seeds);
-  const setSeeds = useThemeStore((s) => s.setSeeds);
-  const resetSeeds = useThemeStore((s) => s.resetSeeds);
+/**
+ * The picker for either theme. Soul Mark: solid colors. Gradients: the same
+ * controls plus the gradient's colors and shape. Each theme keeps its own colors.
+ */
+function SoulMarkControls({ kind }: { kind: "solid" | "gradient" }) {
+  const gradientTheme = kind === "gradient";
+  const seeds = useThemeStore((s) =>
+    gradientTheme ? s.gradientSeeds : s.seeds,
+  );
+  const setSeeds = useThemeStore((s) =>
+    gradientTheme ? s.setGradientSeeds : s.setSeeds,
+  );
+  const resetSeeds = useThemeStore((s) =>
+    gradientTheme ? s.resetGradientSeeds : s.resetSeeds,
+  );
   const { notes, shortfalls } = useSoulMark();
   const guard = seeds.guard !== false;
   const hardBackgrounds = useHardColors(
@@ -172,43 +212,41 @@ function SoulMarkControls() {
 
   return (
     <div className="space-y-5 border-t border-white/15 pt-4">
-      <SignatureThemes
-        background={seeds.background}
-        accent={seeds.accent}
-        onPick={(background, accent) =>
-          setSeeds({
-            background,
-            accent,
-            color2: undefined,
-            color3: undefined,
-          })
-        }
-      />
-      <SignatureGradients
-        seeds={seeds}
-        onPick={(g) =>
-          setSeeds({
-            background: g.colors[0],
-            color2: g.colors[1],
-            color3: g.colors[2],
-            shape: g.shape,
-            accent: g.accent,
-          })
-        }
-      />
+      {gradientTheme ? (
+        <SignatureGradients
+          seeds={seeds}
+          onPick={(g) =>
+            setSeeds({
+              background: g.colors[0],
+              color2: g.colors[1],
+              color3: g.colors[2],
+              shape: g.shape,
+              accent: g.accent,
+            })
+          }
+        />
+      ) : (
+        <SignatureThemes
+          background={seeds.background}
+          accent={seeds.accent}
+          onPick={(background, accent) => setSeeds({ background, accent })}
+        />
+      )}
       <div className="flex flex-col gap-0.5 border-t border-white/15 pt-4">
         <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
           Mark it with your own taste
         </p>
         <p className="text-xs opacity-70">
-          Or make your own: pick any background and accent below.
+          {gradientTheme
+            ? "Or make your own: pick the colors your background flows through, and an accent."
+            : "Or make your own: pick any background and accent below."}
         </p>
       </div>
       <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
       <ColorField
-        title={seeds.color2 ? "Background: color 1" : "Background"}
+        title={gradientTheme ? "Color 1" : "Background"}
         hint={
-          seeds.color2
+          gradientTheme
             ? "Where the gradient starts, at the top. Panels and fields are built from it."
             : "The color behind everything. Panels and fields are built from it."
         }
@@ -230,7 +268,7 @@ function SoulMarkControls() {
           )
         }
       />
-      <GradientControls />
+      {gradientTheme && <GradientFields seeds={seeds} setSeeds={setSeeds} />}
       <ColorField
         title="Accent"
         hint="Buttons like Generate, selections and highlights."
@@ -288,17 +326,19 @@ function SoulMarkControls() {
         </div>
       </div>
       {!guard && <Shortfalls shortfalls={shortfalls} />}
-      <Notes notes={notes} guard={guard} />
-      <ThemeCode />
+      <Notes notes={notes} guard={guard} setSeeds={setSeeds} />
+      <ThemeCode seeds={seeds} />
       <button
         type="button"
         onClick={resetSeeds}
         className="flex h-8 items-center gap-2 border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
       >
         <WandIcon className="h-3.5 w-3.5" />
-        Start again from the starter colors
+        {gradientTheme
+          ? "Start again from Neon Deep"
+          : "Start again from the starter colors"}
       </button>
-      <AboutSoulMark />
+      {gradientTheme ? <AboutGradients /> : <AboutSoulMark />}
     </div>
   );
 }
@@ -311,87 +351,63 @@ const BACKGROUND_ROWS: [string, [string, Hex][]][] = [
 ];
 
 /**
- * Turns the background into a gradient: color 1 is the background above,
- * color 2 what it fades to, and an optional color 3 after that.
+ * The gradient's own controls: its shape, color 2 (what color 1 fades to) and
+ * an optional color 3 after that.
  */
-function GradientControls() {
-  const seeds = useThemeStore((s) => s.seeds);
-  const setSeeds = useThemeStore((s) => s.setSeeds);
-  const on = !!seeds.color2;
-  const firstFade =
-    GRADIENT_FADES.find(([, h]) => h !== seeds.background)?.[1] ?? "#000000";
+function GradientFields({
+  seeds,
+  setSeeds,
+}: {
+  seeds: SoulMarkSeeds;
+  setSeeds: (s: Partial<SoulMarkSeeds>) => void;
+}) {
   return (
     <div className="flex flex-col gap-4 border-l-2 border-white/15 pl-3">
-      <div className="flex items-start justify-between gap-4">
-        <Label
-          title="Gradient"
-          hint={
-            on
-              ? "The background fades from color 1 into the colors below. Text is checked at every point of it."
-              : "Make the background a gradient: pick what it fades to."
-          }
-        />
-        <Switch
-          enabled={on}
-          setEnabled={(v) =>
-            setSeeds(
-              v
-                ? { color2: firstFade, shape: "vertical" }
-                : { color2: undefined, color3: undefined },
-            )
-          }
-          offClassName="bg-white/20"
-        />
-      </div>
-      {on && (
+      <ShapePicker
+        shape={seeds.shape ?? "vertical"}
+        onChange={(shape) => setSeeds({ shape })}
+      />
+      <ColorField
+        title="Color 2"
+        hint="What color 1 fades to. Any color but color 1."
+        value={seeds.color2}
+        quick={GRADIENT_FADES}
+        presets={BACKGROUND_ROWS}
+        exclude={seeds.background}
+        onChange={(color2) => setSeeds({ color2 })}
+      />
+      {seeds.color3 ? (
         <>
-          <ShapePicker
-            shape={seeds.shape ?? "vertical"}
-            onChange={(shape) => setSeeds({ shape })}
-          />
           <ColorField
-            title="Color 2"
-            hint="What color 1 fades to. Any color but color 1."
-            value={seeds.color2}
+            title="Color 3"
+            hint="Where the gradient ends, after color 2."
+            value={seeds.color3}
             quick={GRADIENT_FADES}
             presets={BACKGROUND_ROWS}
-            exclude={seeds.background}
-            onChange={(color2) => setSeeds({ color2 })}
+            onChange={(color3) => setSeeds({ color3 })}
           />
-          {seeds.color3 ? (
-            <>
-              <ColorField
-                title="Color 3"
-                hint="Where the gradient ends, after color 2."
-                value={seeds.color3}
-                quick={GRADIENT_FADES}
-                presets={BACKGROUND_ROWS}
-                onChange={(color3) => setSeeds({ color3 })}
-              />
-              <button
-                type="button"
-                onClick={() => setSeeds({ color3: undefined })}
-                className="flex h-8 w-fit items-center border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
-              >
-                Remove color 3
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={() =>
-                setSeeds({
-                  color3:
-                    GRADIENT_FADES.find(([, h]) => h !== seeds.color2)?.[1] ??
-                    "#000000",
-                })
-              }
-              className="flex h-8 w-fit items-center border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
-            >
-              Add a third color
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setSeeds({ color3: undefined })}
+            className="flex h-8 w-fit items-center border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
+          >
+            Remove color 3
+          </button>
         </>
+      ) : (
+        <button
+          type="button"
+          onClick={() =>
+            setSeeds({
+              color3:
+                GRADIENT_FADES.find(([, h]) => h !== seeds.color2)?.[1] ??
+                "#000000",
+            })
+          }
+          className="flex h-8 w-fit items-center border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
+        >
+          Add a third color
+        </button>
       )}
     </div>
   );
@@ -502,6 +518,22 @@ function AboutSoulMark() {
         color back in your hands, so whoever you are, everyday user or creator,
         ArtCraft can look like you. Every combination is checked so text stays
         easy to read. Be bold; make it yours.
+      </p>
+    </div>
+  );
+}
+
+/** Why Gradients exists, in a few words, at the very bottom of its panel. */
+function AboutGradients() {
+  return (
+    <div className="flex flex-col gap-1 border-t border-white/15 pt-4">
+      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+        About Gradients
+      </p>
+      <p className="text-xs leading-relaxed opacity-70">
+        Soul Mark's sibling: your background flows from one color into the next,
+        behind every page, panel and menu. Text is checked at every point of the
+        flow, so it stays easy to read from top to bottom.
       </p>
     </div>
   );
@@ -688,15 +720,25 @@ function useHardColors(
   seeds: SoulMarkSeeds,
   field: "background" | "accent",
 ): Set<Hex> {
-  const { background, accent, tint, character } = seeds;
+  const { background, accent, tint, character, color2, color3, shape } = seeds;
   // A background's fit never depends on the accent, so changing the accent
   // does not recompute the background marks.
+  const gradientKey = `${color2}|${color3}|${shape}`;
   const key =
     field === "background"
-      ? `${tint}|${character}`
-      : `${background}|${tint}|${character}`;
+      ? `${tint}|${character}|${gradientKey}`
+      : `${background}|${tint}|${character}|${gradientKey}`;
   return useMemo(() => {
-    const base = { background, accent, tint, character, guard: true };
+    const base = {
+      background,
+      accent,
+      tint,
+      character,
+      guard: true,
+      color2,
+      color3,
+      shape,
+    };
     return new Set(
       list
         .map(([, hex]) => hex)
@@ -779,8 +821,15 @@ function Shortfalls({ shortfalls }: { shortfalls: Shortfall[] }) {
   );
 }
 
-function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
-  const setSeeds = useThemeStore((s) => s.setSeeds);
+function Notes({
+  notes,
+  guard,
+  setSeeds,
+}: {
+  notes: SoulMarkNote[];
+  guard: boolean;
+  setSeeds: (s: Partial<SoulMarkSeeds>) => void;
+}) {
   if (!guard && !notes.length) return null;
   if (!notes.length) {
     return (
@@ -857,9 +906,10 @@ function Chip({ hex }: { hex: Hex }) {
   );
 }
 
-function ThemeCode() {
-  const seeds = useThemeStore((s) => s.seeds);
+function ThemeCode({ seeds }: { seeds: SoulMarkSeeds }) {
   const setSeeds = useThemeStore((s) => s.setSeeds);
+  const setGradientSeeds = useThemeStore((s) => s.setGradientSeeds);
+  const setMode = useThemeStore((s) => s.setMode);
   const code = encodeSeeds(seeds);
   const [pasted, setPasted] = useState("");
   const [copied, setCopied] = useState(false);
@@ -898,7 +948,7 @@ function ThemeCode() {
           type="text"
           value={pasted}
           onChange={(e) => setPasted(e.target.value)}
-          placeholder="SM1-…"
+          placeholder="SM1-… or SM2-…"
           aria-label="Paste a theme code"
           spellCheck={false}
           className="h-8 w-56 border border-white/15 bg-ui-sunken px-2 font-mono text-xs text-white placeholder:text-white/40"
@@ -907,7 +957,14 @@ function ThemeCode() {
           type="button"
           disabled={!decoded}
           onClick={() => {
-            if (decoded) setSeeds(decoded);
+            // A gradient code (SM2) opens Gradients; a solid one (SM1) opens Soul Mark.
+            if (decoded && themeForSeeds(decoded) === "gradients") {
+              setGradientSeeds(decoded);
+              setMode("gradients");
+            } else if (decoded) {
+              setSeeds(decoded);
+              setMode("soul-mark");
+            }
             setPasted("");
           }}
           className="h-8 border border-white/15 px-2.5 text-xs text-white/70 enabled:hover:bg-white/[0.06] disabled:opacity-40"
