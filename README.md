@@ -210,19 +210,29 @@ axe-core's color-contrast rule (WCAG 2 AA) on 12 pages per theme. "On the plan c
 text on the green, purple and orange plan colors, which part 2 leaves as designed; it falls short in
 today's app too, and slightly darker plan colors would fix it.
 
-| Theme                   | Text below AA | On the plan colors |
-|-------------------------|---------------|---------------------|
-| Today's app             |            14 |                  17 |
-| Soul Mark Light         |             0 |                  15 |
-| Soul Mark Dark          |             0 |                  17 |
-| Starter (Blush, Purple) |             0 |                  15 |
-| Midnight blue, Teal     |             0 |                  17 |
-| Sky, Blue               |             0 |                  15 |
-| Mint, Green             |             0 |                  15 |
-| Deep purple, Pink       |             0 |                  17 |
-| Peach, Red-orange       |             0 |                  15 |
-| Crimson, guard on       |             0 |                  17 |
-| Crimson, guard off      |           332 |                  17 |
+| Theme                         | Text below AA | On the plan colors |
+|-------------------------------|---------------|--------------------|
+| Today's app                   |            14 |                 17 |
+| Soul Mark Light               |             0 |                 15 |
+| Soul Mark Dark (Night, Blue)  |             0 |                 17 |
+| GitHub Light (data)           |             0 |                 15 |
+| GitHub Dark (data)            |             0 |                 17 |
+| One Dark (data)               |             0 |                 17 |
+| Dracula (data)                |             0 |                 17 |
+| Winter is Coming (data)       |             0 |                 17 |
+| One Light (data)              |             0 |                 15 |
+| Midnight blue, Teal (starter) |             0 |                 17 |
+| Sky, Blue                     |             0 |                 15 |
+| Deep red, Red                 |             0 |                 17 |
+| Deep green, Green             |             0 |                 17 |
+| Deep blue, Light blue         |             0 |                 17 |
+| Royal blue, Teal              |             0 |                 17 |
+| Deep purple, Pink             |             0 |                 17 |
+| Deep rose, Pink               |             0 |                 17 |
+| Reddish brown, Amber          |             0 |                 17 |
+| Brown, Orange                 |             0 |                 17 |
+| Crimson, guard on             |             0 |                 17 |
+| Crimson, guard off            |           332 |                 17 |
 
 ### Light and dark, every page
 
@@ -260,10 +270,18 @@ Left: today. Middle: Soul Mark Light (Paper `#FFFFFF`, Blue `#2D81FF`). Right: S
 | `video-editor` | ![today](part2/full/video-editor--today.png) | ![light](part2/full/video-editor--soul-mark-light.png) | ![dark](part2/full/video-editor--soul-mark-dark.png) |
 | `welcome` | ![today](part2/full/welcome--today.png) | ![light](part2/full/welcome--soul-mark-light.png) | ![dark](part2/full/welcome--soul-mark-dark.png) |
 
-### Other palettes, guard on and off, the settings panel
+### Palettes
 
-[`part2/palettes`](part2/palettes) has six common pairings on eight key pages, and Crimson with the
-readability guard off and on. [`part2/panel`](part2/panel) shows Settings › Appearance.
+[`part2/palettes`](part2/palettes) has each palette on eight key pages, in two groups:
+
+- **Most likely to be picked, from data:** GitHub Light, GitHub Dark, One Dark, Dracula, Winter is
+  Coming and One Light, taken from the most-installed VS Code color themes and backed by color and
+  dark-mode surveys. Sources, dates, sample sizes and raw data: [`research/README.md`](research/README.md).
+- **Designer's picks, by Luminous-Enigma:** Midnight blue and Teal (the starter everyone sees
+  first), Sky and Blue, and every Deep background, from Night to Deep green.
+
+Also there: Crimson with the readability guard off and on. [`part2/panel`](part2/panel) shows
+Settings › Appearance.
 
 ---
 
