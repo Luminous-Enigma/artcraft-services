@@ -37,9 +37,10 @@ import {
   meaningVariables,
 } from "./meaning";
 
+/** What everyone sees the first time they turn Soul Mark on: Midnight blue and Teal. */
 export const SOUL_MARK_STARTER: SoulMarkSeeds = {
-  background: "#FDF2F7",
-  accent: "#9B4DCA",
+  background: "#101B44",
+  accent: "#1CB6BE",
   tint: 0.5,
   character: "soft",
   guard: true,
