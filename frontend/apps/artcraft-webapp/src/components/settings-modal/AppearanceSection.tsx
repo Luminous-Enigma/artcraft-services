@@ -27,6 +27,7 @@ import {
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
   PRIMARY_BACKGROUNDS,
+  SIGNATURE_THEMES,
   WHEEL,
   WHEEL_DEEP,
   WHEEL_LIGHT,
@@ -161,6 +162,19 @@ function SoulMarkControls() {
 
   return (
     <div className="space-y-5 border-t border-white/15 pt-4">
+      <SignatureThemes
+        background={seeds.background}
+        accent={seeds.accent}
+        onPick={(background, accent) => setSeeds({ background, accent })}
+      />
+      <div className="flex flex-col gap-0.5 border-t border-white/15 pt-4">
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+          Mark it with your own taste
+        </p>
+        <p className="text-xs opacity-70">
+          Or make your own: pick any background and accent below.
+        </p>
+      </div>
       <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
       <ColorField
         title="Background"
@@ -244,6 +258,73 @@ function SoulMarkControls() {
         <WandIcon className="h-3.5 w-3.5" />
         Start again from the starter colors
       </button>
+      <AboutSoulMark />
+    </div>
+  );
+}
+
+/** Why Soul Mark exists, in a few words, at the very bottom of the panel. */
+function AboutSoulMark() {
+  return (
+    <div className="flex flex-col gap-1 border-t border-white/15 pt-4">
+      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+        About Soul Mark
+      </p>
+      <p className="text-xs leading-relaxed opacity-70">
+        Most apps give you black, white or dark blue. Soul Mark puts every
+        solid color back in your hands, so whoever you are, everyday user or
+        creator, ArtCraft can look like you. Every combination is checked so
+        text stays easy to read. Be bold; make it yours.
+      </p>
+    </div>
+  );
+}
+
+/** Whole looks in one tap: each sets the background and the accent together. */
+function SignatureThemes({
+  background,
+  accent,
+  onPick,
+}: {
+  background: Hex;
+  accent: Hex;
+  onPick: (background: Hex, accent: Hex) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <Label
+        title="Signature themes"
+        hint="Ready-made looks. Tap one to use it; change any color after."
+      />
+      <div className="flex flex-wrap gap-2">
+        {SIGNATURE_THEMES.map((t) => {
+          const on = t.background === background && t.accent === accent;
+          return (
+            <button
+              key={t.name}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onPick(t.background, t.accent)}
+              className={twMerge(
+                "flex items-center gap-2 rounded-[3px] border border-white/15 py-1.5 pl-1.5 pr-3 text-xs text-white/80 transition-colors hover:bg-white/10",
+                on && "border-primary bg-white/10 text-white",
+              )}
+            >
+              <span
+                aria-hidden
+                className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-white/15"
+                style={{ background: t.background }}
+              >
+                <span
+                  className="absolute bottom-0 right-0 h-3 w-3 rounded-tl-full"
+                  style={{ background: t.accent }}
+                />
+              </span>
+              {t.name}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
