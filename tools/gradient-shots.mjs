@@ -46,9 +46,10 @@ const server = await new Promise((res) => {
 const base = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch();
 
-async function context(seeds, viewport = { width: 1440, height: 900 }) {
+// Gradients is its own theme: its seeds are stored apart from Soul Mark's.
+async function context(seeds, viewport = { width: 1440, height: 900 }, state = { mode: "gradients", gradientSeeds: seeds }) {
   const ctx = await browser.newContext({ viewport, reducedMotion: "reduce", deviceScaleFactor: 1 });
-  const store = JSON.stringify({ state: { mode: "soul-mark", seeds }, version: 0 });
+  const store = JSON.stringify({ state, version: 0 });
   await ctx.addInitScript((v) => localStorage.setItem("artcraft-theme", v), store);
   await ctx.route("**/*", (route) => {
     const u = new URL(route.request().url());
@@ -59,6 +60,26 @@ async function context(seeds, viewport = { width: 1440, height: 900 }) {
     return route.abort();
   });
   return ctx;
+}
+
+// The picker: six shots spaced evenly from its top to its bottom, so together they show all of it.
+async function shootPicker(tab, dir) {
+  await tab.goto(base + "/");
+  await tab.waitForTimeout(1800);
+  await tab.locator("header button:has(img), [class*=topbar] button:has(img)").last().click();
+  await tab.getByRole("menuitem", { name: /settings/i }).or(tab.getByText("Settings", { exact: true })).first().click();
+  await tab.getByRole("button", { name: "Appearance" }).first().click();
+  await settle(tab);
+  await tab.screenshot({ path: path.join(dir, "picker-1.png") });
+  for (const n of [2, 3, 4, 5, 6]) {
+    await tab.evaluate((step) => {
+      let el = document.elementFromPoint(900, 500);
+      while (el && !(el.scrollHeight > el.clientHeight + 4 && /auto|scroll/.test(getComputedStyle(el).overflowY))) el = el.parentElement;
+      if (el) el.scrollTop = ((el.scrollHeight - el.clientHeight) * step) / 5;
+    }, n - 1);
+    await tab.waitForTimeout(500);
+    await tab.screenshot({ path: path.join(dir, `picker-${n}.png`) });
+  }
 }
 
 async function settle(tab) {
@@ -81,24 +102,7 @@ for (const [name, seeds] of THEMES) {
     if (!applied) throw new Error(`${name}/${page}: no gradient applied`);
     await tab.screenshot({ path: path.join(dir, `${page}.png`) });
   }
-  // The picker, top and further down.
-  await tab.goto(base + "/");
-  await tab.waitForTimeout(1800);
-  await tab.locator("header button:has(img), [class*=topbar] button:has(img)").last().click();
-  await tab.getByRole("menuitem", { name: /settings/i }).or(tab.getByText("Settings", { exact: true })).first().click();
-  await tab.getByRole("button", { name: "Appearance" }).first().click();
-  await settle(tab);
-  await tab.screenshot({ path: path.join(dir, "picker-1.png") });
-  // Six shots spaced evenly from the top of the picker to its bottom, so together they show all of it.
-  for (const n of [2, 3, 4, 5, 6]) {
-    await tab.evaluate((step) => {
-      let el = document.elementFromPoint(900, 500);
-      while (el && !(el.scrollHeight > el.clientHeight + 4 && /auto|scroll/.test(getComputedStyle(el).overflowY))) el = el.parentElement;
-      if (el) el.scrollTop = ((el.scrollHeight - el.clientHeight) * step) / 5;
-    }, n - 1);
-    await tab.waitForTimeout(500);
-    await tab.screenshot({ path: path.join(dir, `picker-${n}.png`) });
-  }
+  await shootPicker(tab, dir);
   await ctx.close();
   // A phone, with the side menu open.
   const phone = await context(seeds, { width: 390, height: 844 });
@@ -115,6 +119,23 @@ for (const [name, seeds] of THEMES) {
   }
   await phone.close();
   console.log("shot", name);
+}
+// Soul Mark (solid) beside it: its picker, now without any gradient parts, and its page without a gradient.
+if (!ONLY || ONLY.has("soul-mark-solid")) {
+  const dir = path.join(OUT, "soul-mark-solid");
+  fs.mkdirSync(dir, { recursive: true });
+  const starter = { background: "#101B44", accent: "#1CB6BE", tint: 0.5, character: "soft", guard: true };
+  const ctx = await context(starter, undefined, { mode: "soul-mark", seeds: starter });
+  const tab = await ctx.newPage();
+  await tab.goto(base + "/");
+  await tab.waitForTimeout(1800);
+  await settle(tab);
+  const applied = await tab.evaluate(() => document.documentElement.dataset.gradient ?? "");
+  if (applied) throw new Error("soul-mark-solid: a gradient was applied to the solid theme");
+  await tab.screenshot({ path: path.join(dir, "home.png") });
+  await shootPicker(tab, dir);
+  await ctx.close();
+  console.log("shot soul-mark-solid");
 }
 await browser.close();
 server.close();
