@@ -1,4 +1,4 @@
-// Colour maths for themes: WCAG contrast, mixing and lightness search.
+// Color maths for themes: WCAG contrast, mixing and lightness search.
 // Ported from Luminous-Enigma/twentyseven (mobile/src/theme.jsx), where the
 // same functions guard that app's free-palette theme.
 
@@ -10,7 +10,7 @@ export function isHex(value: unknown): value is Hex {
   return typeof value === "string" && HEX_RE.test(value);
 }
 
-/** WCAG contrast ratio between two colours, from 1 (same) to 21 (black on white). */
+/** WCAG contrast ratio between two colors, from 1 (same) to 21 (black on white). */
 export function contrastRatio(a: Hex, b: Hex): number {
   const la = luminance(a);
   const lb = luminance(b);
@@ -60,7 +60,7 @@ export function overlayContrast(s: Rgb, i: Rgb, opacity: number): number {
   return ls > ld ? (ls + 0.05) / (ld + 0.05) : (ld + 0.05) / (ls + 0.05);
 }
 
-/** Mix two colours. amount 0 = a, 1 = b. Also how `b` at `amount` opacity lands on `a`. */
+/** Mix two colors. amount 0 = a, 1 = b. Also how `b` at `amount` opacity lands on `a`. */
 export function mix(a: Hex, b: Hex, amount: number): Hex {
   const ca = channels(a);
   const cb = channels(b);
@@ -70,7 +70,7 @@ export function mix(a: Hex, b: Hex, amount: number): Hex {
 /**
  * The nearest version of `hex` (same hue and saturation, lightness moved as
  * little as possible) for which `passes` holds. Searches outward in both
- * directions, so the first answer is the smallest change; a colour that
+ * directions, so the first answer is the smallest change; a color that
  * already passes comes back untouched. When nothing passes it returns the
  * candidate that `score` rates highest, so the caller can report the
  * shortfall instead of pretending.

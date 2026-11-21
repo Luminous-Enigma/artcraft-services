@@ -1,4 +1,4 @@
-// Colours that carry a meaning: red errors, amber BETA badges, green success,
+// Colors that carry a meaning: red errors, amber BETA badges, green success,
 // and the rest of the palette's text shades. On the default theme they are
 // Tailwind's own; a theme fits each to its surfaces. The hue is the meaning,
 // so it never changes, and lightness may only move within a band where red
@@ -32,12 +32,12 @@ export const MEANING_FAMILIES = [
 ] as const;
 export const MEANING_SHADES = [200, 300, 400, 500, 600] as const;
 
-/** HSL lightness a meaning colour may use and still look like itself. */
+/** HSL lightness a meaning color may use and still look like itself. */
 export const MEANING_LIGHTNESS: [number, number] = [0.15, 0.85];
 const EDGE_INSET = 0.01;
 
-/** Every meaning colour as Tailwind declares it, with the CSS variable a theme overrides. */
-export const MEANING_COLOURS: { variable: string; chosen: Hex }[] =
+/** Every meaning color as Tailwind declares it, with the CSS variable a theme overrides. */
+export const MEANING_COLORS: { variable: string; chosen: Hex }[] =
   MEANING_FAMILIES.flatMap((family) =>
     MEANING_SHADES.map((shade) => ({
       variable: `--st-${family}-${shade}-rgb`,
@@ -56,7 +56,7 @@ export interface MeaningInk {
   floor: number;
 }
 
-/** Every meaning colour, fitted to read at its floor on all of `surfaces`. */
+/** Every meaning color, fitted to read at its floor on all of `surfaces`. */
 export function fitMeaningInks(
   surfaces: Hex[],
   floorOf: (variable: string) => number,
@@ -68,7 +68,7 @@ export function fitMeaningInks(
     const l = toHsl(c)[2];
     return l >= lo && l <= hi;
   };
-  return MEANING_COLOURS.map(({ variable, chosen }) => {
+  return MEANING_COLORS.map(({ variable, chosen }) => {
     const floor = floorOf(variable);
     const fit = nearestLightness(
       chosen,
@@ -80,10 +80,10 @@ export function fitMeaningInks(
 }
 
 /**
- * The most readable each meaning colour can get within its band: for light
+ * The most readable each meaning color can get within its band: for light
  * text (dark grounds) its lightest allowed shade, for dark text its darkest.
  * Every shade is listed, since each has its own saturation and so its own
- * reach. A ground where these clear is one where every meaning colour fits.
+ * reach. A ground where these clear is one where every meaning color fits.
  */
 export function bandEdges(lightInk: boolean): Hex[] {
   // A step inside the band: the fitting search samples lightness every 0.5%,
@@ -91,7 +91,7 @@ export function bandEdges(lightInk: boolean): Hex[] {
   const l = lightInk
     ? MEANING_LIGHTNESS[1] - EDGE_INSET
     : MEANING_LIGHTNESS[0] + EDGE_INSET;
-  const edges = MEANING_COLOURS.map(({ chosen }) => {
+  const edges = MEANING_COLORS.map(({ chosen }) => {
     const [h, s] = toHsl(chosen);
     return fromHsl(h, s, l);
   });

@@ -13,7 +13,7 @@ export type ThemeMode = "default" | "soul-mark";
 
 interface ThemeStore {
   mode: ThemeMode;
-  /** Only the seeds are stored; every colour is derived again on load. */
+  /** Only the seeds are stored; every color is derived again on load. */
   seeds: SoulMarkSeeds;
   setMode: (mode: ThemeMode) => void;
   setSeeds: (seeds: Partial<SoulMarkSeeds>) => void;
@@ -32,7 +32,7 @@ export const useThemeStore = create<ThemeStore>()(
     }),
     {
       name: "artcraft-theme",
-      // A stored value is never trusted as colours: it goes back through
+      // A stored value is never trusted as colors: it goes back through
       // sanitizeSeeds, and only composed hex values reach the page.
       merge: (stored, current) => {
         const s = (stored ?? {}) as Partial<ThemeStore>;
