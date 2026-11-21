@@ -1,7 +1,7 @@
-// Soul Mark's ready-made colours. Each Light and Deep background is one Soul
+// Soul Mark's ready-made colors. Each Light and Deep background is one Soul
 // Mark uses exactly as shown, at every tint and text tone (soul-mark.spec.ts
 // checks it); the Primaries are fitted where they need to be, like any other
-// colour someone picks. No colour appears in more than one row.
+// color someone picks. No color appears in more than one row.
 
 import { type Hex, mix } from "./contrast";
 import { DEFAULT_TOKENS } from "./soul-mark";
@@ -44,7 +44,7 @@ export const ACCENTS: [string, Hex][] = [
 ];
 
 /**
- * The painter's colour wheel as accents: the primaries red, yellow and blue,
+ * The painter's color wheel as accents: the primaries red, yellow and blue,
  * the secondaries mixed from them (orange, green, violet), and the six
  * tertiaries between each pair. Like any accent, the readability guard fits
  * each one to the background.
@@ -73,13 +73,13 @@ export const WHEEL: [string, Hex][] = [
  */
 export const PRIMARY_BACKGROUNDS: [string, Hex][] = WHEEL;
 
-/** Each wheel colour lighter: a tint, 45% of the way to white. */
+/** Each wheel color lighter: a tint, 45% of the way to white. */
 export const WHEEL_LIGHT: [string, Hex][] = WHEEL.map(([name, hex]) => [
   `Light ${name.toLowerCase()}`,
   mix(hex, "#FFFFFF", 0.45),
 ]);
 
-/** Each wheel colour deeper: a shade, 40% of the way to black. */
+/** Each wheel color deeper: a shade, 40% of the way to black. */
 export const WHEEL_DEEP: [string, Hex][] = WHEEL.map(([name, hex]) => [
   `Deep ${name.toLowerCase()}`,
   mix(hex, "#000000", 0.4),
@@ -94,7 +94,7 @@ export const ALL_ACCENTS: [string, Hex][] = [
 ];
 
 /**
- * Mid-tones the readability guard has to adjust: bright, saturated colours
+ * Mid-tones the readability guard has to adjust: bright, saturated colors
  * that neither white nor dark text reads on everywhere the app draws text.
  * They are offered only with the guard off, marked as hard to read.
  */
@@ -104,7 +104,7 @@ export const BOLD_BACKGROUNDS: [string, Hex][] = [
   ["Burnt orange", "#CC5500"],
   ["Royal blue", "#4169E1"],
   ["Violet", "#7A4FBF"],
-  ["Grey", "#777777"],
+  ["Gray", "#777777"],
   ["Emerald", "#10B981"],
   ["Orange", "#F59E0B"],
   ["Hot pink", "#E86FA6"],

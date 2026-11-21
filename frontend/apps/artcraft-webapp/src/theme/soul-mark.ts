@@ -1,20 +1,20 @@
-// Soul Mark: a theme the person composes from a few colours of their own.
+// Soul Mark: a theme the person composes from a few colors of their own.
 //
 // They choose the mood (background, accent, how strongly panels take the
-// background's colour, the tone of the text). Every other colour is derived
+// background's color, the tone of the text). Every other color is derived
 // from those and measured, so no choice can make the app hard to read: text
 // is never chosen directly, and a background that cannot carry readable text
 // is moved in lightness only (its hue stays) until it can.
 //
 // The rule for "readable" is WCAG AA: 4.5:1 for every piece of text, at every
 // opacity the app draws text at (down to its 40% captions), for button labels
-// and for status colours like red errors; 3:1 for rings, lines and icons.
+// and for status colors like red errors; 3:1 for rings, lines and icons.
 // That is stricter than the default theme in a few places (its faded captions,
 // the label on its blue buttons, some red error text): a Soul Mark can be
 // wilder than the default, but never harder to read.
 //
 // All of that is the readability guard, and it is on unless the person turns
-// it off. With it off, their colours are used exactly as picked, nothing is
+// it off. With it off, their colors are used exactly as picked, nothing is
 // nudged, and the result says what falls short and what the guard would use.
 
 import {
@@ -45,7 +45,7 @@ export const SOUL_MARK_STARTER: SoulMarkSeeds = {
   guard: true,
 };
 
-/** The app's own colours, as declared in styles.css. Soul Mark's floors are measured on these. */
+/** The app's own colors, as declared in styles.css. Soul Mark's floors are measured on these. */
 export const DEFAULT_TOKENS: SoulMarkTokens = {
   white: "#FFFFFF",
   black: "#000000",
@@ -69,7 +69,7 @@ export const DEFAULT_TOKENS: SoulMarkTokens = {
 };
 
 /**
- * The opacities the app draws text at, as a colour (text-white/60) or on the
+ * The opacities the app draws text at, as a color (text-white/60) or on the
  * element (opacity-60). Below 40% it is decoration.
  */
 export const TEXT_OPACITIES = [
@@ -97,7 +97,7 @@ const TEXT_FLOORS: Record<number, number> = Object.fromEntries(
 /** Button labels are small bold caps, not large text, so they get the text floor. */
 const ACCENT_FILL_FLOOR = AA;
 
-/** The furthest each status colour can reach in its band, for light text and for dark. */
+/** The furthest each status color can reach in its band, for light text and for dark. */
 const BAND_EDGES_LIGHT = bandEdges(true);
 const BAND_EDGES_DARK = bandEdges(false);
 
@@ -109,7 +109,7 @@ export interface SoulMarkSeeds {
   /** 0 = panels barely step off the background, 1 = bold steps. 0.5 matches the default theme. */
   tint: number;
   character: Character;
-  /** The readability guard, on unless set to false. Off means every colour is used exactly as picked. */
+  /** The readability guard, on unless set to false. Off means every color is used exactly as picked. */
   guard?: boolean;
 }
 
@@ -134,7 +134,7 @@ export interface SoulMarkTokens {
   accent700: Hex;
   /** ui-accent-ink text and the focus outline. */
   accentInk: Hex;
-  /** text-primary: accent-coloured words. */
+  /** text-primary: accent-colored words. */
   accentText: Hex;
   /** ring-, border-, fill-, stroke-primary: selection rings, outlines, icons. */
   accentLine: Hex;
@@ -150,7 +150,7 @@ export interface SoulMarkTokens {
 }
 
 export interface SoulMarkNote {
-  /** adjusted: a colour was moved to stay readable. info: worth knowing. warning: worth changing. */
+  /** adjusted: a color was moved to stay readable. info: worth knowing. warning: worth changing. */
   kind: "adjusted" | "info" | "warning";
   seed: "background" | "accent" | "text";
   chosen: Hex;
@@ -163,7 +163,7 @@ export interface SoulMarkNote {
 export interface SoulMark {
   seeds: SoulMarkSeeds;
   tokens: SoulMarkTokens;
-  /** Status colours (errors, badges ...) fitted to this theme's surfaces. */
+  /** Status colors (errors, badges ...) fitted to this theme's surfaces. */
   meaning: MeaningInk[];
   notes: SoulMarkNote[];
   /** With the guard off: what falls below the readability line. Empty with it on. */
@@ -282,7 +282,7 @@ export function composeSoulMark(rawSeeds: SoulMarkSeeds): SoulMark {
 
 /**
  * The guard off: the background and accent exactly as picked. Two things are
- * still done, because neither changes a colour anyone picked: the text is
+ * still done, because neither changes a color anyone picked: the text is
  * whichever of the light and dark inks reads better, and faded text is made
  * as strong as it needs to be (as far as it can go). What still falls short
  * is measured and said, next to what the guard would have used.
@@ -306,7 +306,7 @@ function composeOpen(seeds: SoulMarkSeeds): SoulMark {
     accentInk: mix(a, ground.fg, 0.18),
   };
   const surfaces = textSurfaces(tokens).map(([, s]) => s);
-  // Status colours exactly as Tailwind declares them: no surface is asked of them.
+  // Status colors exactly as Tailwind declares them: no surface is asked of them.
   const meaning = fitMeaningInks(surfaces, () => 0);
   const shortfalls = describeShortfalls(tokens, meaning);
   const notes: SoulMarkNote[] = [];
@@ -346,7 +346,7 @@ function describeShortfalls(
     ],
     ["Text over pictures", (w) => w === "white on black"],
     ["Button labels", (w) => w.startsWith("white on accent")],
-    ["Accent-coloured text", (w) => /^accent(Text|Ink|300|400) /.test(w)],
+    ["Accent-colored text", (w) => /^accent(Text|Ink|300|400) /.test(w)],
     ["Selection rings and accent icons", (w) => w.startsWith("accentLine ")],
     ["Buttons against the page", (w) => w.startsWith("button edge ")],
   ];
@@ -360,7 +360,7 @@ function describeShortfalls(
     })),
   ];
   groups.push([
-    "Error, warning and badge colours",
+    "Error, warning and badge colors",
     (w) => w.startsWith("status "),
   ]);
   const out: Shortfall[] = [];
@@ -584,7 +584,7 @@ interface FittedGround {
  * from it, with faded text strengthened first if that is all it takes;
  * otherwise the smallest lightness move that makes it so. Both inks (light
  * text, dark text) are tried, and the one needing the smaller move wins, so a
- * mid-tone keeps as much of its colour as it can.
+ * mid-tone keeps as much of its color as it can.
  */
 function fitGround(seeds: SoulMarkSeeds): FittedGround {
   const [, , seedL] = toHsl(seeds.background);
@@ -678,7 +678,7 @@ function buildGround(
  * The worst text pair as a fraction of its floor: 1 or more means every text
  * pair clears. The same pairs as measureText, without the labels, because the
  * fitting searches call it thousands of times. It also asks that each status
- * colour family can reach AA within its band, so a ground that white text only
+ * color family can reach AA within its band, so a ground that white text only
  * just reads on, and red errors could not, is not accepted.
  */
 function textMargin(t: Ground): number {
@@ -686,7 +686,7 @@ function textMargin(t: Ground): number {
   const inks = [channels(t.white), channels(t.fg)];
   const edges = t.scheme === "dark" ? BAND_EDGES_LIGHT : BAND_EDGES_DARK;
   for (const [, surface] of textSurfaces(t)) {
-    // Status colours (errors, badges) must be able to read here too.
+    // Status colors (errors, badges) must be able to read here too.
     for (const edge of edges) {
       const m = contrastRatio(edge, surface) / AA;
       if (m < worst) worst = m;
@@ -789,7 +789,7 @@ function fitAccent(
       chosen: seed,
       used: fill.hex,
       message:
-        "Accent and background are the same colour family, so buttons stand out by brightness only.",
+        "Accent and background are the same color family, so buttons stand out by brightness only.",
     });
   }
 

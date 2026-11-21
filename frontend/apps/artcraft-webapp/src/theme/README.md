@@ -1,7 +1,7 @@
 # Soul Mark: a theme you make yourself that is always readable
 
 Soul Mark is a theme for ArtCraft's web app that the person makes from their
-own colours. Pick any background and any accent and the app takes them on.
+own colors. Pick any background and any accent and the app takes them on.
 What you can't do is make it hard to read, and that is on purpose.
 
 This page explains how it works in plain words. It is written so you can take
@@ -12,12 +12,12 @@ Take it, change it, improve it, share it back. That's how the web got good.
 
 ## The idea in one paragraph
 
-**You choose the mood. The app works out every colour you have to read.**
-You never pick a text colour, a border or a button-label colour directly. You
+**You choose the mood. The app works out every color you have to read.**
+You never pick a text color, a border or a button-label color directly. You
 pick a few *seeds* (a background, an accent, how strongly panels are tinted,
 and a warm, cool or soft tone for the text). Everything else is calculated
 from those seeds and then *measured*. If a measurement comes up short, the
-colour is nudged, keeping its hue and changing only its lightness, until it
+color is nudged, keeping its hue and changing only its lightness, until it
 passes. So the theme can be as wild as you like, but never unreadable.
 
 ---
@@ -25,11 +25,11 @@ passes. So the theme can be as wild as you like, but never unreadable.
 ## What "readable" means here
 
 Readability can be measured. The standard everyone uses is **contrast ratio**,
-from the WCAG guidelines. It compares how bright two colours are:
+from the WCAG guidelines. It compares how bright two colors are:
 
 | Ratio    | Means                                                     |
 |----------|-----------------------------------------------------------|
-| 1 : 1    | the same colour, invisible                                |
+| 1 : 1    | the same color, invisible                                |
 | 3 : 1    | enough for large text, icons, outlines and rings          |
 | 4.5 : 1  | enough for ordinary text ("AA", the usual target)         |
 | 21 : 1   | black on white, the most there is                         |
@@ -37,9 +37,9 @@ from the WCAG guidelines. It compares how bright two colours are:
 Soul Mark's promise:
 
 - **4.5 : 1 for all text**: body text, faded captions (down to the app's
-  40% grey), button labels, and coloured status text like red errors and the
+  40% gray), button labels, and colored status text like red errors and the
   BETA badge.
-- **3 : 1 for lines**: selection rings, outlines, accent-coloured icons.
+- **3 : 1 for lines**: selection rings, outlines, accent-colored icons.
 - A filled button's *shape* should stand out from the page too. Soul Mark aims
   for 3 : 1 there and says so when it can only get between 1.5 and 3. The
   button's label still reads at 4.5 : 1.
@@ -49,7 +49,7 @@ captions, the white label on its blue buttons at 3.7 : 1, some red error
 text). A Soul Mark can be wilder than the default, but never harder to read.
 
 The maths lives in `contrast.ts`: `contrastRatio(a, b)`, plus `mix(a, b, t)`,
-which is also how a colour at `t` opacity lands on another.
+which is also how a color at `t` opacity lands on another.
 
 ---
 
@@ -65,11 +65,11 @@ same thing.
 { background: "#0C2F1C", accent: "#F59E0B", tint: 0.5, character: "warm" }
 ```
 
-Only these four values are ever saved. Every colour is worked out again from
+Only these four values are ever saved. Every color is worked out again from
 them each time the app loads, so when the calculation improves, old saved
 themes improve with it.
 
-### 2. Pick the text colour by measuring, not guessing
+### 2. Pick the text color by measuring, not guessing
 
 There are two inks to choose from: a light one (near-white) and a dark one
 (near-black). The *character* seed picks their tone (soft, warm, cool). Soul
@@ -99,7 +99,7 @@ For every surface, every ink, and every opacity the app draws text at (100%,
 90%, … down to 40%), Soul Mark measures the contrast. If something falls
 short, it fixes it in this order, the gentlest fix first:
 
-1. **Strengthen faded text.** The app makes captions grey by drawing white at
+1. **Strengthen faded text.** The app makes captions gray by drawing white at
    40% or 60%. Soul Mark can make faded text less see-through with a single
    variable, `--st-text-fade`, without touching anything else. This is the fix
    light themes usually need: dark text at 40% reads far worse on white than
@@ -109,24 +109,24 @@ short, it fixes it in this order, the gentlest fix first:
    panel says so and offers the other direction ("use a deeper shade
    instead").
 
-A background is only accepted if the **status colours** can read on it too.
+A background is only accepted if the **status colors** can read on it too.
 That's step 6, but the check happens here: there's no point keeping a
 background that white text reads on and red error text doesn't.
 
 ### 5. Fit the accent, three ways
 
-One accent colour does three jobs, and each gets its own shade:
+One accent color does three jobs, and each gets its own shade:
 
 - **fill**, the Generate button: its label must read at 4.5 : 1. The button's
   edge against the page is best effort.
-- **text**, accent-coloured words: 4.5 : 1 on every surface.
+- **text**, accent-colored words: 4.5 : 1 on every surface.
 - **lines**, selection rings, outlines and accent icons: 3 : 1 on every surface.
 
 Same hue each time, lightness moved as little as possible (`nearestLightness`
-in `contrast.ts` searches outward from the chosen colour and stops at the
+in `contrast.ts` searches outward from the chosen color and stops at the
 first shade that passes).
 
-### 6. Fit the status colours
+### 6. Fit the status colors
 
 Red errors, amber BETA badges, green success and the rest keep their **hue**,
 because the hue is the meaning. They may only move in lightness between 15%
@@ -144,7 +144,7 @@ CSS.
 
 ## How the app is wired to take a theme
 
-Before Soul Mark, ArtCraft's colours were written directly into the code. Now
+Before Soul Mark, ArtCraft's colors were written directly into the code. Now
 every one of them reads a variable whose default is the old value, so the
 normal look didn't change at all. That was checked by screenshot, pixel by
 pixel. The useful trick for a Tailwind app: in this design "white" always
@@ -162,9 +162,9 @@ it every theme variable goes back to the app's defaults, so its text is the
 light text it was designed with, whatever theme is on. (Defined in
 `tailwind.config.js` as a small plugin.)
 
-The one trap: text that sets no colour of its own inherits the page's colour,
+The one trap: text that sets no color of its own inherits the page's color,
 which was worked out before the island reset anything, so the island sets
-its own text colour too.
+its own text color too.
 
 ---
 
@@ -177,12 +177,12 @@ With the guard **off**:
 
 - the background and accent are used **exactly as picked**, and nothing is
   nudged;
-- two things still happen, because neither changes a colour anyone picked:
+- two things still happen, because neither changes a color anyone picked:
   the text is whichever of the light and dark inks reads better, and faded
   text is made as strong as it needs to be (ArtCraft's own 40% captions
   never reach 4.5 : 1, on any background, without that);
 - the panel shows a **Bold** row of the hardest mid-tones (red, crimson,
-  burnt orange, bright royal blue, violet, grey, emerald, orange, hot pink,
+  burnt orange, bright royal blue, violet, gray, emerald, orange, hot pink,
   teal), and marks every
   swatch the guard would change with a ⚠ "hard to read" sign;
 - it lists what falls **below the readability line** in plain words
@@ -203,9 +203,9 @@ and harder to read, so Soul Mark doesn't use it.
 
 | Kind     | Means                                                                    |
 |----------|--------------------------------------------------------------------------|
-| adjusted | a colour was moved to stay readable (with the before → after swatches)   |
+| adjusted | a color was moved to stay readable (with the before → after swatches)   |
 | info     | worth knowing, e.g. buttons stand out a little less than usual           |
-| warning  | worth changing, e.g. accent and background are the same colour family    |
+| warning  | worth changing, e.g. accent and background are the same color family    |
 
 The rule is **warn, don't block**: it's their screen. The one thing there's no
 way around is that text is always readable.
@@ -229,8 +229,8 @@ PhotoCraft, yours) turns the code into a theme that's right for *its* surfaces.
 ## How it's tested
 
 `npx vitest run src/theme` runs a sweep that composes tens of thousands of
-combinations (backgrounds across the whole colour wheel × text tones × tints
-× accents, plus known troublemakers like mid grey `#777777`) and measures
+combinations (backgrounds across the whole color wheel × text tones × tints
+× accents, plus known troublemakers like mid gray `#777777`) and measures
 every promised pair. The rule is zero shortfalls. Every preset in `presets.ts`
 is also checked to be used exactly as shown.
 
@@ -240,8 +240,8 @@ is also checked to be used exactly as shown.
 
 You need four things, and none of them are ArtCraft-specific:
 
-1. **Colours as variables.** Make every colour in your UI read a CSS variable
-   (or your platform's equivalent) whose default is today's colour. Watch
+1. **Colors as variables.** Make every color in your UI read a CSS variable
+   (or your platform's equivalent) whose default is today's color. Watch
    for names other code already reads: ArtCraft's shared components read
    the desktop app's `--st-bg` and friends with fallbacks of their own, so
    defining those by default changed their look. Give your own variables

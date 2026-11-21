@@ -91,8 +91,8 @@ function SoulMarkCard({
       title="Soul Mark"
       subtitle={
         seeds.guard
-          ? "Your own colours, always readable"
-          : "Your own colours, exactly as picked"
+          ? "Your own colors, always readable"
+          : "Your own colors, exactly as picked"
       }
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
     />
@@ -148,12 +148,12 @@ function SoulMarkControls() {
   const resetSeeds = useThemeStore((s) => s.resetSeeds);
   const { notes, shortfalls } = useSoulMark();
   const guard = seeds.guard !== false;
-  const hardBackgrounds = useHardColours(
+  const hardBackgrounds = useHardColors(
     guard ? [] : [...PRIMARY_BACKGROUNDS, ...BOLD_BACKGROUNDS],
     seeds,
     "background",
   );
-  const hardAccents = useHardColours(
+  const hardAccents = useHardColors(
     guard ? [] : ALL_ACCENTS,
     seeds,
     "accent",
@@ -162,9 +162,9 @@ function SoulMarkControls() {
   return (
     <div className="space-y-5 border-t border-white/15 pt-4">
       <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
-      <ColourField
+      <ColorField
         title="Background"
-        hint="The colour behind everything. Panels and fields are built from it."
+        hint="The color behind everything. Panels and fields are built from it."
         value={seeds.background}
         presets={[
           ["Primaries", PRIMARY_BACKGROUNDS],
@@ -177,7 +177,7 @@ function SoulMarkControls() {
         hard={hardBackgrounds}
         onChange={(background) => setSeeds({ background })}
       />
-      <ColourField
+      <ColorField
         title="Accent"
         hint="Buttons like Generate, selections and highlights."
         value={seeds.accent}
@@ -212,7 +212,7 @@ function SoulMarkControls() {
       <div className="flex flex-col gap-2">
         <Label
           title="Text tone"
-          hint="The colour of text is always chosen for you, so it can be read. This sets its tone."
+          hint="The color of text is always chosen for you, so it can be read. This sets its tone."
         />
         <div className="flex gap-2">
           {CHARACTERS.map(([id, label]) => (
@@ -242,13 +242,13 @@ function SoulMarkControls() {
         className="flex h-8 items-center gap-2 border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
       >
         <WandIcon className="h-3.5 w-3.5" />
-        Start again from the starter colours
+        Start again from the starter colors
       </button>
     </div>
   );
 }
 
-function ColourField({
+function ColorField({
   title,
   hint,
   value,
@@ -318,7 +318,7 @@ function ColourField({
           type="color"
           value={value.toLowerCase()}
           onChange={(e) => onChange(e.target.value.toUpperCase() as Hex)}
-          aria-label={`${title}: any colour`}
+          aria-label={`${title}: any color`}
           className="h-8 w-10 cursor-pointer border border-white/15 bg-transparent p-0.5"
         />
         <input
@@ -337,10 +337,10 @@ function ColourField({
 }
 
 /**
- * The colours in `list` that the guard would change, under the current
+ * The colors in `list` that the guard would change, under the current
  * seeds: the ones that are hard to read with the guard off.
  */
-function useHardColours(
+function useHardColors(
   list: [string, Hex][],
   seeds: SoulMarkSeeds,
   field: "background" | "accent",
@@ -380,8 +380,8 @@ function GuardSwitch({
           title="Readability guard"
           hint={
             guard
-              ? "On: where a colour would make text hard to read, Soul Mark nudges its shade (never its hue) so everything reads at the WCAG AA standard."
-              : "Off: your colours are used exactly as picked, and nothing is nudged. Some text may be hard to read, for you or for others using this screen. Turn it back on any time."
+              ? "On: where a color would make text hard to read, Soul Mark nudges its shade (never its hue) so everything reads at the WCAG AA standard."
+              : "Off: your colors are used exactly as picked, and nothing is nudged. Some text may be hard to read, for you or for others using this screen. Turn it back on any time."
           }
         />
         <Switch
@@ -393,7 +393,7 @@ function GuardSwitch({
       {!guard && (
         <p className="flex items-center gap-2 text-xs text-white/80">
           <TriangleAlertIcon className="h-3.5 w-3.5 shrink-0" />
-          Colours marked with this sign are hard to read on their own. The Bold
+          Colors marked with this sign are hard to read on their own. The Bold
           row shows the hardest.
         </p>
       )}
@@ -406,7 +406,7 @@ function Shortfalls({ shortfalls }: { shortfalls: Shortfall[] }) {
     return (
       <p className="flex items-center gap-2 text-xs text-white/70">
         <ShieldCheckIcon className="h-3.5 w-3.5 text-primary" />
-        Nothing falls short: these colours read well even without the guard.
+        Nothing falls short: these colors read well even without the guard.
       </p>
     );
   }
@@ -443,7 +443,7 @@ function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
     return (
       <p className="flex items-center gap-2 text-xs text-white/70">
         <CheckIcon className="h-3.5 w-3.5 text-primary" />
-        Every colour is used exactly as you chose it.
+        Every color is used exactly as you chose it.
       </p>
     );
   }
@@ -452,12 +452,12 @@ function Notes({ notes, guard }: { notes: SoulMarkNote[]; guard: boolean }) {
       {guard ? (
         <Label
           title="Readability"
-          hint="What Soul Mark did so your colours stay easy to read."
+          hint="What Soul Mark did so your colors stay easy to read."
         />
       ) : (
         <Label
           title="With the guard on"
-          hint="What the readability guard would change. Your colours are used as picked."
+          hint="What the readability guard would change. Your colors are used as picked."
         />
       )}
       <ul className="flex flex-col gap-1.5">

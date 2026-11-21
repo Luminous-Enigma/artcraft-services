@@ -26,7 +26,7 @@ import {
 
 const SWEEP_TIMEOUT = 600_000;
 
-// Colours that are known to be hard: mid grey, saturated mid-tones, the
+// Colors that are known to be hard: mid gray, saturated mid-tones, the
 // extremes, and the default's own background.
 const TROUBLEMAKERS: Hex[] = [
   "#777777",
@@ -60,7 +60,7 @@ describe("contrast", () => {
   });
 });
 
-describe("ArtCraft's own colours as seeds", () => {
+describe("ArtCraft's own colors as seeds", () => {
   it("keep their background, and only strengthen what falls short of AA", () => {
     const mark = composeSoulMark({
       background: "#121316",
@@ -161,7 +161,7 @@ describe("the other way", () => {
   });
 });
 
-describe("status colours", () => {
+describe("status colors", () => {
   it("keep their hue, and stay within the lightness band where they still look like themselves", () => {
     const mark = composeSoulMark({
       ...SOUL_MARK_STARTER,
@@ -221,7 +221,7 @@ describe("the readability guard switched off", () => {
     expect(note?.used).toBe(mark.guarded?.bg);
   });
 
-  it("still picks whichever text colour reads better", () => {
+  it("still picks whichever text color reads better", () => {
     const light = composeSoulMark(open("#4169E1"));
     const lightFg = contrastRatio(light.tokens.fg, "#4169E1");
     const other = light.tokens.scheme === "dark" ? "#1A1712" : "#F2F1EE";
@@ -230,7 +230,7 @@ describe("the readability guard switched off", () => {
     );
   });
 
-  it("still strengthens faded text, which is no colour anyone picked", () => {
+  it("still strengthens faded text, which is no color anyone picked", () => {
     const mark = composeSoulMark(open("#0B0E14", "#9B4DCA"));
     expect(mark.tokens.textFade).toBeLessThan(1);
     expect(
@@ -308,7 +308,7 @@ describe("every combination", () => {
   const tints = [0, 0.5, 1];
 
   it(
-    "keeps all text readable, status colours included, with no exception",
+    "keeps all text readable, status colors included, with no exception",
     async () => {
       const bad: string[] = [];
       for (const background of backgrounds)
@@ -381,9 +381,9 @@ describe("every combination", () => {
   );
 
   it(
-    "fits every ready-made accent, the colour wheel included, to every ready-made background and a wide sample of others",
+    "fits every ready-made accent, the color wheel included, to every ready-made background and a wide sample of others",
     async () => {
-      // Every ready-made background, the troublemakers, and every 6th colour
+      // Every ready-made background, the troublemakers, and every 6th color
       // of the sweep: 44 accents on all of them would take minutes.
       const sample = [
         ...TROUBLEMAKERS,
@@ -470,7 +470,7 @@ describe("background primaries", () => {
   );
 });
 
-describe("the colour wheel", () => {
+describe("the color wheel", () => {
   it("has the 12 painter's hues, each with a lighter and a deeper version", () => {
     expect(WHEEL).toHaveLength(12);
     expect(WHEEL_LIGHT).toHaveLength(12);
