@@ -92,18 +92,14 @@ function SoulMarkCard({
   active: boolean;
   onSelect: (m: ThemeMode) => void;
 }) {
-  const { tokens, seeds } = useSolidMark();
+  const { tokens } = useSolidMark();
   return (
     <ModeCard
       mode="soul-mark"
       active={active}
       onSelect={onSelect}
       title="Soul Mark"
-      subtitle={
-        seeds.guard
-          ? "Your own colors, always readable"
-          : "Your own colors, exactly as picked"
-      }
+      subtitle="Solid colors"
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
     />
   );
@@ -116,18 +112,14 @@ function GradientsCard({
   active: boolean;
   onSelect: (m: ThemeMode) => void;
 }) {
-  const { tokens, seeds, gradient } = useGradientMark();
+  const { tokens, gradient } = useGradientMark();
   return (
     <ModeCard
       mode="gradients"
       active={active}
       onSelect={onSelect}
       title="Gradients"
-      subtitle={
-        seeds.guard
-          ? "Colors that flow, always readable"
-          : "Colors that flow, exactly as picked"
-      }
+      subtitle="Flowing colors"
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
       firstSwatch={
         gradient ? gradientCss("vertical", gradient.stops) : undefined
