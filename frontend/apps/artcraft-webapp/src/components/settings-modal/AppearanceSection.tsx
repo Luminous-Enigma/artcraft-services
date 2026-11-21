@@ -490,6 +490,11 @@ function SignatureGradients({
                 />
               </span>
               {g.name}
+              {g.colors.length === 3 && (
+                <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-white/60">
+                  3 colors
+                </span>
+              )}
             </button>
           );
         })}
