@@ -169,7 +169,12 @@ function ModeCard({
       </span>
       <span className="flex min-w-0 flex-col">
         <span className="text-sm font-medium leading-tight text-white">
-          {title}
+          {/* "Soul Mark: Solid Tones" breaks after the colon, never inside the name. */}
+          {title.split(/(?<=:) /).map((part) => (
+            <span key={part} className="block">
+              {part}
+            </span>
+          ))}
         </span>
         <span className="truncate text-xs text-white/60">{subtitle}</span>
       </span>
