@@ -6,6 +6,8 @@ import {
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
   PRIMARY_BACKGROUNDS,
+  GRADIENT_FADES,
+  SIGNATURE_GRADIENTS,
   SIGNATURE_THEMES,
   WHEEL,
   WHEEL_DEEP,
@@ -23,6 +25,7 @@ import {
   sanitizeSeeds,
   SOUL_MARK_STARTER,
   type SoulMarkSeeds,
+  tokensAcrossGradient,
 } from "./soul-mark";
 
 const SWEEP_TIMEOUT = 600_000;
@@ -431,11 +434,19 @@ describe("background primaries", () => {
     for (const [name, background] of PRIMARY_BACKGROUNDS)
       for (const tint of [0, 0.5, 1])
         for (const character of ["soft", "warm", "cool"] as const) {
-          const bg = composeSoulMark({ background, accent: "#2D81FF", tint, character }).tokens.bg;
+          const bg = composeSoulMark({
+            background,
+            accent: "#2D81FF",
+            tint,
+            character,
+          }).tokens.bg;
           const [h1] = toHsl(background);
           const [h2, s2] = toHsl(bg);
           const turn = Math.min(Math.abs(h1 - h2), 1 - Math.abs(h1 - h2));
-          if (s2 > 0.05 && turn > 0.02) drift.push(`${name} at ${tint}, ${character}: ${background} -> ${bg}`);
+          if (s2 > 0.05 && turn > 0.02)
+            drift.push(
+              `${name} at ${tint}, ${character}: ${background} -> ${bg}`,
+            );
         }
     expect(drift).toEqual([]);
   });
@@ -455,16 +466,29 @@ describe("background primaries", () => {
             for (const character of ["soft", "warm", "cool"] as const) {
               combos++;
               await breathe();
-              const seeds: SoulMarkSeeds = { background, accent, tint, character };
+              const seeds: SoulMarkSeeds = {
+                background,
+                accent,
+                tint,
+                character,
+              };
               const mark = composeSoulMark(seeds);
               const where = `${bgName} + ${acName} (${describeSeeds(seeds)})`;
-              for (const f of failures(measureText(mark.tokens))) bad.push(`${where}: ${f}`);
-              for (const f of failures(measureAccent(mark.tokens))) bad.push(`${where}: ${f}`);
+              for (const f of failures(measureText(mark.tokens)))
+                bad.push(`${where}: ${f}`);
+              for (const f of failures(measureAccent(mark.tokens)))
+                bad.push(`${where}: ${f}`);
               for (const m of mark.meaning)
                 if (m.ratio < m.floor - 1e-9)
-                  bad.push(`${where}: ${m.variable} ${m.ratio.toFixed(2)} < ${m.floor.toFixed(2)}`);
+                  bad.push(
+                    `${where}: ${m.variable} ${m.ratio.toFixed(2)} < ${m.floor.toFixed(2)}`,
+                  );
             }
-      expect(combos).toBe((12 + LIGHT_BACKGROUNDS.length + DEEP_BACKGROUNDS.length) * ALL_ACCENTS.length * 9);
+      expect(combos).toBe(
+        (12 + LIGHT_BACKGROUNDS.length + DEEP_BACKGROUNDS.length) *
+          ALL_ACCENTS.length *
+          9,
+      );
       expect(bad.slice(0, 20)).toEqual([]);
     },
     SWEEP_TIMEOUT * 2,
@@ -527,8 +551,14 @@ describe("the color wheel", () => {
 
   it("mixes the light and deep versions as VidScripter does", () => {
     // Values from VidScripter 0.19.1, which mixes with rounding to the nearest.
-    expect(WHEEL_LIGHT[0]).toEqual(["Light red", mix("#FE2712", "#FFFFFF", 0.45)]);
-    expect(WHEEL_DEEP[8]).toEqual(["Deep blue", mix("#0247FE", "#000000", 0.4)]);
+    expect(WHEEL_LIGHT[0]).toEqual([
+      "Light red",
+      mix("#FE2712", "#FFFFFF", 0.45),
+    ]);
+    expect(WHEEL_DEEP[8]).toEqual([
+      "Deep blue",
+      mix("#0247FE", "#000000", 0.4),
+    ]);
     expect(WHEEL_LIGHT[0][1]).toBe("#FE887D");
     expect(WHEEL_DEEP[8][1]).toBe("#012B98");
   });
@@ -559,3 +589,145 @@ function failures(
 function describeSeeds(s: SoulMarkSeeds): string {
   return `bg ${s.background} accent ${s.accent} tint ${s.tint} ${s.character}`;
 }
+
+describe("gradients", () => {
+  const passesEverywhere = (seeds: SoulMarkSeeds) => {
+    const mark = composeSoulMark(seeds);
+    expect(mark.gradient).toBeDefined();
+    for (const t of tokensAcrossGradient(mark)) {
+      expect(failures(measureText(t))).toEqual([]);
+    }
+    return mark;
+  };
+
+  it("keeps every signature gradient exactly as designed, readable at every point", () => {
+    for (const g of SIGNATURE_GRADIENTS) {
+      const mark = passesEverywhere({
+        ...SOUL_MARK_STARTER,
+        background: g.colors[0],
+        color2: g.colors[1],
+        color3: g.colors[2],
+        shape: g.shape,
+        accent: g.accent,
+      });
+      expect([g.name, mark.gradient!.stops]).toEqual([g.name, g.colors]);
+    }
+  });
+
+  it(
+    "reads at every point for every background and every quick fade, at every tint and tone",
+    () => {
+      const backgrounds = [
+        ...PRIMARY_BACKGROUNDS,
+        ...LIGHT_BACKGROUNDS,
+        ...DEEP_BACKGROUNDS,
+      ].map(([, h]) => h);
+      for (const background of backgrounds) {
+        for (const [, color2] of GRADIENT_FADES) {
+          if (color2 === background) continue;
+          for (const tint of [0, 0.5, 1]) {
+            for (const character of ["soft", "warm", "cool"] as Character[]) {
+              passesEverywhere({
+                ...SOUL_MARK_STARTER,
+                background,
+                color2,
+                tint,
+                character,
+              });
+            }
+          }
+        }
+      }
+    },
+    SWEEP_TIMEOUT,
+  );
+
+  it(
+    "reads at every point for three-color gradients through the wheel",
+    () => {
+      for (const [, a] of WHEEL) {
+        for (const [, b] of WHEEL) {
+          if (a === b) continue;
+          passesEverywhere({
+            ...SOUL_MARK_STARTER,
+            background: a,
+            color2: b,
+            color3: "#000000",
+          });
+        }
+      }
+    },
+    SWEEP_TIMEOUT,
+  );
+
+  it("never lets color 2 be the same as the background", () => {
+    const s = sanitizeSeeds({
+      ...SOUL_MARK_STARTER,
+      color2: SOUL_MARK_STARTER.background,
+    });
+    expect(s.color2).toBeUndefined();
+    expect(composeSoulMark(s).gradient).toBeUndefined();
+    expect(decodeSeeds("SM2-101B44-101b44-v-1CB6BE-50-soft")).toBeNull();
+  });
+
+  it("allows a third color that repeats the first, since the second differs", () => {
+    const mark = composeSoulMark({
+      ...SOUL_MARK_STARTER,
+      color2: "#000000",
+      color3: SOUL_MARK_STARTER.background,
+    });
+    expect(mark.gradient!.stops).toHaveLength(3);
+  });
+
+  it("round-trips gradient codes, two and three colors, both shapes", () => {
+    for (const g of SIGNATURE_GRADIENTS) {
+      const seeds = sanitizeSeeds({
+        ...SOUL_MARK_STARTER,
+        background: g.colors[0],
+        color2: g.colors[1],
+        color3: g.colors[2],
+        shape: g.shape,
+        accent: g.accent,
+        guard: false,
+      });
+      const code = encodeSeeds(seeds);
+      expect(code.startsWith("SM2-")).toBe(true);
+      expect(decodeSeeds(code)).toEqual(seeds);
+    }
+  });
+
+  it("keeps solid themes and their SM1 codes exactly as before", () => {
+    expect(encodeSeeds(SOUL_MARK_STARTER)).toMatch(/^SM1-/);
+    expect(composeSoulMark(SOUL_MARK_STARTER).gradient).toBeUndefined();
+  });
+
+  it("with the guard off uses the colors exactly and reports the worst point", () => {
+    const mark = composeSoulMark({
+      ...SOUL_MARK_STARTER,
+      background: "#FE2712",
+      color2: "#FFFFFF",
+      guard: false,
+    });
+    expect(mark.gradient!.stops).toEqual(["#FE2712", "#FFFFFF"]);
+    expect(mark.shortfalls.length).toBeGreaterThan(0);
+    expect(mark.notes.some((n) => n.kind === "warning")).toBe(true);
+  });
+
+  it("with the guard on moves a color only in lightness, and says so", () => {
+    const mark = composeSoulMark({
+      ...SOUL_MARK_STARTER,
+      background: "#FE2712",
+      color2: "#FFFFFF",
+    });
+    const moved = mark.notes.filter(
+      (n) => n.seed === "background" || n.seed === "gradient",
+    );
+    expect(moved.length).toBeGreaterThan(0);
+    for (const n of moved) {
+      const [h1, s1] = toHsl(n.chosen);
+      const [h2, s2] = toHsl(n.used);
+      if (s1 > 0.05) expect(Math.abs(h1 - h2)).toBeLessThan(0.02);
+      expect(Math.abs(s1 - s2)).toBeLessThan(0.05);
+    }
+  });
+});

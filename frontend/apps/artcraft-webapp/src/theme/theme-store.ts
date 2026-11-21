@@ -73,8 +73,12 @@ export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds) {
   for (const name of applied) root.style.removeProperty(name);
   applied = [];
   root.dataset.theme = mode;
+  delete root.dataset.gradient;
   if (mode !== "soul-mark") return;
-  const vars = cssVariables(soulMarkFor(seeds));
+  const mark = soulMarkFor(seeds);
+  // The gradient rules in styles.css apply only while this is set.
+  if (mark.gradient) root.dataset.gradient = mark.gradient.shape;
+  const vars = cssVariables(mark);
   for (const [name, value] of Object.entries(vars)) {
     root.style.setProperty(name, value);
     applied.push(name);
