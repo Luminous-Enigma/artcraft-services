@@ -1,10 +1,10 @@
 # Theme evidence for storytold/artcraft-services
 
-Evidence for [#166](https://github.com/storytold/artcraft-services/pull/166) (part 1: colours as theme
+Evidence for [#166](https://github.com/storytold/artcraft-services/pull/166) (part 1: colors as theme
 variables) and for part 2 (the Soul Mark theme, branch
 [`soul-mark-theme`](https://github.com/Luminous-Enigma/artcraft-services/tree/soul-mark-theme)).
 It answers the review on #166: before and after screenshots of each page in light and dark, a script
-that compares the rendered pages, every variable with its fallback, the hard-coded colours left for
+that compares the rendered pages, every variable with its fallback, the hard-coded colors left for
 part 2, and whether third-party components follow the variables.
 
 This branch holds evidence only. It shares no history with the code.
@@ -31,7 +31,7 @@ All 28 pages of `src/app/app.tsx`, built just before #166 (`5547585a~1`) and jus
 
 - **44 of 56 views are identical to the pixel.**
 - In the other 12, some pixels are 1 shade apart (of 255), on smoothed edges of see-through
-  colours that now come from a variable: the prompt box's resize grip on the Create pages, and the
+  colors that now come from a variable: the prompt box's resize grip on the Create pages, and the
   corners of the filter buttons on Media. Nobody can see this; it is listed, not hidden.
 - **Control:** the same build compared with itself gives 0 differing pixels, so the method adds no
   noise ([`part1/control/report.md`](part1/control/report.md)).
@@ -66,7 +66,7 @@ on a dimmed copy of the page).
 
 Every `--st-*` variable the web app and the libraries it uses refer to, read from the code and then
 asked of the running page ([`audit/variables.md`](audit/variables.md)). The variables #166 adds are
-all declared on `:root` with today's colours, so each always has a value.
+all declared on `:root` with today's colors, so each always has a value.
 
 | Variable                | Value on :root | Status                                           |
 |-------------------------|----------------|--------------------------------------------------|
@@ -100,13 +100,13 @@ all declared on `:root` with today's colours, so each always has a value.
 fallbacks of their own". For three of them that is wrong: `--st-divider` and `--st-fg`
 (`pagedraw/HistoryStack.tsx`) and `--st-controls-rgb` (`lightbox-modal.tsx`) have no fallback, and
 the web app never sets them, so the Edit Image history dividers and spinner ring and the lightbox
-button backgrounds are drawn with no colour. This predates #166 and #166 does not change it; part 2
+button backgrounds are drawn with no color. This predates #166 and #166 does not change it; part 2
 should give them values.
 
-## Colours still written into the code
+## Colors still written into the code
 
 199 places in the web app ([`audit/hardcoded.md`](audit/hardcoded.md), by file). #166 already sends
-text in the palette's status colours through variables (`MEANING_FAMILIES` in `tailwind.config.js`),
+text in the palette's status colors through variables (`MEANING_FAMILIES` in `tailwind.config.js`),
 so those are themed; part 2 fits them to each theme without changing their hue.
 
 | Group                                         | Places | Examples                              | For part 2                                          |
@@ -114,26 +114,26 @@ so those are themed; part 2 fits them to each theme without changing their hue.
 | Text in a themed family and shade             |     66 | `text-red-500` `text-amber-300`       | Already themed                                      |
 | Background or border tints                    |    109 | `bg-red-500/10` `border-red-500/20`   | See-through over themed surfaces; can stay          |
 | Text outside the themed families or shades    |      5 | `text-violet-400` `text-amber-100`    | Add `violet` and shade 100 to the themed set        |
-| Literal colours                               |     19 | `#0b0b0c` `#000000` Google, Discord   | Near-blacks onto the variables; brand colours stay  |
+| Literal colors                               |     19 | `#0b0b0c` `#000000` Google, Discord   | Near-blacks onto the variables; brand colors stay  |
 
 The status variables, `--st-<family>-<shade>-rgb`, are built in `tailwind.config.js` and every use
-carries Tailwind's own colour as its fallback.
+carries Tailwind's own color as its fallback.
 
 ## Third-party components
 
-There are no charts: the web app uses no chart library. What draws colour:
+There are no charts: the web app uses no chart library. What draws color:
 
 - **Follows the variables:** menus, dialogs and tooltips (Radix UI, Headless UI) are styled with the
-  app's own Tailwind classes; icons (Lucide, Hugeicons) take the text colour.
+  app's own Tailwind classes; icons (Lucide, Hugeicons) take the text color.
 - **Does not, and should in part 2:** the Edit Image canvas (Konva) draws its guide lines in fixed
   `#333`, `#444`, `#555`. The 3D scene (three.js) has a transparent background, so it shows the theme;
   its cyan selection highlight is fixed, which is fine.
-- **Should not:** the Google sign-in button (Google's brand rules) and the colour picker.
+- **Should not:** the Google sign-in button (Google's brand rules) and the color picker.
 
 ## Part 2: Soul Mark
 
-Updated onto main of today; adds the painter's colour wheel: 12 hues as accents, each also lighter
-and deeper (36 more accents), and the same 12 hues as a Primaries row of backgrounds. No colour
+Updated onto main of today; adds the painter's color wheel: 12 hues as accents, each also lighter
+and deeper (36 more accents), and the same 12 hues as a Primaries row of backgrounds. No color
 appears in more than one row. The tests pass, including a sweep of every ready-made background with
 every ready-made accent at every panel tint and text tone: 12,672 combinations, all text readable.
 With the guard on, Soul Mark keeps each primary's hue and moves its shade where text would not read
@@ -206,11 +206,11 @@ photographed twice differed by 41 pixels once and 0 the next time.
 
 ### Text contrast, measured
 
-axe-core's colour-contrast rule (WCAG 2 AA) on 12 pages per theme. "On the plan colours" is white
-text on the green, purple and orange plan colours, which part 2 leaves as designed; it falls short in
-today's app too, and slightly darker plan colours would fix it.
+axe-core's color-contrast rule (WCAG 2 AA) on 12 pages per theme. "On the plan colors" is white
+text on the green, purple and orange plan colors, which part 2 leaves as designed; it falls short in
+today's app too, and slightly darker plan colors would fix it.
 
-| Theme                   | Text below AA | On the plan colours |
+| Theme                   | Text below AA | On the plan colors |
 |-------------------------|---------------|---------------------|
 | Today's app             |            14 |                  17 |
 | Soul Mark Light         |             0 |                  15 |
