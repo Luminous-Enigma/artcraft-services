@@ -98,7 +98,7 @@ function SoulMarkCard({
       mode="soul-mark"
       active={active}
       onSelect={onSelect}
-      title="Soul Mark"
+      title="Soul Mark: Solid Tones"
       subtitle="Solid colors"
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
     />
@@ -118,7 +118,7 @@ function GradientsCard({
       mode="gradients"
       active={active}
       onSelect={onSelect}
-      title="Gradients"
+      title="Soul Mark: Gradients"
       subtitle="Flowing colors"
       swatch={[tokens.bg, tokens.controls, tokens.accent]}
       firstSwatch={
@@ -168,7 +168,9 @@ function ModeCard({
         ))}
       </span>
       <span className="flex min-w-0 flex-col">
-        <span className="text-sm font-medium text-white">{title}</span>
+        <span className="text-sm font-medium leading-tight text-white">
+          {title}
+        </span>
         <span className="truncate text-xs text-white/60">{subtitle}</span>
       </span>
       {active && (
@@ -508,7 +510,7 @@ function AboutSoulMark() {
   return (
     <div className="flex flex-col gap-1 border-t border-white/15 pt-4">
       <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
-        About Soul Mark
+        About Soul Mark: Solid Tones
       </p>
       <p className="text-xs leading-relaxed opacity-70">
         Most apps give you black, white or dark blue. Soul Mark puts every solid
@@ -525,12 +527,12 @@ function AboutGradients() {
   return (
     <div className="flex flex-col gap-1 border-t border-white/15 pt-4">
       <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
-        About Gradients
+        About Soul Mark: Gradients
       </p>
       <p className="text-xs leading-relaxed opacity-70">
-        Soul Mark's sibling: your background flows from one color into the next,
-        behind every page, panel and menu. Text is checked at every point of the
-        flow, so it stays easy to read from top to bottom.
+        Your background flows from one color into the next, behind every page,
+        panel and menu. Text is checked at every point of the flow, so it stays
+        easy to read from top to bottom.
       </p>
     </div>
   );
