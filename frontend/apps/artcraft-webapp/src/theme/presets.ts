@@ -230,6 +230,24 @@ export const SIGNATURE_GRADIENTS: {
     accent: "#E86FA6",
   },
   {
+    name: "Nebula",
+    colors: ["#19206A", "#391961", "#0B0E14"],
+    shape: "vertical",
+    accent: "#E86FA6",
+  },
+  {
+    name: "Ember",
+    colors: ["#5D101B", "#441E13", "#0B0E14"],
+    shape: "vertical",
+    accent: "#F59E0B",
+  },
+  {
+    name: "Twilight",
+    colors: ["#521232", "#391961", "#101B44"],
+    shape: "vertical",
+    accent: "#E86FA6",
+  },
+  {
     name: "Event horizon",
     colors: ["#19206A", "#000000"],
     shape: "elliptical",
