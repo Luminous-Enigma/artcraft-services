@@ -6,6 +6,7 @@ import {
   DEEP_BACKGROUNDS,
   LIGHT_BACKGROUNDS,
   PRIMARY_BACKGROUNDS,
+  SIGNATURE_THEMES,
   WHEEL,
   WHEEL_DEEP,
   WHEEL_LIGHT,
@@ -470,12 +471,58 @@ describe("background primaries", () => {
   );
 });
 
+describe("signature themes", () => {
+  it("are each made only of colors in the picker's rows, so they can be built by hand", () => {
+    const backgrounds = new Set(
+      [...PRIMARY_BACKGROUNDS, ...LIGHT_BACKGROUNDS, ...DEEP_BACKGROUNDS].map(
+        ([, h]) => h.toUpperCase(),
+      ),
+    );
+    const accents = new Set(ALL_ACCENTS.map(([, h]) => h.toUpperCase()));
+    const missing = SIGNATURE_THEMES.filter(
+      (t) =>
+        !backgrounds.has(t.background.toUpperCase()) ||
+        !accents.has(t.accent.toUpperCase()),
+    ).map((t) => t.name);
+    expect(missing).toEqual([]);
+  });
+
+  it("have unique names and looks", () => {
+    const names = new Set(SIGNATURE_THEMES.map((t) => t.name));
+    const looks = new Set(SIGNATURE_THEMES.map((t) => t.background + t.accent));
+    expect(names.size).toBe(SIGNATURE_THEMES.length);
+    expect(looks.size).toBe(SIGNATURE_THEMES.length);
+  });
+
+  it("read at every tint and text tone, and keep their background exactly", () => {
+    const bad: string[] = [];
+    for (const t of SIGNATURE_THEMES)
+      for (const tint of [0, 0.5, 1])
+        for (const character of ["soft", "warm", "cool"] as const) {
+          const seeds: SoulMarkSeeds = {
+            background: t.background,
+            accent: t.accent,
+            tint,
+            character,
+          };
+          const mark = composeSoulMark(seeds);
+          if (mark.tokens.bg !== t.background)
+            bad.push(`${t.name}: background moved to ${mark.tokens.bg}`);
+          for (const f of failures(measureText(mark.tokens)))
+            bad.push(`${t.name}: ${f}`);
+          for (const f of failures(measureAccent(mark.tokens)))
+            bad.push(`${t.name}: ${f}`);
+        }
+    expect(bad).toEqual([]);
+  });
+});
+
 describe("the color wheel", () => {
   it("has the 12 painter's hues, each with a lighter and a deeper version", () => {
     expect(WHEEL).toHaveLength(12);
     expect(WHEEL_LIGHT).toHaveLength(12);
     expect(WHEEL_DEEP).toHaveLength(12);
-    expect(ALL_ACCENTS).toHaveLength(8 + 36);
+    expect(ALL_ACCENTS).toHaveLength(11 + 36);
   });
 
   it("mixes the light and deep versions as VidScripter does", () => {

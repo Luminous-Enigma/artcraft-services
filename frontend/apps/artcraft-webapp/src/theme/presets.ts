@@ -21,6 +21,8 @@ export const LIGHT_BACKGROUNDS: [string, Hex][] = [
 export const DEEP_BACKGROUNDS: [string, Hex][] = [
   ["ArtCraft", DEFAULT_TOKENS.bg],
   ["Night", "#0B0E14"],
+  ["Deep space", "#0D1117"],
+  ["Navy", "#011627"],
   ["Midnight blue", "#101B44"],
   ["Deep blue", "#0D2661"],
   ["Royal blue", "#19206A"],
@@ -34,6 +36,9 @@ export const DEEP_BACKGROUNDS: [string, Hex][] = [
 
 export const ACCENTS: [string, Hex][] = [
   ["Blue", DEFAULT_TOKENS.accent],
+  ["Cobalt", "#0969DA"],
+  ["Azure", "#1F6FEB"],
+  ["Cerulean", "#219FD5"],
   ["Purple", "#9B4DCA"],
   ["Pink", "#E86FA6"],
   ["Red", "#E23E57"],
@@ -109,4 +114,35 @@ export const BOLD_BACKGROUNDS: [string, Hex][] = [
   ["Orange", "#F59E0B"],
   ["Hot pink", "#E86FA6"],
   ["Teal", "#1CB6BE"],
+];
+
+/**
+ * Signature themes: whole looks picked in one tap, shown above the color
+ * rows. Each is built only from colors in those rows, so anyone can also
+ * make it by hand. The first three follow the most-installed editor themes
+ * (see the theme-evidence research); the rest are the designer's picks.
+ */
+export const SIGNATURE_THEMES: {
+  name: string;
+  background: Hex;
+  accent: Hex;
+}[] = [
+  { name: "Paper and Cobalt", background: "#FFFFFF", accent: "#0969DA" },
+  { name: "Deep space and Azure", background: "#0D1117", accent: "#1F6FEB" },
+  { name: "Navy and Cerulean", background: "#011627", accent: "#219FD5" },
+  { name: "Midnight and Teal", background: "#101B44", accent: "#1CB6BE" },
+  { name: "Sky and Blue", background: "#BFDBF1", accent: "#2D81FF" },
+  { name: "Deep red and Red", background: "#5D101B", accent: "#E23E57" },
+  { name: "Deep green and Green", background: "#0C2F1C", accent: "#10B981" },
+  { name: "Night and Blue", background: "#0B0E14", accent: "#2D81FF" },
+  {
+    name: "Deep blue and Light blue",
+    background: "#0D2661",
+    accent: "#749AFE",
+  },
+  { name: "Royal blue and Teal", background: "#19206A", accent: "#1CB6BE" },
+  { name: "Deep purple and Pink", background: "#391961", accent: "#E86FA6" },
+  { name: "Deep rose and Pink", background: "#521232", accent: "#E86FA6" },
+  { name: "Reddish brown and Amber", background: "#441E13", accent: "#F59E0B" },
+  { name: "Brown and Orange", background: "#34241A", accent: "#FB9902" },
 ];
