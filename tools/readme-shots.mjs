@@ -20,10 +20,14 @@ const SHOTS = [
   ["solid-paper-and-cobalt", solid("#FFFFFF", "#0969DA")],
   ["solid-deep-red-and-red", solid("#5D101B", "#E23E57")],
   ["solid-deep-purple-and-pink", solid("#391961", "#E86FA6")],
+  ["solid-deep-blue-and-light-blue", solid("#0D2661", "#749AFE")],
+  ["solid-reddish-brown-and-amber", solid("#441E13", "#F59E0B")],
   ["gradient-neon-deep", grad(["#0E1A2E", "#070B14"], "#00E5FF")],
   ["gradient-aurora", grad(["#0D2661", "#0C2F1C", "#0B0E14"], "#1CB6BE")],
   ["gradient-synthwave", grad(["#391961", "#521232", "#0B0E14"], "#E86FA6")],
   ["gradient-ember", grad(["#5D101B", "#441E13", "#0B0E14"], "#F59E0B")],
+  ["gradient-midnight-and-teal", grad(["#101B44", "#000000"], "#1CB6BE")],
+  ["gradient-deep-violet-to-black", grad(["#500169", "#000000"], "#E86FA6")],
 ];
 const USER = { user_token: "u", username: "visual_compare", display_name: "Visual Compare",
   email_gravatar_hash: "0", core_info: {}, can_access_studio: true, maybe_feature_flags: [] };
