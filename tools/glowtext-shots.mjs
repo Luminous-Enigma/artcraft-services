@@ -92,11 +92,15 @@ async function settle(tab) {
 const V = JSON.parse(fs.readFileSync("/home/user/shots/glowtext/values.json", "utf8"));
 const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)).join(" ");
 // Two blur layers whose combined strongest point equals `halo` exactly: 1 - (1 - a)^2 = halo.
-const layers = (glow, halo) => { const a = (1 - Math.sqrt(1 - halo)).toFixed(3); return `0 0 3px rgb(${rgb(glow)} / ${a}), 0 0 12px rgb(${rgb(glow)} / ${a})`; };
+const layers = (glow, halo, wide) => {
+  const n = wide ? 3 : 2;
+  const a = (1 - Math.pow(1 - halo, 1 / n)).toFixed(3); // n layers whose combined peak is exactly `halo`
+  return [`0 0 3px rgb(${rgb(glow)} / ${a})`, `0 0 12px rgb(${rgb(glow)} / ${a})`, ...(wide ? [`0 0 28px rgb(${rgb(glow)} / ${a})`] : [])].join(", ");
+};
 function css(v, on) {
   const ink = on ? v.ink : v.inkOff, fg = on ? v.fg : v.fgOff, halo = on ? v.on.halo : v.off.halo;
   return `html:root { --st-white-rgb: ${rgb(ink)} !important; --st-fg-rgb: ${rgb(fg)} !important; --st-fg: rgb(${rgb(fg)}) !important;${on ? ` --st-text-fade: ${v.on.fade} !important;` : ""} }
-body, body * { text-shadow: ${layers(v.glow, halo)} !important; }`;
+body, body * { text-shadow: ${layers(v.glow, halo, !on)} !important; }`;
 }
 const PAGES2 = [["home", "/"], ["create-image", "/create-image"]];
 for (const [name, seeds] of THEMES) {
