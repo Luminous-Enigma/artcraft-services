@@ -621,7 +621,7 @@ html[data-gradient] .bg-ui-panel-gradient {
    side menu and filled buttons; the bloom's strongest point is the tint the engine measured
    text against. It never sits under or replaces text color. The grid is a faint line every
    32px behind the page, also measured under text, and stays off on pages where people work on
-   a picture, video or 3D scene (html[data-workspace], set in theme/workspace.ts). */
+   a picture, video or 3D scene (html[data-workspace], set in theme/workspace.ts: off where an editor draws its own grid, dimmed where it doesn't). */
 html[data-neon] .bg-ui-panel,
 html[data-neon] .bg-ui-modal,
 html[data-neon] .bg-sidebar {
@@ -634,21 +634,42 @@ html[data-neon] .bg-primary {
     0 0 0 1px rgb(var(--st-neon-glow-rgb)),
     0 0 14px 1px rgb(var(--st-neon-glow-rgb) / var(--st-neon-bloom));
 }
-html[data-neon="grid"]:not([data-workspace]) body,
-html[data-neon="grid"]:not([data-workspace]) .bg-ui-background,
-html[data-neon="grid"]:not([data-workspace]) .bg-background {
+/* The grid line's color: full strength, dimmed in an editor without a grid of its own, and none
+   at all in an editor that draws its own (theme/workspace.ts sets html[data-workspace]). */
+html[data-neon="grid"] {
+  --st-neon-grid-line: rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid));
+}
+html[data-neon="grid"][data-workspace="dim"] {
+  --st-neon-grid-line: rgb(var(--st-neon-glow-rgb) / calc(var(--st-neon-grid) * 0.4));
+}
+html[data-neon="grid"]:not([data-workspace="off"]) body,
+html[data-neon="grid"]:not([data-workspace="off"]) .bg-ui-background,
+html[data-neon="grid"]:not([data-workspace="off"]) .bg-background {
   background-image:
-    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px);
+    linear-gradient(var(--st-neon-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--st-neon-grid-line) 1px, transparent 1px);
   background-size: 32px 32px;
   background-attachment: fixed;
 }
-html[data-neon="grid"][data-gradient]:not([data-workspace]) body,
-html[data-neon="grid"][data-gradient]:not([data-workspace]) .bg-ui-background,
-html[data-neon="grid"][data-gradient]:not([data-workspace]) .bg-background {
+html[data-neon="grid"][data-gradient]:not([data-workspace="off"]) body,
+html[data-neon="grid"][data-gradient]:not([data-workspace="off"]) .bg-ui-background,
+html[data-neon="grid"][data-gradient]:not([data-workspace="off"]) .bg-background {
   background-image:
-    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
+    linear-gradient(var(--st-neon-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--st-neon-grid-line) 1px, transparent 1px),
     var(--st-gradient-page);
   background-size: 32px 32px, 32px 32px, auto;
+}
+/* A window that draws its own grid shows none of ours: it repaints the page beneath, the same
+   fade pinned to the window, so it lines up with the page around it. The windows are found by
+   what they hold, so the editors themselves stay untouched:
+   - the video editor's preview (its grid guides): the one panel with this set of classes;
+   - the image editor's canvas (a checkerboard behind see-through parts): the box around a
+     Konva drawing surface. */
+html[data-neon="grid"] .panel.bg-background.relative.size-full.min-h-0.min-w-0.flex-col,
+html[data-neon="grid"] div:has(> div > .konvajs-content) {
+  background-color: var(--st-bg);
+  background-image: var(--st-gradient-page, none);
+  background-size: auto;
+  background-attachment: fixed;
 }
