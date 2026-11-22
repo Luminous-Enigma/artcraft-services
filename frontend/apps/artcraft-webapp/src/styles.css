@@ -693,13 +693,22 @@ html[data-neon-text] .bg-primary * {
 }
 /* The grid on menus: the side menu, drop-down menus and dialogs carry the page's grid, pinned to
    the window so its lines continue from the page, at the strength the engine measured text in
-   them against (--st-neon-menu-grid). Unlike the page's grid, it ignores html[data-workspace]:
+   them against (--st-neon-menu-grid), down to the fields and controls inside them (the engine
+   measures their text with the grid behind it too). Unlike the page's grid, it ignores html[data-workspace]:
    menus keep it on every page, editors included (the owner's call). */
 html[data-neon-menu-grid] .bg-sidebar,
 html[data-neon-menu-grid] .bg-ui-panel,
 html[data-neon-menu-grid] .bg-ui-modal,
 html[data-neon-menu-grid] [role="menu"],
-html[data-neon-menu-grid] [role="dialog"] {
+html[data-neon-menu-grid] [role="dialog"],
+html[data-neon-menu-grid] .bg-sidebar .bg-ui-sunken,
+html[data-neon-menu-grid] .bg-sidebar .bg-ui-controls,
+html[data-neon-menu-grid] .bg-ui-modal .bg-ui-sunken,
+html[data-neon-menu-grid] .bg-ui-modal .bg-ui-controls,
+html[data-neon-menu-grid] [role="menu"] .bg-ui-sunken,
+html[data-neon-menu-grid] [role="menu"] .bg-ui-controls,
+html[data-neon-menu-grid] [role="dialog"] .bg-ui-sunken,
+html[data-neon-menu-grid] [role="dialog"] .bg-ui-controls {
   background-image:
     linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
     linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px);
@@ -710,7 +719,15 @@ html[data-neon-menu-grid][data-gradient] .bg-sidebar,
 html[data-neon-menu-grid][data-gradient] .bg-ui-panel,
 html[data-neon-menu-grid][data-gradient] .bg-ui-modal,
 html[data-neon-menu-grid][data-gradient] [role="menu"],
-html[data-neon-menu-grid][data-gradient] [role="dialog"] {
+html[data-neon-menu-grid][data-gradient] [role="dialog"],
+html[data-neon-menu-grid][data-gradient] .bg-sidebar .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] .bg-sidebar .bg-ui-controls,
+html[data-neon-menu-grid][data-gradient] .bg-ui-modal .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] .bg-ui-modal .bg-ui-controls,
+html[data-neon-menu-grid][data-gradient] [role="menu"] .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] [role="menu"] .bg-ui-controls,
+html[data-neon-menu-grid][data-gradient] [role="dialog"] .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] [role="dialog"] .bg-ui-controls {
   background-image:
     linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
     linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
