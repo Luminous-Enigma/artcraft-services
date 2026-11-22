@@ -48,7 +48,7 @@ const browser = await chromium.launch();
 
 // Neon is its own theme: its seeds are stored apart from the others'.
 async function context(seeds, viewport = { width: 1440, height: 900 }, state = { mode: "neon", neonSeeds: seeds }) {
-  const ctx = await browser.newContext({ viewport, reducedMotion: "reduce", deviceScaleFactor: 1 });
+  const ctx = await browser.newContext({ viewport, reducedMotion: "reduce", deviceScaleFactor: process.env.ZOOM ? 2 : 1 });
   const store = JSON.stringify({ state, version: 0 });
   await ctx.addInitScript((v) => localStorage.setItem("artcraft-theme", v), store);
   await ctx.route("**/*", (route) => {
@@ -110,7 +110,10 @@ for (const [name, seeds] of THEMES) {
       if (document.head) add(); else document.addEventListener("DOMContentLoaded", add);
     }, css(v, on));
     const tab = await ctx.newPage();
-    for (const [page, url] of PAGES2) {
+    if (process.env.ZOOM) {
+      await tab.goto(base + "/"); await tab.waitForTimeout(1800); await settle(tab);
+      await tab.screenshot({ path: path.join(dir, `zoom-glow-${on ? "on" : "off"}.png`), clip: { x: 290, y: 95, width: 640, height: 140 } });
+    } else for (const [page, url] of PAGES2) {
       await tab.goto(base + url); await tab.waitForTimeout(1800); await settle(tab);
       await tab.screenshot({ path: path.join(dir, `${page}-glow-${on ? "on" : "off"}.png`) });
     }
