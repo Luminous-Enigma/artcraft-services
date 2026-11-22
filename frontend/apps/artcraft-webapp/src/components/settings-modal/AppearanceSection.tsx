@@ -38,8 +38,21 @@ import {
   WHEEL_LIGHT,
 } from "../../theme/presets";
 import {
+  decodeNeon,
+  encodeNeon,
+  type NeonNote,
+  type NeonSeeds,
+} from "../../theme/neon";
+import {
+  NEON_BACKGROUNDS,
+  NEON_FADES,
+  NEON_GLOWS,
+  NEON_SIGNATURES,
+} from "../../theme/neon-presets";
+import {
   type ThemeMode,
   useGradientMark,
+  useNeonMark,
   useSolidMark,
   useSoulMark,
   useThemeStore,
@@ -62,7 +75,7 @@ export function AppearanceSection() {
           title="Theme"
           hint="Applies instantly, to every screen. Saved on this device."
         />
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <ModeCard
             mode="default"
             active={mode === "default"}
@@ -77,10 +90,12 @@ export function AppearanceSection() {
           />
           <SoulMarkCard active={mode === "soul-mark"} onSelect={setMode} />
           <GradientsCard active={mode === "gradients"} onSelect={setMode} />
+          <NeonCard active={mode === "neon"} onSelect={setMode} />
         </div>
       </div>
       {mode === "soul-mark" && <SoulMarkControls kind="solid" />}
       {mode === "gradients" && <SoulMarkControls kind="gradient" />}
+      {mode === "neon" && <NeonControls />}
     </div>
   );
 }
@@ -910,14 +925,17 @@ function Chip({ hex }: { hex: Hex }) {
   );
 }
 
-function ThemeCode({ seeds }: { seeds: SoulMarkSeeds }) {
+function ThemeCode({ seeds }: { seeds: SoulMarkSeeds | NeonSeeds }) {
   const setSeeds = useThemeStore((s) => s.setSeeds);
   const setGradientSeeds = useThemeStore((s) => s.setGradientSeeds);
   const setMode = useThemeStore((s) => s.setMode);
-  const code = encodeSeeds(seeds);
+  const code =
+    "glow" in seeds ? encodeNeon(seeds as NeonSeeds) : encodeSeeds(seeds);
   const [pasted, setPasted] = useState("");
   const [copied, setCopied] = useState(false);
+  const setNeonSeeds = useThemeStore((s) => s.setNeonSeeds);
   const decoded = pasted ? decodeSeeds(pasted) : null;
+  const decodedNeon = pasted ? decodeNeon(pasted) : null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -952,17 +970,20 @@ function ThemeCode({ seeds }: { seeds: SoulMarkSeeds }) {
           type="text"
           value={pasted}
           onChange={(e) => setPasted(e.target.value)}
-          placeholder="SM1-… or SM2-…"
+          placeholder="SM1-…, SM2-… or SM3-…"
           aria-label="Paste a theme code"
           spellCheck={false}
           className="h-8 w-56 border border-white/15 bg-ui-sunken px-2 font-mono text-xs text-white placeholder:text-white/40"
         />
         <button
           type="button"
-          disabled={!decoded}
+          disabled={!decoded && !decodedNeon}
           onClick={() => {
-            // A gradient code (SM2) opens Gradients; a solid one (SM1) opens Soul Mark.
-            if (decoded && themeForSeeds(decoded) === "gradients") {
+            // A neon code (SM3) opens Neon; a gradient code (SM2) opens Gradients; a solid one (SM1) opens Soul Mark.
+            if (decodedNeon) {
+              setNeonSeeds(decodedNeon);
+              setMode("neon");
+            } else if (decoded && themeForSeeds(decoded) === "gradients") {
               setGradientSeeds(decoded);
               setMode("gradients");
             } else if (decoded) {
@@ -975,7 +996,7 @@ function ThemeCode({ seeds }: { seeds: SoulMarkSeeds }) {
         >
           Use code
         </button>
-        {pasted && !decoded && (
+        {pasted && !decoded && !decodedNeon && (
           <span className="text-xs text-white/60">Not a Soul Mark code</span>
         )}
       </div>
@@ -990,6 +1011,282 @@ function Label({ title, hint }: { title: string; hint: string }) {
         {title}
       </p>
       <p className="text-xs opacity-70">{hint}</p>
+    </div>
+  );
+}
+
+function NeonCard({
+  active,
+  onSelect,
+}: {
+  active: boolean;
+  onSelect: (m: ThemeMode) => void;
+}) {
+  const { mark, glow } = useNeonMark();
+  return (
+    <ModeCard
+      mode="neon"
+      active={active}
+      onSelect={onSelect}
+      title="Soul Mark: Neon"
+      subtitle="Glowing lines"
+      swatch={[mark.tokens.bg, glow, mark.tokens.accent]}
+      firstSwatch={
+        mark.gradient
+          ? gradientCss("vertical", mark.gradient.stops)
+          : undefined
+      }
+    />
+  );
+}
+
+/** The Deep row without the near-blacks the Neon row already has: no color appears twice. */
+const NEON_DEEP_BACKGROUNDS: [string, Hex][] = DEEP_BACKGROUNDS.filter(
+  ([, hex]) => !NEON_BACKGROUNDS.some(([, n]) => n === hex),
+);
+
+/** The fades' top colors that aren't already in the rows above. */
+const NEON_FADE_TOPS: [string, Hex][] = NEON_FADES.map(
+  ([name, top]): [string, Hex] => [name, top],
+).filter(
+  ([, hex]) =>
+    ![...NEON_BACKGROUNDS, ...NEON_DEEP_BACKGROUNDS].some(([, n]) => n === hex),
+);
+
+/** What a Neon fade can run down to: none, or one of the near-blacks. */
+const NEON_FADE_ENDS: [string, Hex][] = [
+  ["Void", "#000000"],
+  ["Deep", "#03060C"],
+  ["Glass", "#070B14"],
+];
+
+function NeonControls() {
+  const seeds = useThemeStore((s) => s.neonSeeds);
+  const setSeeds = useThemeStore((s) => s.setNeonSeeds);
+  const resetSeeds = useThemeStore((s) => s.resetNeonSeeds);
+  const neon = useNeonMark();
+  const guard = seeds.guard !== false;
+
+  return (
+    <div className="space-y-5 border-t border-white/15 pt-4">
+      <SignatureNeon seeds={seeds} onPick={(n) => setSeeds(n)} />
+      <div className="flex flex-col gap-0.5 border-t border-white/15 pt-4">
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+          Mark it with your own taste
+        </p>
+        <p className="text-xs opacity-70">
+          Or make your own: a dark page, the color your lines glow, and an
+          accent.
+        </p>
+      </div>
+      <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
+      <ColorField
+        title="Background"
+        hint="The page behind the glow. Neon reads best near black."
+        value={seeds.background}
+        presets={[
+          ["Neon", NEON_BACKGROUNDS],
+          ["Deep", NEON_DEEP_BACKGROUNDS],
+          ["Fade tops", NEON_FADE_TOPS],
+        ]}
+        onChange={(background) =>
+          setSeeds(
+            background === seeds.color2
+              ? { background, color2: undefined }
+              : { background },
+          )
+        }
+      />
+      <div className="flex flex-col gap-2">
+        <Label
+          title="Fade"
+          hint="Let the page fade down to a deeper black, like the Watchers screen."
+        />
+        <div className="flex flex-wrap gap-1.5">
+          {([["None", undefined], ...NEON_FADE_ENDS] as [string, Hex | undefined][]).map(
+            ([name, hex]) => (
+              <button
+                key={name}
+                type="button"
+                disabled={hex === seeds.background}
+                aria-pressed={seeds.color2 === hex}
+                onClick={() => setSeeds({ color2: hex })}
+                className={twMerge(
+                  "flex h-7 items-center gap-1.5 border border-white/15 px-2.5 text-xs text-white/70 transition-colors hover:bg-white/[0.06] disabled:opacity-40",
+                  seeds.color2 === hex && "border-primary bg-white/10 text-white",
+                )}
+              >
+                {hex && (
+                  <span
+                    aria-hidden
+                    className="h-3.5 w-3.5 rounded-full border border-white/20"
+                    style={{ background: hex }}
+                  />
+                )}
+                {name}
+              </button>
+            ),
+          )}
+        </div>
+      </div>
+      <ColorField
+        title="Glow"
+        hint="The color your panels, menus and buttons glow. It lights edges, never text."
+        value={seeds.glow}
+        presets={[
+          ["Neon", NEON_GLOWS],
+          ["Wheel", WHEEL],
+        ]}
+        onChange={(glow) => setSeeds({ glow })}
+      />
+      <ColorField
+        title="Accent"
+        hint="Buttons like Generate, selections and highlights. A neon color matches the glow."
+        value={seeds.accent}
+        presets={[
+          ["Neon", NEON_GLOWS],
+          ["Classic", ACCENTS],
+        ]}
+        onChange={(accent) => setSeeds({ accent })}
+      />
+      <div className="flex flex-col gap-2">
+        <Label
+          title="Glow strength"
+          hint="How far the glow blooms around panels and buttons, and how bright the grid is."
+        />
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-white/60">A line</span>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={Math.round(seeds.strength * 100)}
+            onChange={(e) =>
+              setSeeds({ strength: Number(e.target.value) / 100 })
+            }
+            aria-label="Glow strength"
+            className="flex-1 accent-primary"
+          />
+          <span className="text-xs text-white/60">Bright</span>
+        </div>
+      </div>
+      <div className="flex items-start justify-between gap-4">
+        <Label
+          title="Grid"
+          hint="A faint grid behind every page, like a heads-up display."
+        />
+        <Switch
+          enabled={seeds.grid}
+          setEnabled={(grid) => setSeeds({ grid })}
+          offClassName="bg-white/20"
+        />
+      </div>
+      {!guard && <Shortfalls shortfalls={neon.shortfalls} />}
+      <NeonNotes notes={neon.notes} />
+      <Notes notes={neon.mark.notes} guard={guard} setSeeds={setSeeds} />
+      <ThemeCode seeds={seeds} />
+      <button
+        type="button"
+        onClick={resetSeeds}
+        className="flex h-8 items-center gap-2 border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
+      >
+        <WandIcon className="h-3.5 w-3.5" />
+        Start again from the starter glow
+      </button>
+      <AboutNeon />
+    </div>
+  );
+}
+
+/** Whole Neon looks in one tap. */
+function SignatureNeon({
+  seeds,
+  onPick,
+}: {
+  seeds: NeonSeeds;
+  onPick: (n: Partial<NeonSeeds>) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <Label
+        title="Signature looks"
+        hint="Ready-made neon looks. Tap one to use it; change any color after."
+      />
+      <div className="flex flex-wrap gap-2">
+        {NEON_SIGNATURES.map(({ name, ...n }) => {
+          const on =
+            seeds.background === n.background &&
+            seeds.color2 === n.color2 &&
+            seeds.glow === n.glow &&
+            seeds.accent === n.accent &&
+            seeds.grid === n.grid &&
+            seeds.strength === n.strength;
+          return (
+            <button
+              key={name}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onPick({ color2: undefined, ...n })}
+              className={twMerge(
+                "flex items-center gap-2 rounded-[3px] border border-white/15 py-1.5 pl-1.5 pr-3 text-xs text-white/80 transition-colors hover:bg-white/10",
+                on && "border-primary bg-white/10 text-white",
+              )}
+            >
+              <span
+                aria-hidden
+                className="h-6 w-6 shrink-0 rounded-full"
+                style={{
+                  background: n.color2
+                    ? gradientCss("vertical", [n.background, n.color2])
+                    : n.background,
+                  boxShadow: `0 0 0 1px ${n.glow}, 0 0 8px ${n.glow}`,
+                }}
+              />
+              {name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** What the guard did to the glow, its bloom or the grid, in plain words. */
+function NeonNotes({ notes }: { notes: NeonNote[] }) {
+  if (!notes.length) return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      {notes.map((n) => (
+        <p
+          key={n.seed}
+          className="flex items-start gap-2 text-xs text-white/80"
+        >
+          <ShieldCheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          <span>
+            {n.message}{" "}
+            <span className="font-mono text-white/60">
+              {n.chosen} → {n.used}
+            </span>
+          </span>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+/** Why Neon exists, in a few words, at the very bottom of its panel. */
+function AboutNeon() {
+  return (
+    <div className="flex flex-col gap-1 border-t border-white/15 pt-4">
+      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+        About Soul Mark: Neon
+      </p>
+      <p className="text-xs leading-relaxed opacity-70">
+        A heads-up display for your workspace: glowing edges on a dark page,
+        with an optional grid. The glow lights the edges, never the words, and
+        every text is checked beside it and over the grid, so it stays easy to
+        read.
+      </p>
     </div>
   );
 }
