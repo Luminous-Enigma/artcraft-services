@@ -1186,7 +1186,7 @@ function NeonControls() {
           title="Grid on menus"
           hint={
             seeds.grid
-              ? "The grid also runs through the side menu, menus and dialogs, lined up with the page."
+              ? "The grid also runs through the side menu, menus and dialogs, lined up with the page. It stays on them everywhere, even in editors where the page's grid steps back."
               : "Turn the grid on first."
           }
         />

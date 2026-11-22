@@ -693,7 +693,8 @@ html[data-neon-text] .bg-primary * {
 }
 /* The grid on menus: the side menu, drop-down menus and dialogs carry the page's grid, pinned to
    the window so its lines continue from the page, at the strength the engine measured text in
-   them against (--st-neon-menu-grid). */
+   them against (--st-neon-menu-grid). Unlike the page's grid, it ignores html[data-workspace]:
+   menus keep it on every page, editors included (the owner's call). */
 html[data-neon-menu-grid] .bg-sidebar,
 html[data-neon-menu-grid] .bg-ui-panel,
 html[data-neon-menu-grid] .bg-ui-modal,
