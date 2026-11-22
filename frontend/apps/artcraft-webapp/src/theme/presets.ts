@@ -19,6 +19,7 @@ export const LIGHT_BACKGROUNDS: [string, Hex][] = [
 ];
 
 export const DEEP_BACKGROUNDS: [string, Hex][] = [
+  ["Black", "#000000"],
   ["ArtCraft", DEFAULT_TOKENS.bg],
   ["Night", "#0B0E14"],
   ["Deep space", "#0D1117"],
@@ -135,6 +136,7 @@ export const SIGNATURE_THEMES: {
   { name: "Deep red and Red", background: "#5D101B", accent: "#E23E57" },
   { name: "Deep green and Green", background: "#0C2F1C", accent: "#10B981" },
   { name: "Night and Blue", background: "#0B0E14", accent: "#2D81FF" },
+  { name: "Black and Blue", background: "#000000", accent: "#2D81FF" },
   {
     name: "Deep blue and Light blue",
     background: "#0D2661",
@@ -156,6 +158,8 @@ export const GRADIENT_FADES: [string, Hex][] = [
   ["White", "#FFFFFF"],
   ["Gray", "#4A4E55"],
   ["Midnight", "#101B44"],
+  ["Charcoal", "#2C2C2C"],
+  ["Silver", "#D2D2D2"],
 ];
 
 /**
@@ -180,6 +184,18 @@ export const SIGNATURE_GRADIENTS: {
     colors: ["#101B44", "#000000"],
     shape: "vertical",
     accent: "#1CB6BE",
+  },
+  {
+    name: "Black to charcoal",
+    colors: ["#000000", "#2C2C2C"],
+    shape: "vertical",
+    accent: "#2D81FF",
+  },
+  {
+    name: "White to silver",
+    colors: ["#FFFFFF", "#D2D2D2"],
+    shape: "vertical",
+    accent: "#0969DA",
   },
   {
     name: "Royal blue to black",
