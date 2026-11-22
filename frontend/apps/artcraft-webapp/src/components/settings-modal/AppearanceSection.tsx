@@ -1100,7 +1100,7 @@ function NeonControls() {
       <div className="flex flex-col gap-2">
         <Label
           title="Fade"
-          hint="Let the page fade down to a deeper black, like the Watchers screen."
+          hint="Let the page fade down to a deeper black, like a blueprint."
         />
         <div className="flex flex-wrap gap-1.5">
           {([["None", undefined], ...NEON_FADE_ENDS] as [string, Hex | undefined][]).map(
@@ -1173,7 +1173,7 @@ function NeonControls() {
       <div className="flex items-start justify-between gap-4">
         <Label
           title="Grid"
-          hint="A faint grid behind every page, like a heads-up display."
+          hint="A faint grid behind the page, like a blueprint or a 3D workspace. It stays off where you edit images, video and 3D, so it never gets in the way of your work."
         />
         <Switch
           enabled={seeds.grid}

@@ -49,6 +49,7 @@ import { InsufficientCreditsModal } from "../components/insufficient-credits-mod
 import { GlobalActionReminder } from "../components/global-action-reminder";
 import { useSession } from "../lib/session";
 import { DesktopLogin } from "../pages/login/desktop-login";
+import { useWorkspaceMark } from "../theme/workspace";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -88,6 +89,8 @@ function RequireAuth() {
 function ProtectedContent() {
   const { state, isMobile } = useSidebar();
   const { pathname } = useLocation();
+  // Soul Mark: Neon keeps its grid off the pages where people work on their media.
+  useWorkspaceMark(pathname);
   // Effective horizontal space taken by the sidebar — used by fixed-positioned
   // page chrome (e.g. promptboxes) to center within the content area.
   const sidebarOffset = isMobile

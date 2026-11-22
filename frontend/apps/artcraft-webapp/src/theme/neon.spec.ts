@@ -69,8 +69,8 @@ describe("Soul Mark: Neon", () => {
       }
     });
 
-    it("start with the Watchers look", () => {
-      expect(NEON_SIGNATURES[0].name).toBe("Watchers HUD");
+    it("start with Blueprint", () => {
+      expect(NEON_SIGNATURES[0].name).toBe("Blueprint");
       expect(composeNeon(NEON_STARTER).notes).toEqual([]);
     });
   });

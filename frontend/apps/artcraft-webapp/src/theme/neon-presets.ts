@@ -1,12 +1,12 @@
-// Soul Mark: Neon's ready-made colors and signature looks. The glows are the Watchers app's
-// neon colors; the backgrounds are the near-blacks its glass and screens use. Every signature is
+// Soul Mark: Neon's ready-made colors and signature looks. The glows are classic heads-up
+// display neons; the backgrounds are near-blacks. Every signature is
 // built only from these rows, so anyone can also make it by hand, and its page, fade, glow, bloom
 // and grid hold exactly as picked (neon.spec.ts checks it). Like any accent, a bright neon button
 // fill may be deepened so its white label reads; the glow keeps the neon color itself.
 import type { Hex } from "./contrast";
 import type { NeonSeeds } from "./neon";
 
-/** The neon colors, from the Watchers app's design system. */
+/** The neon colors: cyan, green, amber, magenta, violet, lime and red. */
 export const NEON_GLOWS: [string, Hex][] = [
   ["Cyan", "#00E5FF"],
   ["Green", "#39FF88"],
@@ -28,17 +28,17 @@ export const NEON_BACKGROUNDS: [string, Hex][] = [
 ];
 
 /**
- * The page fades: the top color, then what it fades to. The first is the Watchers screen's fade,
- * its top one step deeper (#1C3D6E there) so text reads all the way down and the guard keeps it.
+ * The page fades: the top color, then what it fades to. The first is Blueprint: deep blue fading to
+ * near-black, deep enough that text reads all the way down and the guard keeps it exactly.
  */
 export const NEON_FADES: [string, Hex, Hex][] = [
-  ["Watchers screen", "#162F56", "#03060C"],
+  ["Blueprint", "#162F56", "#03060C"],
   ["Midnight to void", "#101B44", "#000000"],
 ];
 
 /** Signature looks, shown first. Each is one tap. */
 export const NEON_SIGNATURES: ({ name: string } & NeonSeeds)[] = [
-  sig("Watchers HUD", "#162F56", "#00E5FF", "#00E5FF", { color2: "#03060C" }),
+  sig("Blueprint", "#162F56", "#00E5FF", "#00E5FF", { color2: "#03060C" }),
   sig("Workshop", "#03060C", "#FFB020", "#00E5FF"),
   sig("Green terminal", "#000000", "#39FF88", "#39FF88"),
   sig("Amber console", "#0B0E14", "#FFB020", "#FFB020", { grid: false }),
