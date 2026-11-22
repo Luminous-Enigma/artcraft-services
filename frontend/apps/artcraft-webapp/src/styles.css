@@ -673,3 +673,46 @@ html[data-neon="grid"] div:has(> div > .konvajs-content) {
   background-size: auto;
   background-attachment: fixed;
 }
+
+/* Soul Mark: Neon's two switches. Glowing text: every text gets a soft halo in the glow color,
+   in three layers whose combined strongest point is the halo the engine measured
+   (--st-neon-text-halo per layer); the text colors themselves are tinted by the engine
+   (--st-white-rgb, --st-fg). Filled buttons keep their own labels, untinted and without a halo,
+   since the engine measures text on the page and panels, not on buttons. */
+html[data-neon-text] body,
+html[data-neon-text] body * {
+  text-shadow:
+    0 0 3px rgb(var(--st-neon-glow-rgb) / var(--st-neon-text-halo)),
+    0 0 12px rgb(var(--st-neon-glow-rgb) / var(--st-neon-text-halo)),
+    0 0 28px rgb(var(--st-neon-glow-rgb) / var(--st-neon-text-halo));
+}
+html[data-neon-text] .bg-primary,
+html[data-neon-text] .bg-primary * {
+  --st-white-rgb: var(--st-neon-label-rgb);
+  text-shadow: none;
+}
+/* The grid on menus: the side menu, drop-down menus and dialogs carry the page's grid, pinned to
+   the window so its lines continue from the page, at the strength the engine measured text in
+   them against (--st-neon-menu-grid). */
+html[data-neon-menu-grid] .bg-sidebar,
+html[data-neon-menu-grid] .bg-ui-panel,
+html[data-neon-menu-grid] .bg-ui-modal,
+html[data-neon-menu-grid] [role="menu"],
+html[data-neon-menu-grid] [role="dialog"] {
+  background-image:
+    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-attachment: fixed;
+}
+html[data-neon-menu-grid][data-gradient] .bg-sidebar,
+html[data-neon-menu-grid][data-gradient] .bg-ui-panel,
+html[data-neon-menu-grid][data-gradient] .bg-ui-modal,
+html[data-neon-menu-grid][data-gradient] [role="menu"],
+html[data-neon-menu-grid][data-gradient] [role="dialog"] {
+  background-image:
+    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
+    var(--st-gradient-panel);
+  background-size: 32px 32px, 32px 32px, auto;
+}

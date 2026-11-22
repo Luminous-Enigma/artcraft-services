@@ -4,6 +4,7 @@ import { contrastRatio, type Hex, toHsl } from "./contrast";
 import {
   BLOOM_MAX,
   composeNeon,
+  glowMeasurements,
   decodeNeon,
   encodeNeon,
   GRID_MAX,
@@ -15,7 +16,7 @@ import {
   type SoulMarkNeon,
 } from "./neon";
 import { NEON_BACKGROUNDS, NEON_FADES, NEON_GLOWS, NEON_SIGNATURES } from "./neon-presets";
-import { NON_TEXT } from "./soul-mark";
+import { MIN_TEXT_FADE, NON_TEXT } from "./soul-mark";
 
 describe("Soul Mark: Neon", () => {
   describe("the readability sweep", () => {
@@ -101,6 +102,68 @@ describe("Soul Mark: Neon", () => {
     });
   });
 
+  describe("glowing text and the grid on menus", () => {
+    it("are off unless asked for", () => {
+      const n = composeNeon(NEON_STARTER);
+      expect([n.text, n.menuGrid, n.textFade]).toEqual([null, 0, null]);
+      expect(neonVariables(n)).not.toHaveProperty("--st-white-rgb");
+    });
+
+    it(
+      "keep every text readable, on every page and glow, with both on",
+      () => {
+        const pages: Pick<NeonSeeds, "background" | "color2">[] = [
+          ...NEON_BACKGROUNDS.map(([, background]) => ({ background })),
+          ...NEON_FADES.map(([, background, color2]) => ({ background, color2 })),
+        ];
+        let checked = 0;
+        for (const page of pages)
+          for (const [, glow] of NEON_GLOWS) {
+            const seeds = { ...NEON_STARTER, ...page, glow, accent: glow, textGlow: true, menuGrid: true };
+            expectGlowReadable(composeNeon(seeds), seeds);
+            checked++;
+          }
+        expect(checked).toBe(8 * 7);
+      },
+      600_000,
+    );
+
+    it("give every signature look's text a glow, measured, and strengthen captions only as needed", () => {
+      for (const s of NEON_SIGNATURES) {
+        const n = composeNeon({ ...s, textGlow: true });
+        expectGlowReadable(n, s);
+        expect(n.text, s.name).not.toBeNull();
+        expect(n.text!.tint, s.name).toBeGreaterThan(0);
+        if (n.textFade !== null) expect(n.textFade, s.name).toBeGreaterThanOrEqual(MIN_TEXT_FADE);
+      }
+      // The near-black looks get a real halo, not a token one.
+      expect(composeNeon({ ...NEON_SIGNATURES.find((x) => x.name === "Green terminal")!, textGlow: true }).text!.halo).toBeGreaterThan(0.1);
+    });
+
+    it("run the grid through menus at the page's strength, making captions stronger rather than the grid fainter", () => {
+      const n = composeNeon({ ...NEON_STARTER, menuGrid: true });
+      expect(n.menuGrid).toBeCloseTo(n.grid * GRID_MAX);
+      expectGlowReadable(n, NEON_STARTER);
+      expect(composeNeon({ ...NEON_STARTER, grid: false, menuGrid: true }).menuGrid).toBe(0);
+    });
+
+    it("off: a full glow, as picked, with what falls short said", () => {
+      const n = composeNeon({ ...NEON_STARTER, textGlow: true, guard: false });
+      expect(n.text).toMatchObject({ tint: 0.45, halo: 0.8 });
+      expect(n.shortfalls.map((x) => x.label)).toContain("Glowing text");
+    });
+
+    it("set the text colors, the halo and the captions as CSS variables", () => {
+      const n = composeNeon({ ...NEON_STARTER, textGlow: true, menuGrid: true });
+      const v = neonVariables(n);
+      expect(v["--st-white-rgb"]).toMatch(/^\d+ \d+ \d+$/);
+      expect(v["--st-neon-label-rgb"]).toMatch(/^\d+ \d+ \d+$/);
+      expect(Number(v["--st-neon-text-halo"])).toBeGreaterThan(0);
+      expect(Number(v["--st-neon-menu-grid"])).toBeCloseTo(n.menuGrid);
+      if (n.textFade !== null) expect(v["--st-text-fade"]).toBe(String(Math.round(n.textFade * 1000) / 1000));
+    });
+  });
+
   describe("theme codes", () => {
     it("round-trip every signature and the starter", () => {
       for (const s of [NEON_STARTER, ...NEON_SIGNATURES]) {
@@ -109,6 +172,13 @@ describe("Soul Mark: Neon", () => {
         expect(code).toMatch(/^SM3-/);
         expect(decodeNeon(code), code).toEqual(composeNeon(seeds).seeds);
       }
+    });
+
+    it("carry glowing text (-t) and the grid on menus (-m)", () => {
+      const code = encodeNeon({ ...NEON_STARTER, textGlow: true, menuGrid: true, guard: false });
+      expect(code).toMatch(/-cool-t-m-open$/);
+      expect(decodeNeon(code)).toMatchObject({ textGlow: true, menuGrid: true, guard: false });
+      expect(decodeNeon(encodeNeon({ ...NEON_STARTER, menuGrid: true }))).toMatchObject({ textGlow: false, menuGrid: true });
     });
 
     it("say the guard is off with -open", () => {
@@ -130,6 +200,7 @@ describe("Soul Mark: Neon", () => {
       "--st-neon-glow-rgb": "0 229 255",
       "--st-neon-bloom": (0.6 * BLOOM_MAX).toFixed(3),
       "--st-neon-grid": (0.6 * GRID_MAX).toFixed(3),
+      "--st-neon-menu-grid": "0.000",
     });
   });
 });
@@ -151,4 +222,15 @@ function expectReadable(n: SoulMarkNeon, seeds: Partial<NeonSeeds>) {
     const short = neonTextMeasurements(pages, n.glow as Hex, amount).filter((m) => m.ratio < m.floor - 1e-9);
     expect(short, `${label} text beside the ${what}`).toEqual([]);
   }
+}
+
+/** Glowing text and the menu grid, measured here again from what composeNeon chose. */
+function expectGlowReadable(n: SoulMarkNeon, seeds: Partial<NeonSeeds>) {
+  const label = JSON.stringify(seeds);
+  expect(n.shortfalls, label).toEqual([]);
+  const under = Math.max(n.bloom * BLOOM_MAX, n.grid * GRID_MAX);
+  const fade = n.textFade ?? 1;
+  const parts = { tint: n.text?.tint ?? 0, halo: n.text?.halo ?? 0, menu: n.menuGrid, fade };
+  const short = glowMeasurements(pageTokens(n.mark), n.glow, under, parts).filter((m) => m.ratio < m.floor - 1e-9);
+  expect(short, label).toEqual([]);
 }

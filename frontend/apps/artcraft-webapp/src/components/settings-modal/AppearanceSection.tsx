@@ -1177,7 +1177,37 @@ function NeonControls() {
         />
         <Switch
           enabled={seeds.grid}
-          setEnabled={(grid) => setSeeds({ grid })}
+          setEnabled={(grid) => setSeeds(grid ? { grid } : { grid, menuGrid: false })}
+          offClassName="bg-white/20"
+        />
+      </div>
+      <div className="flex items-start justify-between gap-4">
+        <Label
+          title="Grid on menus"
+          hint={
+            seeds.grid
+              ? "The grid also runs through the side menu, menus and dialogs, lined up with the page."
+              : "Turn the grid on first."
+          }
+        />
+        <Switch
+          enabled={!!seeds.menuGrid && seeds.grid}
+          setEnabled={(menuGrid) => seeds.grid && setSeeds({ menuGrid })}
+          offClassName="bg-white/20"
+        />
+      </div>
+      <div className="flex items-start justify-between gap-4">
+        <Label
+          title="Glowing text"
+          hint={
+            guard
+              ? "Every text tinted toward your glow, with a soft halo. The guard keeps it easy to read, drawing small captions a little stronger."
+              : "Every text in a full movie-style glow, exactly as is. Small text may be hard to read."
+          }
+        />
+        <Switch
+          enabled={!!seeds.textGlow}
+          setEnabled={(textGlow) => setSeeds({ textGlow })}
           offClassName="bg-white/20"
         />
       </div>

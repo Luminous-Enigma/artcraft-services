@@ -168,6 +168,8 @@ export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds | NeonSeeds) {
   root.dataset.theme = mode;
   delete root.dataset.gradient;
   delete root.dataset.neon;
+  delete root.dataset.neonText;
+  delete root.dataset.neonMenuGrid;
   if (mode === "default") return;
   if (mode === "neon") {
     applyNeon(root, neonFor(seeds as NeonSeeds));
@@ -190,6 +192,8 @@ export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds | NeonSeeds) {
 function applyNeon(root: HTMLElement, neon: SoulMarkNeon) {
   // The neon rules in styles.css apply only while this is set.
   root.dataset.neon = neon.grid > 0 ? "grid" : "glow";
+  if (neon.text) root.dataset.neonText = "on";
+  if (neon.menuGrid > 0) root.dataset.neonMenuGrid = "on";
   if (neon.mark.gradient) root.dataset.gradient = neon.mark.gradient.shape;
   const vars = { ...cssVariables(neon.mark), ...neonVariables(neon) };
   for (const [name, value] of Object.entries(vars)) {
