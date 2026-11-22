@@ -620,7 +620,8 @@ html[data-gradient] .bg-ui-panel-gradient {
    (measured at 3:1 against the page and panels) and a soft bloom around panels, dialogs, the
    side menu and filled buttons; the bloom's strongest point is the tint the engine measured
    text against. It never sits under or replaces text color. The grid is a faint line every
-   32px behind the page, also measured under text. */
+   32px behind the page, also measured under text, and stays off on pages where people work on
+   a picture, video or 3D scene (html[data-workspace], set in theme/workspace.ts). */
 html[data-neon] .bg-ui-panel,
 html[data-neon] .bg-ui-modal,
 html[data-neon] .bg-sidebar {
@@ -633,18 +634,18 @@ html[data-neon] .bg-primary {
     0 0 0 1px rgb(var(--st-neon-glow-rgb)),
     0 0 14px 1px rgb(var(--st-neon-glow-rgb) / var(--st-neon-bloom));
 }
-html[data-neon="grid"] body,
-html[data-neon="grid"] .bg-ui-background,
-html[data-neon="grid"] .bg-background {
+html[data-neon="grid"]:not([data-workspace]) body,
+html[data-neon="grid"]:not([data-workspace]) .bg-ui-background,
+html[data-neon="grid"]:not([data-workspace]) .bg-background {
   background-image:
     linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
     linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px);
   background-size: 32px 32px;
   background-attachment: fixed;
 }
-html[data-neon="grid"][data-gradient] body,
-html[data-neon="grid"][data-gradient] .bg-ui-background,
-html[data-neon="grid"][data-gradient] .bg-background {
+html[data-neon="grid"][data-gradient]:not([data-workspace]) body,
+html[data-neon="grid"][data-gradient]:not([data-workspace]) .bg-ui-background,
+html[data-neon="grid"][data-gradient]:not([data-workspace]) .bg-background {
   background-image:
     linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
     linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),

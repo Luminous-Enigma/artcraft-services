@@ -1,4 +1,4 @@
-// Soul Mark: Neon. A heads-up display in the style of the Watchers app: a near-black page, a
+// Soul Mark: Neon. A heads-up display look, like glowing drafting lines: a near-black page, a
 // glowing outline color on panels and buttons, and a faint grid. Built on top of the Solid Tones
 // and Gradients engine (soul-mark.ts), which it never changes: the text, panels and accent come
 // from composeSoulMark, and Neon adds the glow and the grid.
@@ -12,6 +12,9 @@
 // With the guard on, the glow keeps its hue and moves only in shade, and the bloom and grid are
 // turned down until every text clears. With it off, everything is used as picked and what falls
 // short is said.
+//
+// Apps: keep the grid out of anywhere people work on a picture, video or 3D scene (an editor, a
+// canvas, a viewer). Lines behind someone's work get in the way; the glow on panels can stay.
 import { contrastRatio, type Hex, isHex, mix, nearestLightness } from "./contrast";
 import {
   AA,
@@ -38,7 +41,7 @@ export interface NeonSeeds extends SoulMarkSeeds {
   glow: Hex;
   /** How strong the bloom and grid are, 0 (a plain line) to 1. Default 0.6. */
   strength: number;
-  /** A faint grid behind everything, like the Watchers backdrop. */
+  /** A faint grid behind the page, like a blueprint or a 3D workspace. */
   grid: boolean;
 }
 
@@ -85,7 +88,7 @@ export function sanitizeNeonSeeds(raw: unknown): NeonSeeds {
     typeof r.strength === "number" && Number.isFinite(r.strength) ? Math.min(1, Math.max(0, r.strength)) : NEON_STARTER.strength;
   return {
     ...rest,
-    // A Neon fade runs top to bottom with two colors, like the Watchers screen.
+    // A Neon fade runs top to bottom with two colors, like a blueprint.
     ...(rest.color2 ? { shape: "vertical" as const } : {}),
     glow: isHex(r.glow) ? (r.glow.toUpperCase() as Hex) : NEON_STARTER.glow,
     strength,
