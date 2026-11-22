@@ -1,4 +1,6 @@
-// Soul Mark: Neon. A heads-up display look, like glowing drafting lines: a near-black page, a
+// Soul Mark: Neon. For the futuristic digital craftsman: the grid of the people who build things
+// (blueprints, drafting tables, a 3D workspace) and the neon of cyberpunk and a sci-fi engineer's
+// holographic workshop. A near-black page, a
 // glowing outline color on panels and buttons, and a faint grid. Built on top of the Solid Tones
 // and Gradients engine (soul-mark.ts), which it never changes: the text, panels and accent come
 // from composeSoulMark, and Neon adds the glow and the grid.
