@@ -1282,10 +1282,12 @@ function AboutNeon() {
         About Soul Mark: Neon
       </p>
       <p className="text-xs leading-relaxed opacity-70">
-        A heads-up display for your workspace: glowing edges on a dark page,
-        with an optional grid. The glow lights the edges, never the words, and
-        every text is checked beside it and over the grid, so it stays easy to
-        read.
+        For the futuristic digital craftsman. The grid comes from the people
+        who build things: architects' blueprints, engineers' drafting tables,
+        the floor of a 3D workspace. The neon comes from cyberpunk and the
+        holographic workshop of a sci-fi engineer. The glow lights the edges,
+        never the words, and every text is checked beside it and over the grid,
+        so it stays easy to read.
       </p>
     </div>
   );
