@@ -614,3 +614,123 @@ html[data-gradient] .bg-sidebar,
 html[data-gradient] .bg-ui-panel-gradient {
   background-image: var(--st-gradient-panel);
 }
+
+/* Soul Mark: Neon. Set only while Neon is on (html[data-neon]); the variables are a composed
+   RGB triplet and two opacities, never typed text. The glow is a 1px line in the glow color
+   (measured at 3:1 against the page and panels) and a soft bloom around panels, dialogs, the
+   side menu and filled buttons; the bloom's strongest point is the tint the engine measured
+   text against. It never sits under or replaces text color. The grid is a faint line every
+   32px behind the page, also measured under text, and stays off on pages where people work on
+   a picture, video or 3D scene (html[data-workspace], set in theme/workspace.ts: off where an editor draws its own grid, dimmed where it doesn't). */
+html[data-neon] .bg-ui-panel,
+html[data-neon] .bg-ui-modal,
+html[data-neon] .bg-sidebar {
+  box-shadow:
+    0 0 0 1px rgb(var(--st-neon-glow-rgb)),
+    0 0 22px 2px rgb(var(--st-neon-glow-rgb) / var(--st-neon-bloom));
+}
+html[data-neon] .bg-primary {
+  box-shadow:
+    0 0 0 1px rgb(var(--st-neon-glow-rgb)),
+    0 0 14px 1px rgb(var(--st-neon-glow-rgb) / var(--st-neon-bloom));
+}
+/* The grid line's color: full strength, dimmed in an editor without a grid of its own, and none
+   at all in an editor that draws its own (theme/workspace.ts sets html[data-workspace]). */
+html[data-neon="grid"] {
+  --st-neon-grid-line: rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid));
+}
+html[data-neon="grid"][data-workspace="dim"] {
+  --st-neon-grid-line: rgb(var(--st-neon-glow-rgb) / calc(var(--st-neon-grid) * 0.4));
+}
+html[data-neon="grid"]:not([data-workspace="off"]) body,
+html[data-neon="grid"]:not([data-workspace="off"]) .bg-ui-background,
+html[data-neon="grid"]:not([data-workspace="off"]) .bg-background {
+  background-image:
+    linear-gradient(var(--st-neon-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--st-neon-grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-attachment: fixed;
+}
+html[data-neon="grid"][data-gradient]:not([data-workspace="off"]) body,
+html[data-neon="grid"][data-gradient]:not([data-workspace="off"]) .bg-ui-background,
+html[data-neon="grid"][data-gradient]:not([data-workspace="off"]) .bg-background {
+  background-image:
+    linear-gradient(var(--st-neon-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--st-neon-grid-line) 1px, transparent 1px),
+    var(--st-gradient-page);
+  background-size: 32px 32px, 32px 32px, auto;
+}
+/* A window that draws its own grid shows none of ours: it repaints the page beneath, the same
+   fade pinned to the window, so it lines up with the page around it. The windows are found by
+   what they hold, so the editors themselves stay untouched:
+   - the video editor's preview (its grid guides): the one panel with this set of classes;
+   - the image editor's canvas (a checkerboard behind see-through parts): the box around a
+     Konva drawing surface. */
+html[data-neon="grid"] .panel.bg-background.relative.size-full.min-h-0.min-w-0.flex-col,
+html[data-neon="grid"] div:has(> div > .konvajs-content) {
+  background-color: var(--st-bg);
+  background-image: var(--st-gradient-page, none);
+  background-size: auto;
+  background-attachment: fixed;
+}
+
+/* Soul Mark: Neon's two switches. Glowing text: every text gets a soft halo in the glow color,
+   in three layers whose combined strongest point is the halo the engine measured
+   (--st-neon-text-halo per layer); the text colors themselves are tinted by the engine
+   (--st-white-rgb, --st-fg). Filled buttons keep their own labels, untinted and without a halo,
+   since the engine measures text on the page and panels, not on buttons. */
+html[data-neon-text] body,
+html[data-neon-text] body * {
+  text-shadow:
+    0 0 3px rgb(var(--st-neon-glow-rgb) / var(--st-neon-text-halo)),
+    0 0 12px rgb(var(--st-neon-glow-rgb) / var(--st-neon-text-halo)),
+    0 0 28px rgb(var(--st-neon-glow-rgb) / var(--st-neon-text-halo));
+}
+html[data-neon-text] .bg-primary,
+html[data-neon-text] .bg-primary * {
+  --st-white-rgb: var(--st-neon-label-rgb);
+  text-shadow: none;
+}
+/* The grid on menus: the side menu, drop-down menus and dialogs carry the page's grid, pinned to
+   the window so its lines continue from the page, at the strength the engine measured text in
+   them against (--st-neon-menu-grid), down to the fields and controls inside them (the engine
+   measures their text with the grid behind it too). Unlike the page's grid, it ignores html[data-workspace]:
+   menus keep it on every page, editors included (the owner's call). */
+html[data-neon-menu-grid] .bg-sidebar,
+html[data-neon-menu-grid] .bg-ui-panel,
+html[data-neon-menu-grid] .bg-ui-modal,
+html[data-neon-menu-grid] [role="menu"],
+html[data-neon-menu-grid] [role="dialog"],
+html[data-neon-menu-grid] .bg-sidebar .bg-ui-sunken,
+html[data-neon-menu-grid] .bg-sidebar .bg-ui-controls,
+html[data-neon-menu-grid] .bg-ui-modal .bg-ui-sunken,
+html[data-neon-menu-grid] .bg-ui-modal .bg-ui-controls,
+html[data-neon-menu-grid] [role="menu"] .bg-ui-sunken,
+html[data-neon-menu-grid] [role="menu"] .bg-ui-controls,
+html[data-neon-menu-grid] [role="dialog"] .bg-ui-sunken,
+html[data-neon-menu-grid] [role="dialog"] .bg-ui-controls {
+  background-image:
+    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-attachment: fixed;
+}
+html[data-neon-menu-grid][data-gradient] .bg-sidebar,
+html[data-neon-menu-grid][data-gradient] .bg-ui-panel,
+html[data-neon-menu-grid][data-gradient] .bg-ui-modal,
+html[data-neon-menu-grid][data-gradient] [role="menu"],
+html[data-neon-menu-grid][data-gradient] [role="dialog"],
+html[data-neon-menu-grid][data-gradient] .bg-sidebar .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] .bg-sidebar .bg-ui-controls,
+html[data-neon-menu-grid][data-gradient] .bg-ui-modal .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] .bg-ui-modal .bg-ui-controls,
+html[data-neon-menu-grid][data-gradient] [role="menu"] .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] [role="menu"] .bg-ui-controls,
+html[data-neon-menu-grid][data-gradient] [role="dialog"] .bg-ui-sunken,
+html[data-neon-menu-grid][data-gradient] [role="dialog"] .bg-ui-controls {
+  background-image:
+    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-menu-grid)) 1px, transparent 1px),
+    var(--st-gradient-panel);
+  background-size: 32px 32px, 32px 32px, auto;
+}

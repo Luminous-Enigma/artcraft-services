@@ -1,5 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import {
+  composeNeon,
+  NEON_STARTER,
+  type NeonSeeds,
+  neonVariables,
+  sanitizeNeonSeeds,
+  type SoulMarkNeon,
+} from "./neon";
 import { GRADIENT_STARTER } from "./presets";
 import {
   composeSoulMark,
@@ -11,8 +19,8 @@ import {
   type SoulMarkSeeds,
 } from "./soul-mark";
 
-/** ArtCraft's own look, Soul Mark (solid colors) or Gradients: two themes from one engine. */
-export type ThemeMode = "default" | "soul-mark" | "gradients";
+/** ArtCraft's own look, or one of the Soul Mark themes: Solid Tones, Gradients or Neon. */
+export type ThemeMode = "default" | "soul-mark" | "gradients" | "neon";
 
 interface ThemeStore {
   mode: ThemeMode;
@@ -20,11 +28,15 @@ interface ThemeStore {
   seeds: SoulMarkSeeds;
   /** Gradients' seeds: always with a color 2. Kept apart, so switching themes keeps both. */
   gradientSeeds: SoulMarkSeeds;
+  /** Neon's seeds: a glow on a near-black page. Kept apart too. */
+  neonSeeds: NeonSeeds;
   setMode: (mode: ThemeMode) => void;
   setSeeds: (seeds: Partial<SoulMarkSeeds>) => void;
   resetSeeds: () => void;
   setGradientSeeds: (seeds: Partial<SoulMarkSeeds>) => void;
   resetGradientSeeds: () => void;
+  setNeonSeeds: (seeds: Partial<NeonSeeds>) => void;
+  resetNeonSeeds: () => void;
 }
 
 /** Gradients' seeds, sanitized; anything without a usable color 2 falls back to the starter. */
@@ -39,6 +51,7 @@ export const useThemeStore = create<ThemeStore>()(
       mode: "default",
       seeds: SOUL_MARK_STARTER,
       gradientSeeds: sanitizeGradientSeeds(GRADIENT_STARTER),
+      neonSeeds: NEON_STARTER,
       setMode: (mode) => set({ mode }),
       setSeeds: (seeds) =>
         set((s) => ({ seeds: solidSeeds({ ...s.seeds, ...seeds }) })),
@@ -52,6 +65,11 @@ export const useThemeStore = create<ThemeStore>()(
         })),
       resetGradientSeeds: () =>
         set({ gradientSeeds: sanitizeGradientSeeds(GRADIENT_STARTER) }),
+      setNeonSeeds: (seeds) =>
+        set((s) => ({
+          neonSeeds: sanitizeNeonSeeds({ ...s.neonSeeds, ...seeds }),
+        })),
+      resetNeonSeeds: () => set({ neonSeeds: NEON_STARTER }),
     }),
     {
       name: "artcraft-theme",
@@ -67,23 +85,30 @@ export const useThemeStore = create<ThemeStore>()(
             ? "gradients"
             : s.mode === "soul-mark"
               ? "soul-mark"
-              : "default";
+              : s.mode === "neon"
+                ? "neon"
+                : "default";
         return {
           ...current,
           mode,
           seeds: solidSeeds(seeds),
           gradientSeeds: sanitizeGradientSeeds(moved ? seeds : s.gradientSeeds),
+          neonSeeds: sanitizeNeonSeeds(s.neonSeeds),
         };
       },
     },
   ),
 );
 
-/** The seeds the current theme draws with (Soul Mark's or Gradients'). */
+/** The seeds the current theme draws with (Solid Tones', Gradients' or Neon's). */
 export function activeSeeds(
-  s: Pick<ThemeStore, "mode" | "seeds" | "gradientSeeds">,
-) {
-  return s.mode === "gradients" ? s.gradientSeeds : s.seeds;
+  s: Pick<ThemeStore, "mode" | "seeds" | "gradientSeeds" | "neonSeeds">,
+): SoulMarkSeeds | NeonSeeds {
+  return s.mode === "gradients"
+    ? s.gradientSeeds
+    : s.mode === "neon"
+      ? s.neonSeeds
+      : s.seeds;
 }
 
 /** The composed theme for the active seeds, recomputed only when they change. */
@@ -99,6 +124,22 @@ export function useSolidMark(): SoulMark {
 /** Gradients' own composed theme, whichever theme is active (for its card). */
 export function useGradientMark(): SoulMark {
   return soulMarkFor(useThemeStore((s) => s.gradientSeeds));
+}
+
+/** Neon's own composed theme, whichever theme is active (for its card and panel). */
+export function useNeonMark(): SoulMarkNeon {
+  return neonFor(useThemeStore((s) => s.neonSeeds));
+}
+
+const neonCache = new Map<NeonSeeds, SoulMarkNeon>();
+function neonFor(seeds: NeonSeeds): SoulMarkNeon {
+  let neon = neonCache.get(seeds);
+  if (!neon) {
+    if (neonCache.size > 8) neonCache.clear();
+    neon = composeNeon(seeds);
+    neonCache.set(seeds, neon);
+  }
+  return neon;
 }
 
 const cache = new Map<SoulMarkSeeds, SoulMark>();
@@ -120,13 +161,20 @@ let applied: string[] = [];
  * gradients built from them only, set one property at a time; nothing the
  * person typed is used as CSS.
  */
-export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds) {
+export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds | NeonSeeds) {
   const root = document.documentElement;
   for (const name of applied) root.style.removeProperty(name);
   applied = [];
   root.dataset.theme = mode;
   delete root.dataset.gradient;
+  delete root.dataset.neon;
+  delete root.dataset.neonText;
+  delete root.dataset.neonMenuGrid;
   if (mode === "default") return;
+  if (mode === "neon") {
+    applyNeon(root, neonFor(seeds as NeonSeeds));
+    return;
+  }
   const mark = soulMarkFor(seeds);
   // The gradient rules in styles.css apply only while this is set.
   if (mode === "gradients" && mark.gradient)
@@ -134,6 +182,20 @@ export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds) {
   const vars = cssVariables(
     mode === "gradients" ? mark : { ...mark, gradient: undefined },
   );
+  for (const [name, value] of Object.entries(vars)) {
+    root.style.setProperty(name, value);
+    applied.push(name);
+  }
+}
+
+/** Neon: the base theme's variables (and its fade, if any), plus the glow, bloom and grid. */
+function applyNeon(root: HTMLElement, neon: SoulMarkNeon) {
+  // The neon rules in styles.css apply only while this is set.
+  root.dataset.neon = neon.grid > 0 ? "grid" : "glow";
+  if (neon.text) root.dataset.neonText = "on";
+  if (neon.menuGrid > 0) root.dataset.neonMenuGrid = "on";
+  if (neon.mark.gradient) root.dataset.gradient = neon.mark.gradient.shape;
+  const vars = { ...cssVariables(neon.mark), ...neonVariables(neon) };
   for (const [name, value] of Object.entries(vars)) {
     root.style.setProperty(name, value);
     applied.push(name);
