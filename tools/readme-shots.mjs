@@ -22,12 +22,16 @@ const SHOTS = [
   ["solid-deep-purple-and-pink", solid("#391961", "#E86FA6")],
   ["solid-deep-blue-and-light-blue", solid("#0D2661", "#749AFE")],
   ["solid-reddish-brown-and-amber", solid("#441E13", "#F59E0B")],
+  ["solid-black-and-blue", solid("#000000", "#2D81FF")],
+  ["solid-deep-green-and-green", solid("#0C2F1C", "#10B981")],
   ["gradient-neon-deep", grad(["#0E1A2E", "#070B14"], "#00E5FF")],
   ["gradient-aurora", grad(["#0D2661", "#0C2F1C", "#0B0E14"], "#1CB6BE")],
   ["gradient-synthwave", grad(["#391961", "#521232", "#0B0E14"], "#E86FA6")],
   ["gradient-ember", grad(["#5D101B", "#441E13", "#0B0E14"], "#F59E0B")],
   ["gradient-midnight-and-teal", grad(["#101B44", "#000000"], "#1CB6BE")],
   ["gradient-deep-violet-to-black", grad(["#500169", "#000000"], "#E86FA6")],
+  ["gradient-black-to-charcoal", grad(["#000000", "#2C2C2C"], "#2D81FF")],
+  ["gradient-white-to-silver", grad(["#FFFFFF", "#D2D2D2"], "#0969DA")],
 ];
 const USER = { user_token: "u", username: "visual_compare", display_name: "Visual Compare",
   email_gravatar_hash: "0", core_info: {}, can_access_studio: true, maybe_feature_flags: [] };
