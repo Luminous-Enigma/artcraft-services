@@ -614,3 +614,40 @@ html[data-gradient] .bg-sidebar,
 html[data-gradient] .bg-ui-panel-gradient {
   background-image: var(--st-gradient-panel);
 }
+
+/* Soul Mark: Neon. Set only while Neon is on (html[data-neon]); the variables are a composed
+   RGB triplet and two opacities, never typed text. The glow is a 1px line in the glow color
+   (measured at 3:1 against the page and panels) and a soft bloom around panels, dialogs, the
+   side menu and filled buttons; the bloom's strongest point is the tint the engine measured
+   text against. It never sits under or replaces text color. The grid is a faint line every
+   32px behind the page, also measured under text. */
+html[data-neon] .bg-ui-panel,
+html[data-neon] .bg-ui-modal,
+html[data-neon] .bg-sidebar {
+  box-shadow:
+    0 0 0 1px rgb(var(--st-neon-glow-rgb)),
+    0 0 22px 2px rgb(var(--st-neon-glow-rgb) / var(--st-neon-bloom));
+}
+html[data-neon] .bg-primary {
+  box-shadow:
+    0 0 0 1px rgb(var(--st-neon-glow-rgb)),
+    0 0 14px 1px rgb(var(--st-neon-glow-rgb) / var(--st-neon-bloom));
+}
+html[data-neon="grid"] body,
+html[data-neon="grid"] .bg-ui-background,
+html[data-neon="grid"] .bg-background {
+  background-image:
+    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-attachment: fixed;
+}
+html[data-neon="grid"][data-gradient] body,
+html[data-neon="grid"][data-gradient] .bg-ui-background,
+html[data-neon="grid"][data-gradient] .bg-background {
+  background-image:
+    linear-gradient(rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--st-neon-glow-rgb) / var(--st-neon-grid)) 1px, transparent 1px),
+    var(--st-gradient-page);
+  background-size: 32px 32px, 32px 32px, auto;
+}
