@@ -99,6 +99,14 @@ for (const [name, seeds] of THEMES) {
     await tab.goto(base + "/"); await tab.waitForTimeout(1800); await settle(tab);
     const flags = await tab.evaluate(() => [document.documentElement.dataset.neonText, document.documentElement.dataset.neonMenuGrid].join(","));
     if (flags !== "on,on") throw new Error(`${name} ${tag}: switches not applied (${flags})`);
+    if (process.env.PICKER) {
+      if (!on) { await ctx.close(); continue; }
+      const pdir = path.join(dir, "switch-picker"); fs.mkdirSync(pdir, { recursive: true });
+      await shootPicker(tab, pdir);
+      for (const f of fs.readdirSync(pdir)) fs.renameSync(path.join(pdir, f), path.join(dir, `switch-${f}`));
+      fs.rmdirSync(pdir);
+      await ctx.close(); continue;
+    }
     if (process.env.ZOOM) {
       await tab.screenshot({ path: path.join(dir, `zoom-switch-${tag}.png`), clip: { x: 290, y: 95, width: 640, height: 140 } });
       await ctx.close(); continue;
