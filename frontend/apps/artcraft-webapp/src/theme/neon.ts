@@ -22,6 +22,7 @@ import {
   AA,
   composeSoulMark,
   measureText,
+  MIN_TEXT_FADE,
   NON_TEXT,
   type Shortfall,
   type SoulMark,
@@ -37,6 +38,11 @@ export const BLOOM_MAX = 0.22;
 export const GRID_MAX = 0.14;
 /** The steps the guard takes when it turns the bloom or the grid down. */
 const TURN_DOWN_STEP = 0.05;
+/** Glowing text, guard on: how far text is tinted toward the glow, and the strongest halo tried. */
+export const TEXT_TINT = 0.2;
+export const TEXT_HALO_MAX = 0.5;
+/** Glowing text, guard off: a strong movie-HUD glow, used exactly as is. */
+export const TEXT_GLOW_FULL = { tint: 0.45, halo: 0.8 };
 
 export interface NeonSeeds extends SoulMarkSeeds {
   /** The neon color: outlines, the bloom around panels and buttons, and the grid. */
@@ -45,11 +51,15 @@ export interface NeonSeeds extends SoulMarkSeeds {
   strength: number;
   /** A faint grid behind the page, like a blueprint or a 3D workspace. */
   grid: boolean;
+  /** Glowing text: every text tinted toward the glow, with a soft halo. Off unless set. */
+  textGlow?: boolean;
+  /** The grid also runs through menus, side menus and dialogs (needs the grid). Off unless set. */
+  menuGrid?: boolean;
 }
 
 export interface NeonNote {
   kind: "adjusted" | "warning";
-  seed: "glow" | "strength" | "grid";
+  seed: "glow" | "strength" | "grid" | "text" | "textGlow" | "menuGrid";
   message: string;
   chosen: string;
   used: string;
@@ -65,6 +75,12 @@ export interface SoulMarkNeon {
   bloom: number;
   /** The grid's strength as used, 0 when there's no grid. */
   grid: number;
+  /** Glowing text as used: the text colors, how far they're tinted, and the halo's strongest point. */
+  text: { tint: number; halo: number; ink: Hex; fg: Hex } | null;
+  /** How much of the glow color a grid line in a menu is, 0 when menus have no grid. */
+  menuGrid: number;
+  /** Faded text (captions, hints) as drawn when the guard strengthened it for the glow or menu grid. */
+  textFade: number | null;
   notes: NeonNote[];
   /** With the guard off: what falls short, the base theme's shortfalls included. */
   shortfalls: Shortfall[];
@@ -95,13 +111,15 @@ export function sanitizeNeonSeeds(raw: unknown): NeonSeeds {
     glow: isHex(r.glow) ? (r.glow.toUpperCase() as Hex) : NEON_STARTER.glow,
     strength,
     grid: r.grid !== false,
+    textGlow: r.textGlow === true,
+    menuGrid: r.menuGrid === true,
   };
 }
 
 /** The whole Neon theme from its seeds. Pure, so what the tests measure is what ships. */
 export function composeNeon(raw: NeonSeeds): SoulMarkNeon {
   const seeds = sanitizeNeonSeeds(raw);
-  const { glow: _g, strength: _s, grid: _grid, ...baseSeeds } = seeds;
+  const { glow: _g, strength: _s, grid: _grid, textGlow: _t, menuGrid: _m, ...baseSeeds } = seeds;
   const mark = composeSoulMark(baseSeeds);
   const pages = pageTokens(mark);
   const outlined = [...new Set([...pages.map((t) => t.bg), ...pages.map((t) => t.panel)])];
@@ -159,7 +177,118 @@ export function composeNeon(raw: NeonSeeds): SoulMarkNeon {
     shortfalls.push({ label: "Text over the grid", ...worstText(pages, glow, wantGrid * GRID_MAX) });
   }
 
-  return { seeds, mark, glow, bloom: bloom.used, grid: grid.used, notes, shortfalls };
+  // 4. Glowing text and the grid on menus, measured together with everything they sit on.
+  const extras = composeGlowingText(seeds, mark, pages, glow, bloom.used, grid.used, notes, shortfalls);
+
+  return { seeds, mark, glow, bloom: bloom.used, grid: grid.used, ...extras, notes, shortfalls };
+}
+
+/**
+ * Glowing text and the grid on menus. The text is tinted toward the glow and given a halo; the
+ * halo's strongest point is measured as a tint under the letters, on the page (over the grid or
+ * bloom, whichever is stronger) and on panels (over the menu grid). With the guard on, captions
+ * are drawn stronger first (down to MIN_TEXT_FADE); only then is the menu grid made fainter, and
+ * the halo is the strongest that keeps every text readable. Labels on filled buttons stay as the
+ * base theme made them: apps leave buttons out of the glow.
+ */
+function composeGlowingText(
+  seeds: NeonSeeds,
+  mark: SoulMark,
+  pages: SoulMarkTokens[],
+  glow: Hex,
+  bloom: number,
+  grid: number,
+  notes: NeonNote[],
+  shortfalls: Shortfall[],
+): Pick<SoulMarkNeon, "text" | "menuGrid" | "textFade"> {
+  const wantMenu = seeds.menuGrid && grid > 0 ? grid * GRID_MAX : 0;
+  if (!seeds.textGlow && wantMenu === 0) return { text: null, menuGrid: 0, textFade: null };
+  const under = Math.max(bloom * BLOOM_MAX, grid * GRID_MAX);
+  const baseFade = Math.min(...pages.map((p) => p.textFade));
+  // Filled buttons keep their own labels, untinted and without a halo (apps leave them out of the
+  // glow), so they aren't part of this measurement.
+  const ok = (o: GlowParts) => glowMeasurements(pages, glow, under, o).every((m) => m.ratio >= m.floor - 1e-9);
+
+  if (!seeds.guard) {
+    const o = { tint: seeds.textGlow ? TEXT_GLOW_FULL.tint : 0, halo: seeds.textGlow ? TEXT_GLOW_FULL.halo : 0, menu: wantMenu, fade: baseFade };
+    const short = glowMeasurements(pages, glow, under, o).filter((m) => m.ratio < m.floor - 1e-9);
+    if (short.length) {
+      const w = short.reduce((a, b) => (b.ratio / b.floor < a.ratio / a.floor ? b : a));
+      shortfalls.push({ label: seeds.textGlow ? "Glowing text" : "Text over the menu grid", ratio: w.ratio, floor: w.floor });
+    }
+    return { text: seeds.textGlow ? textColors(mark, glow, o) : null, menuGrid: wantMenu, textFade: null };
+  }
+
+  // The strongest captions needed (highest fade that passes), or null when even the strongest fail.
+  const fadeFor = (o: Omit<GlowParts, "fade">): number | null => {
+    if (!ok({ ...o, fade: MIN_TEXT_FADE })) return null;
+    if (ok({ ...o, fade: baseFade })) return baseFade;
+    let lo = MIN_TEXT_FADE, hi = baseFade; // ok(lo), !ok(hi)
+    while (hi - lo > 0.005) { const mid = (lo + hi) / 2; if (ok({ ...o, fade: mid })) lo = mid; else hi = mid; }
+    return Math.floor(lo * 1000) / 1000;
+  };
+
+  // The menu grid at the page's strength if captions can make room; fainter only if they can't.
+  let menu = wantMenu;
+  if (menu > 0 && fadeFor({ tint: 0, halo: 0, menu }) === null) {
+    let lo = 0, hi = menu;
+    while (hi - lo > 0.001) { const mid = (lo + hi) / 2; if (fadeFor({ tint: 0, halo: 0, menu: mid }) !== null) lo = mid; else hi = mid; }
+    menu = Math.floor(lo * 1000) / 1000;
+    notes.push({ kind: "adjusted", seed: "menuGrid", chosen: pct(wantMenu / GRID_MAX), used: pct(menu / GRID_MAX),
+      message: menu === 0 ? "Grid left out of menus: text in them wouldn't stay readable." : "Grid in menus made fainter so text in them stays readable." });
+  }
+
+  // Glowing text: the tint first (as close to TEXT_TINT as reads), then the strongest halo.
+  let text: SoulMarkNeon["text"] = null;
+  let parts = { tint: 0, halo: 0, menu };
+  if (seeds.textGlow) {
+    let tint = TEXT_TINT;
+    while (tint > 0 && fadeFor({ tint, halo: 0, menu }) === null) tint = Math.round((tint - 0.05) * 100) / 100;
+    let lo = 0, hi = TEXT_HALO_MAX;
+    if (fadeFor({ tint, halo: hi, menu }) !== null) lo = hi;
+    else while (hi - lo > 0.005) { const mid = (lo + hi) / 2; if (fadeFor({ tint, halo: mid, menu }) !== null) lo = mid; else hi = mid; }
+    parts = { tint, halo: Math.floor(lo * 100) / 100, menu };
+    text = textColors(mark, glow, { ...parts, fade: baseFade });
+    if (parts.halo === 0) {
+      notes.push({ kind: "adjusted", seed: "textGlow", chosen: "on", used: "tint only",
+        message: "Text tinted toward the glow, but left without a halo: a halo here would make it hard to read." });
+    }
+  }
+  const fade = fadeFor(parts) ?? baseFade;
+  if (fade < baseFade - 1e-9) {
+    notes.push({ kind: "adjusted", seed: "text", chosen: pct(baseFade), used: pct(fade),
+      message: "Captions and hints drawn stronger to make room for the glowing text and grid, so they stay readable." });
+  }
+  return { text, menuGrid: menu, textFade: fade < baseFade - 1e-9 ? fade : null };
+}
+
+interface GlowParts {
+  tint: number;
+  halo: number;
+  menu: number;
+  fade: number;
+}
+
+/** Every text measurement with glowing text and the menu grid applied, at every point of the page. */
+export function glowMeasurements(pages: SoulMarkTokens[], glow: Hex, under: number, o: GlowParts) {
+  const tinted = (c: Hex, a: number) => mix(mix(c, glow, a), glow, o.halo);
+  return pages.flatMap((t) => {
+    const g: SoulMarkTokens = {
+      ...t,
+      textFade: Math.min(t.textFade, o.fade),
+      white: mix(t.white, glow, o.tint),
+      fg: mix(t.fg, glow, o.tint),
+      bg: tinted(t.bg, under),
+      panel: tinted(t.panel, o.menu),
+      controls: tinted(t.controls, o.menu),
+      sunken: tinted(t.sunken, o.menu),
+    };
+    return measureText(g);
+  });
+}
+
+function textColors(mark: SoulMark, glow: Hex, o: GlowParts): NonNullable<SoulMarkNeon["text"]> {
+  return { tint: o.tint, halo: o.halo, ink: mix(mark.tokens.white, glow, o.tint), fg: mix(mark.tokens.fg, glow, o.tint) };
 }
 
 /**
@@ -177,17 +306,32 @@ export function neonTextMeasurements(pages: SoulMarkTokens[], glow: Hex, amount:
 
 /** The CSS variables Neon adds to a theme's own (cssVariables in soul-mark.ts). */
 export function neonVariables(n: SoulMarkNeon): Record<string, string> {
-  const [r, g, b] = [1, 3, 5].map((i) => parseInt(n.glow.slice(i, i + 2), 16));
+  const triplet = (h: Hex) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)).join(" ");
   return {
-    "--st-neon-glow-rgb": `${r} ${g} ${b}`,
+    "--st-neon-glow-rgb": triplet(n.glow),
     "--st-neon-bloom": (n.bloom * BLOOM_MAX).toFixed(3),
     "--st-neon-grid": (n.grid * GRID_MAX).toFixed(3),
+    "--st-neon-menu-grid": n.menuGrid.toFixed(3),
+    ...(n.text
+      ? {
+          // Glowing text overrides the base theme's text colors (set after them).
+          "--st-white-rgb": triplet(n.text.ink),
+          "--st-fg-rgb": triplet(n.text.fg),
+          "--st-fg": `rgb(${triplet(n.text.fg)})`,
+          // Labels on filled buttons stay as the base theme made them.
+          "--st-neon-label-rgb": triplet(n.mark.tokens.white),
+          // Three halo layers whose combined strongest point is exactly the measured halo.
+          "--st-neon-text-halo": (1 - Math.pow(1 - n.text.halo, 1 / 3)).toFixed(3),
+        }
+      : {}),
+    ...(n.textFade !== null ? { "--st-text-fade": String(Math.round(n.textFade * 1000) / 1000) } : {}),
   };
 }
 
 /**
  * A short code for sharing: SM3-<background>-<fade color or x>-<accent>-<glow>-<strength 0-100>-
- * <g|n for grid>-<tint 0-100>-<tone>, with -open on the end when the guard is off.
+ * <g|n for grid>-<tint 0-100>-<tone>, then -t for glowing text and -m for the grid on menus when
+ * they're on, and -open on the end when the guard is off.
  */
 export function encodeNeon(raw: NeonSeeds): string {
   const s = sanitizeNeonSeeds(raw);
@@ -201,6 +345,8 @@ export function encodeNeon(raw: NeonSeeds): string {
     s.grid ? "g" : "n",
     Math.round(s.tint * 100),
     s.character,
+    ...(s.textGlow ? ["t"] : []),
+    ...(s.menuGrid ? ["m"] : []),
     ...(s.guard ? [] : ["open"]),
   ].join("-");
 }
@@ -210,7 +356,7 @@ export function decodeNeon(code: string): NeonSeeds | null {
   const m = code
     .trim()
     .match(
-      /^SM3-([0-9a-f]{6})-([0-9a-f]{6}|x)-([0-9a-f]{6})-([0-9a-f]{6})-(\d{1,3})-(g|n)-(\d{1,3})-(soft|warm|cool)(-open)?$/i,
+      /^SM3-([0-9a-f]{6})-([0-9a-f]{6}|x)-([0-9a-f]{6})-([0-9a-f]{6})-(\d{1,3})-(g|n)-(\d{1,3})-(soft|warm|cool)(-t)?(-m)?(-open)?$/i,
     );
   if (!m) return null;
   if (m[2].toLowerCase() === m[1].toLowerCase()) return null;
@@ -223,7 +369,9 @@ export function decodeNeon(code: string): NeonSeeds | null {
     grid: m[6].toLowerCase() === "g",
     tint: Number(m[7]) / 100,
     character: m[8].toLowerCase(),
-    guard: !m[9],
+    textGlow: !!m[9],
+    menuGrid: !!m[10],
+    guard: !m[11],
   });
 }
 
