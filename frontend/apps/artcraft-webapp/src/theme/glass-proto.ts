@@ -144,9 +144,13 @@ export function applyGlassProto(): boolean {
   set("--glass-smoke-rgb", rgbTriplet(SMOKE));
   set("--glass-smoke", String(c.smokeBehind));
   set("--glass-fill-stacked", String(c.stackedFill));
-  set("--glass-fill-total", String(Math.round((1 - (1 - c.fill) * (1 - c.stackedFill)) * 100) / 100));
+  const total = Math.round((1 - (1 - c.fill) * (1 - c.stackedFill)) * 100) / 100;
+  set("--glass-fill-total", String(total));
+  set("--glass-line-rgb", rgbTriplet(c.mark.tokens.fg));
+  matchFills = { base: c.fill, stacked: c.stackedFill, total, fg: c.mark.tokens.fg, under: c.mark.tokens.bg };
   set("--glass-picture", `url("/glass/${g.picture}.jpg")`);
   markGlassOverWork();
+  window.setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
   root.dataset.glassReport = JSON.stringify({
     glass: c.glass, fill: c.fill, blur: c.blur, smoke: c.smokeBehind,
     worst: Math.round(c.worst * 100) / 100, guard: g.guard, fg: c.mark.tokens.fg,
@@ -182,6 +186,7 @@ function markGlassOverWork() {
       if (over) panel.dataset.glassOverWork = "";
       else delete panel.dataset.glassOverWork;
     }
+    matchPass();
   };
   const later = () => { if (!pending) pending = window.setTimeout(run, 300); };
   // Which page is open: a workspace (theme/workspace.ts), and which one.
@@ -193,7 +198,7 @@ function markGlassOverWork() {
   };
   mark();
   window.setInterval(mark, 400);
-  new MutationObserver(later).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style"] });
+  new MutationObserver(later).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
   window.addEventListener("resize", later);
   window.addEventListener("scroll", later, true);
   run();
@@ -201,6 +206,106 @@ function markGlassOverWork() {
 
 function clamp(v: number, lo: number, hi: number) {
   return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : lo;
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// EXPERIMENT (matchMenu): every workspace surface as see-through as the menu.
+
+/** The fills the match pass uses, set by applyGlassProto. */
+let matchFills = { base: 1, stacked: 1, total: 1, fg: "#FFFFFF" as Hex, under: "#000000" as Hex };
+
+/**
+ * Inside a workspace, every neutral surface (not pictures, video, canvases or colored buttons)
+ * is set like the menu: the bottom layer keeps the page fill, so text never sits on the bare
+ * picture; layers stacked on it take the menu's thin fill; and a surface straight over work
+ * covers as much as the menu does in all. Each changed surface's text is measured over pure
+ * black and white beneath; the lowest result is kept in html[data-glass-match-report].
+ */
+function matchPass() {
+  const root = document.documentElement;
+  const on = root.hasAttribute("data-glass-match") && root.hasAttribute("data-glass-workspace") && root.hasAttribute("data-glass-frosted");
+  for (const el of Array.from(document.querySelectorAll<HTMLElement>("[data-glass-orig]"))) {
+    el.style.removeProperty("background-color");
+    el.style.removeProperty("backdrop-filter");
+    el.style.removeProperty("-webkit-backdrop-filter");
+    delete el.dataset.glassOrig;
+  }
+  if (!on) { delete root.dataset.glassMatchReport; return; }
+  const scope = document.querySelector("main")?.parentElement ?? document.body;
+  const work = Array.from(document.querySelectorAll<HTMLElement>("canvas, video, img"))
+    .map((el) => ({ el, r: el.getBoundingClientRect() })).filter(({ r }) => r.width > 40 && r.height > 40);
+  const painted = new Set<Element>();
+  let worst = 99, changed = 0, below = 0;
+  for (const el of Array.from(scope.querySelectorAll<HTMLElement>("*"))) {
+    if (/^(CANVAS|VIDEO|IMG|svg|path)$/i.test(el.tagName) || el.closest("[data-sidebar]")) continue;
+    const b = el.getBoundingClientRect();
+    if (b.width * b.height < 400) continue;
+    const rgba = parseRgba(getComputedStyle(el).backgroundColor);
+    if (!rgba || rgba[3] < 0.02) continue;
+    const [r, g, bl] = rgba;
+    if ((Math.max(r, g, bl) - Math.min(r, g, bl)) / 255 > 0.12) { painted.add(el); continue; } // colored: leave it
+    // A neutral fill far from the glass (a dark "ink" button on light glass, a black video frame
+    // or badge) carries text made for that fill: it stays solid.
+    if (contrastRatio(hexOf(r, g, bl), matchFills.under) > 3) { painted.add(el); continue; }
+    let covered = false;
+    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) if (painted.has(p)) { covered = true; break; }
+    const overWork = work.some(({ el: w, r: wr }) => !el.contains(w) && !w.contains(el) && !covered
+      && wr.left < b.right && wr.right > b.left && wr.top < b.bottom && wr.bottom > b.top);
+    const fill = overWork ? matchFills.total : covered ? matchFills.stacked : matchFills.base;
+    const own = hexOf(r, g, bl);
+    el.dataset.glassOrig = "";
+    el.style.setProperty("background-color", `rgb(${r} ${g} ${bl} / ${fill})`, "important");
+    el.style.setProperty("backdrop-filter", "blur(var(--glass-blur)) saturate(1.15)", "important");
+    el.style.setProperty("-webkit-backdrop-filter", "blur(var(--glass-blur)) saturate(1.15)", "important");
+    painted.add(el);
+    changed++;
+    if (el.innerText && el.innerText.trim()) {
+      const ink = parseRgba(getComputedStyle(el).color);
+      const fg = ink ? hexOf(ink[0], ink[1], ink[2]) : matchFills.fg;
+      const c = Math.min(...(["#000000", "#FFFFFF"] as Hex[]).map((B) => {
+        const under = covered ? mix(B, matchFills.under, matchFills.base) : B;
+        return contrastRatio(mix(under, own, fill), fg);
+      }));
+      worst = Math.min(worst, c);
+      if (c < AA) below++;
+    }
+  }
+  root.dataset.glassMatchReport = JSON.stringify({ changed, worst: Math.round(worst * 100) / 100, below });
+}
+
+function parseRgba(css: string): [number, number, number, number] | null {
+  const m = css.match(/rgba?\(([^)]+)\)/);
+  if (!m) return null;
+  const v = m[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+  return [v[0], v[1], v[2], v[3] ?? 1];
+}
+
+function hexOf(r: number, g: number, b: number): Hex {
+  return `#${[r, g, b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("")}` as Hex;
+}
+
+/**
+ * 3D: while the experiment is on, the scene's own background is cleared to see-through, so the
+ * grid, floor lines and objects keep their full strength over the glass behind them. WebGL
+ * contexts are asked for an alpha channel, and clears are made transparent on /edit-3d only.
+ */
+if (typeof window !== "undefined" && readGlassProto().on) {
+  const getContext = HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, attrs?: unknown) {
+    const webgl = type === "webgl" || type === "webgl2";
+    const ctx = (getContext as (t: string, a?: unknown) => unknown).call(this, type, webgl ? { ...(attrs as object), alpha: true, premultipliedAlpha: true } : attrs);
+    if (webgl && ctx && !(ctx as { __glassClear?: boolean }).__glassClear) {
+      const gl = ctx as WebGLRenderingContext & { __glassClear?: boolean };
+      const clearColor = gl.clearColor.bind(gl);
+      gl.clearColor = (r, g, b, a) => {
+        const see = document.documentElement.hasAttribute("data-glass-match") && window.location.pathname.startsWith("/edit-3d");
+        return see ? clearColor(0, 0, 0, 0) : clearColor(r, g, b, a);
+      };
+      gl.__glassClear = true;
+    }
+    return ctx;
+  } as typeof HTMLCanvasElement.prototype.getContext;
 }
 
 // PROTOTYPE only: lets the screenshot tools change the glass live, so loaded work isn't lost.
