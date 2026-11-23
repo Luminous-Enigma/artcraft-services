@@ -19,28 +19,31 @@ import { NEON_BACKGROUNDS, NEON_FADES, NEON_GLOWS, NEON_SIGNATURES } from "./neo
 import { MIN_TEXT_FADE, NON_TEXT } from "./soul-mark";
 
 describe("Soul Mark: Neon", () => {
-  describe("the readability sweep", () => {
-    it(
-      "keeps every combination readable: glow stands out, text clears beside the glow and over the grid",
-      () => {
-        const pages: Pick<NeonSeeds, "background" | "color2">[] = [
-          ...NEON_BACKGROUNDS.map(([, background]) => ({ background })),
-          ...NEON_FADES.map(([, background, color2]) => ({ background, color2 })),
-        ];
+  // One test per page, each letting the runner catch up first; together they cover
+  // 8 pages × 7 glows × 7 accents × grid on and off × 3 strengths.
+  describe("the readability sweep: glow stands out, text clears beside the glow and over the grid", () => {
+    const pages: [string, Pick<NeonSeeds, "background" | "color2">][] = [
+      ...NEON_BACKGROUNDS.map(([name, background]): [string, Pick<NeonSeeds, "background">] => [name, { background }]),
+      ...NEON_FADES.map(([name, background, color2]): [string, Pick<NeonSeeds, "background" | "color2">] => [
+        name,
+        { background, color2 },
+      ]),
+    ];
+    it("covers all 8 pages", () => expect(pages).toHaveLength(8));
+    for (const [name, page] of pages)
+      it(`keeps every combination readable on ${name}`, async () => {
+        await breathe();
         let checked = 0;
-        for (const page of pages)
-          for (const [, glow] of NEON_GLOWS)
-            for (const [, accent] of NEON_GLOWS)
-              for (const grid of [true, false])
-                for (const strength of [0.3, 0.6, 1]) {
-                  const seeds = { ...NEON_STARTER, ...page, glow, accent, grid, strength };
-                  expectReadable(composeNeon(seeds), seeds);
-                  checked++;
-                }
-        expect(checked).toBe(8 * 7 * 7 * 2 * 3);
-      },
-      600_000,
-    );
+        for (const [, glow] of NEON_GLOWS)
+          for (const [, accent] of NEON_GLOWS)
+            for (const grid of [true, false])
+              for (const strength of [0.3, 0.6, 1]) {
+                const seeds = { ...NEON_STARTER, ...page, glow, accent, grid, strength };
+                expectReadable(composeNeon(seeds), seeds);
+                checked++;
+              }
+        expect(checked).toBe(7 * 7 * 2 * 3);
+      }, 300_000);
   });
 
   describe("signature looks", () => {
@@ -233,4 +236,9 @@ function expectGlowReadable(n: SoulMarkNeon, seeds: Partial<NeonSeeds>) {
   const parts = { tint: n.text?.tint ?? 0, halo: n.text?.halo ?? 0, menu: n.menuGrid, fade };
   const short = glowMeasurements(pageTokens(n.mark), n.glow, under, parts).filter((m) => m.ratio < m.floor - 1e-9);
   expect(short, label).toEqual([]);
+}
+
+/** Lets the test runner answer its own messages between sweep tests; some runners don't on their own. */
+function breathe(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
 }

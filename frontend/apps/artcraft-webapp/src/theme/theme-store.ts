@@ -8,6 +8,14 @@ import {
   sanitizeNeonSeeds,
   type SoulMarkNeon,
 } from "./neon";
+import {
+  composeGlass,
+  GLASS_STARTER,
+  type GlassSeeds,
+  sanitizeGlassSeeds,
+  type SoulMarkGlass,
+} from "./glass";
+import { applyGlass, clearGlass } from "./glass-adapter";
 import { GRADIENT_STARTER } from "./presets";
 import {
   composeSoulMark,
@@ -19,8 +27,8 @@ import {
   type SoulMarkSeeds,
 } from "./soul-mark";
 
-/** ArtCraft's own look, or one of the Soul Mark themes: Solid Tones, Gradients or Neon. */
-export type ThemeMode = "default" | "soul-mark" | "gradients" | "neon";
+/** ArtCraft's own look, or one of the Soul Mark themes: Solid Tones, Gradients, Neon or Glass. */
+export type ThemeMode = "default" | "soul-mark" | "gradients" | "neon" | "glass";
 
 interface ThemeStore {
   mode: ThemeMode;
@@ -30,6 +38,8 @@ interface ThemeStore {
   gradientSeeds: SoulMarkSeeds;
   /** Neon's seeds: a glow on a near-black page. Kept apart too. */
   neonSeeds: NeonSeeds;
+  /** Glass's seeds: light or dark glass over a picture. Kept apart too. */
+  glassSeeds: GlassSeeds;
   setMode: (mode: ThemeMode) => void;
   setSeeds: (seeds: Partial<SoulMarkSeeds>) => void;
   resetSeeds: () => void;
@@ -37,6 +47,8 @@ interface ThemeStore {
   resetGradientSeeds: () => void;
   setNeonSeeds: (seeds: Partial<NeonSeeds>) => void;
   resetNeonSeeds: () => void;
+  setGlassSeeds: (seeds: Partial<GlassSeeds>) => void;
+  resetGlassSeeds: () => void;
 }
 
 /** Gradients' seeds, sanitized; anything without a usable color 2 falls back to the starter. */
@@ -52,6 +64,7 @@ export const useThemeStore = create<ThemeStore>()(
       seeds: SOUL_MARK_STARTER,
       gradientSeeds: sanitizeGradientSeeds(GRADIENT_STARTER),
       neonSeeds: NEON_STARTER,
+      glassSeeds: GLASS_STARTER,
       setMode: (mode) => set({ mode }),
       setSeeds: (seeds) =>
         set((s) => ({ seeds: solidSeeds({ ...s.seeds, ...seeds }) })),
@@ -70,6 +83,11 @@ export const useThemeStore = create<ThemeStore>()(
           neonSeeds: sanitizeNeonSeeds({ ...s.neonSeeds, ...seeds }),
         })),
       resetNeonSeeds: () => set({ neonSeeds: NEON_STARTER }),
+      setGlassSeeds: (seeds) =>
+        set((s) => ({
+          glassSeeds: sanitizeGlassSeeds({ ...s.glassSeeds, ...seeds }),
+        })),
+      resetGlassSeeds: () => set({ glassSeeds: GLASS_STARTER }),
     }),
     {
       name: "artcraft-theme",
@@ -87,33 +105,54 @@ export const useThemeStore = create<ThemeStore>()(
               ? "soul-mark"
               : s.mode === "neon"
                 ? "neon"
-                : "default";
+                : s.mode === "glass"
+                  ? "glass"
+                  : "default";
         return {
           ...current,
           mode,
           seeds: solidSeeds(seeds),
           gradientSeeds: sanitizeGradientSeeds(moved ? seeds : s.gradientSeeds),
           neonSeeds: sanitizeNeonSeeds(s.neonSeeds),
+          glassSeeds: sanitizeGlassSeeds(s.glassSeeds ?? GLASS_STARTER),
         };
       },
     },
   ),
 );
 
-/** The seeds the current theme draws with (Solid Tones', Gradients' or Neon's). */
+/** The seeds the current theme draws with (Solid Tones', Gradients', Neon's or Glass's). */
 export function activeSeeds(
-  s: Pick<ThemeStore, "mode" | "seeds" | "gradientSeeds" | "neonSeeds">,
-): SoulMarkSeeds | NeonSeeds {
+  s: Pick<ThemeStore, "mode" | "seeds" | "gradientSeeds" | "neonSeeds" | "glassSeeds">,
+): SoulMarkSeeds | NeonSeeds | GlassSeeds {
   return s.mode === "gradients"
     ? s.gradientSeeds
     : s.mode === "neon"
       ? s.neonSeeds
-      : s.seeds;
+      : s.mode === "glass"
+        ? s.glassSeeds
+        : s.seeds;
+}
+
+/** Glass's own composed theme, whichever theme is active (for its card and panel). */
+export function useGlassMark(): SoulMarkGlass {
+  return glassFor(useThemeStore((s) => s.glassSeeds));
+}
+
+const glassCache = new Map<GlassSeeds, SoulMarkGlass>();
+function glassFor(seeds: GlassSeeds): SoulMarkGlass {
+  let glass = glassCache.get(seeds);
+  if (!glass) {
+    if (glassCache.size > 8) glassCache.clear();
+    glass = composeGlass(seeds);
+    glassCache.set(seeds, glass);
+  }
+  return glass;
 }
 
 /** The composed theme for the active seeds, recomputed only when they change. */
 export function useSoulMark(): SoulMark {
-  return soulMarkFor(useThemeStore(activeSeeds));
+  return soulMarkFor(useThemeStore((s) => (s.mode === "glass" ? s.seeds : (activeSeeds(s) as SoulMarkSeeds))));
 }
 
 /** Soul Mark's own composed theme, whichever theme is active (for its card). */
@@ -161,21 +200,28 @@ let applied: string[] = [];
  * gradients built from them only, set one property at a time; nothing the
  * person typed is used as CSS.
  */
-export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds | NeonSeeds) {
+export function applyTheme(mode: ThemeMode, seeds: SoulMarkSeeds | NeonSeeds | GlassSeeds) {
   const root = document.documentElement;
   for (const name of applied) root.style.removeProperty(name);
   applied = [];
   root.dataset.theme = mode;
+  clearGlass(root);
   delete root.dataset.gradient;
   delete root.dataset.neon;
   delete root.dataset.neonText;
   delete root.dataset.neonMenuGrid;
   if (mode === "default") return;
+  if (mode === "glass") {
+    // Glass draws on Solid Tones' variables too, so the rest of the app needs nothing new.
+    root.dataset.theme = "soul-mark";
+    applied = applyGlass(root, glassFor(seeds as GlassSeeds));
+    return;
+  }
   if (mode === "neon") {
     applyNeon(root, neonFor(seeds as NeonSeeds));
     return;
   }
-  const mark = soulMarkFor(seeds);
+  const mark = soulMarkFor(seeds as SoulMarkSeeds);
   // The gradient rules in styles.css apply only while this is set.
   if (mode === "gradients" && mark.gradient)
     root.dataset.gradient = mark.gradient.shape;
