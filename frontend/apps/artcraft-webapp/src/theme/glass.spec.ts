@@ -19,27 +19,25 @@ const BLACK = "#000000" as Hex;
 const WHITE = "#FFFFFF" as Hex;
 
 describe("Soul Mark: Glass", () => {
-  describe("the readability sweep", () => {
-    it(
-      "keeps every combination readable over black and white behind every glass layer",
-      () => {
-        let checked = 0;
-        for (const kind of ["light", "dark"] as const)
-          for (const [, accent] of ALL_ACCENTS)
-            for (const darkened of [null, 20, 40, 60, 80, 100])
-              for (const transparency of [0, 0.09, 0.3, 1])
-                for (const [linked, frost] of [[true, 30], [true, 0], [false, 0]] as const) {
-                  const seeds: GlassSeeds = {
-                    ...GLASS_STARTER, kind, accent, transparency, linked, frost, frostOn: frost > 0,
-                    darkOn: darkened !== null, darkened: darkened ?? 50,
-                  };
-                  expectReadable(composeGlass(seeds), seeds);
-                  checked++;
-                }
-        expect(checked).toBe(2 * ALL_ACCENTS.length * 6 * 4 * 3);
-      },
-      900_000,
-    );
+  // One test per glass, darkness and transparency, so a slow machine still reports between them;
+  // together they cover 2 × every accent × 6 darkness settings × 4 transparencies × 3 frost links.
+  describe("the readability sweep: every combination stays readable over black and white", () => {
+    for (const kind of ["light", "dark"] as const)
+      for (const darkened of [null, 20, 40, 60, 80, 100])
+        for (const transparency of [0, 0.09, 0.3, 1])
+          it(`${kind} glass, darkened ${darkened ?? "off"}, transparency ${transparency}`, () => {
+            let checked = 0;
+            for (const [, accent] of ALL_ACCENTS)
+              for (const [linked, frost] of [[true, 30], [true, 0], [false, 0]] as const) {
+                const seeds: GlassSeeds = {
+                  ...GLASS_STARTER, kind, accent, transparency, linked, frost, frostOn: frost > 0,
+                  darkOn: darkened !== null, darkened: darkened ?? 50,
+                };
+                expectReadable(composeGlass(seeds), seeds);
+                checked++;
+              }
+            expect(checked).toBe(ALL_ACCENTS.length * 3);
+          }, 300_000);
   });
 
   describe("the layers", () => {
