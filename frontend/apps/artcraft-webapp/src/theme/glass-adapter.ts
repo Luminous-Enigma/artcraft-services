@@ -232,7 +232,8 @@ function hexOf(r: number, g: number, b: number): Hex {
 if (typeof window !== "undefined") {
   const getContext = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, attrs?: unknown) {
-    const webgl = type === "webgl" || type === "webgl2";
+    // Only while Glass is on: every other theme's canvases are created exactly as before.
+    const webgl = (type === "webgl" || type === "webgl2") && document.documentElement.hasAttribute("data-glass");
     const ctx = (getContext as (t: string, a?: unknown) => unknown).call(this, type, webgl ? { ...(attrs as object), alpha: true, premultipliedAlpha: true } : attrs);
     if (webgl && ctx && !(ctx as { __glassClear?: boolean }).__glassClear) {
       const gl = ctx as WebGLRenderingContext & { __glassClear?: boolean };
