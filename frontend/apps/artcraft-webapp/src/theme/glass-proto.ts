@@ -27,10 +27,20 @@ export interface GlassProto {
   guard: boolean;
   fill?: number;
   /**
-   * While frosted: how much more of the picture glass stacked on the page glass (the side menu,
-   * workspace panels) covers than the page alone, 0 to 1. Unset = no thinning (two full layers).
+   * Transparency: how much more of the picture glass stacked on the page glass (the side menu,
+   * workspace panels) covers than the page alone, 0 to 1, at any Frost. Unset = no thinning.
    */
   stackLift?: number;
+  /**
+   * Transparency, the simple way: the menu's own fill, 0 to 1 (0.09 = 9%), at the default.
+   * Every surface follows it, the way the menu is set. Overrides stackLift when given.
+   */
+  transparency?: number;
+  /**
+   * Transparency linked to Frost (the default): it applies only while Frost is on, as at first.
+   * Unlinked: Transparency and Frost are set apart, and Transparency applies at any Frost.
+   */
+  linked?: boolean;
   /**
    * EXPERIMENT (owner's request, to look at): inside a workspace, every surface takes the menu's
    * fill, the floating tools and glass over work included, and the 3D scene itself turns as
@@ -43,7 +53,7 @@ export interface GlassProto {
 
 export const GLASS_PROTO_DEFAULTS: GlassProto = {
   on: false, kind: "light", frostOn: true, frost: 30, darkOn: false, darkened: 50,
-  picture: "quartz", guard: true,
+  picture: "quartz", guard: true, transparency: 0.09, linked: true,
 };
 
 const BASE: Record<GlassProto["kind"], Hex> = { light: "#F2F5F8", dark: "#2B2E33" };
@@ -108,11 +118,15 @@ export function composeGlassProto(g: GlassProto): ComposedGlass {
   const { bg, panel } = mark.tokens;
   const stackedWorstAt = (p: number) =>
     Math.min(...behind.map((b) => contrastRatio(mix(mix(b, bg, fill), panel, p), fg)));
-  const frosted = g.frostOn && g.frost > 0;
+  // Transparency: linked to Frost it applies only while frosted; unlinked, at any Frost.
   let stackedFill = fill;
-  if (frosted && g.stackLift != null) {
-    const total = Math.min(1, fill + clamp(g.stackLift, 0, 1));
-    stackedFill = fill >= 1 ? 0 : Math.max(0, 1 - (1 - total) / (1 - fill));
+  const thin = thinning(g);
+  if (thin) {
+    if (g.transparency != null) stackedFill = clamp(g.transparency, 0, 1);
+    else {
+      const total = Math.min(1, fill + clamp(g.stackLift ?? 0, 0, 1));
+      stackedFill = fill >= 1 ? 0 : Math.max(0, 1 - (1 - total) / (1 - fill));
+    }
     while (g.guard && stackedFill < 1 && stackedWorstAt(stackedFill) < AA) stackedFill = Math.min(1, stackedFill + 0.01);
     stackedFill = Math.round(stackedFill * 100) / 100;
   }
@@ -134,8 +148,8 @@ export function applyGlassProto(): boolean {
     root.style.setProperty(name, value);
   root.dataset.theme = "soul-mark";
   root.dataset.glass = g.kind;
-  if (g.frostOn && g.frost > 0) root.dataset.glassFrosted = "";
-  else delete root.dataset.glassFrosted;
+  if (thinning(g)) root.dataset.glassThin = "";
+  else delete root.dataset.glassThin;
   if (g.matchMenu) root.dataset.glassMatch = "";
   else delete root.dataset.glassMatch;
   const set = (k: string, v: string) => root.style.setProperty(k, v);
@@ -212,6 +226,13 @@ function markGlassOverWork() {
   run();
 }
 
+/** Whether Transparency thins the glass now: set, and (if linked to Frost) while frosted. */
+function thinning(g: GlassProto): boolean {
+  const set = g.transparency != null || g.stackLift != null;
+  const frosted = g.frostOn && g.frost > 0;
+  return set && (g.linked === false || frosted);
+}
+
 function clamp(v: number, lo: number, hi: number) {
   return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : lo;
 }
@@ -232,7 +253,7 @@ let matchFills = { base: 1, stacked: 1, total: 1, fg: "#FFFFFF" as Hex, under: "
  */
 function matchPass() {
   const root = document.documentElement;
-  const on = root.hasAttribute("data-glass-match") && root.hasAttribute("data-glass-workspace") && root.hasAttribute("data-glass-frosted");
+  const on = root.hasAttribute("data-glass-match") && root.hasAttribute("data-glass-workspace") && root.hasAttribute("data-glass-thin");
   for (const el of Array.from(document.querySelectorAll<HTMLElement>("[data-glass-orig]"))) {
     el.style.removeProperty("background-color");
     el.style.removeProperty("backdrop-filter");
