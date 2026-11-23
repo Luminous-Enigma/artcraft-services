@@ -1,141 +1,48 @@
-import { channels, contrastRatio, type Hex, mix, rgbTriplet } from "./contrast";
-import { AA, composeSoulMark, cssVariables, type SoulMark } from "./soul-mark";
+import { contrastRatio, type Hex, mix } from "./contrast";
+import { composeGlass, GLASS_STARTER, type GlassSeeds, glassVariables, type SoulMarkGlass } from "./glass";
+import { GLASS_PICTURES, GLASS_SIGNATURES } from "./glass-presets";
+import { AA, cssVariables } from "./soul-mark";
 import { workspaceGrid } from "./workspace";
 
 /**
- * PROTOTYPE of Soul Mark: Glass, for the owner's first look. Not the engine: that comes to
- * Soul-Mark-Themes once the pictures decide where glass works. Read from localStorage
- * ("artcraft-glass-proto"); there is no picker card yet.
- *
- * Glass is a see-through fill over a picture. Frost is the blur only. Darkened is a smoke tint:
- * it darkens the glass and the background picture. The fill is never left to taste: it is the
- * least that keeps body text at AA over the darkest and the lightest thing that can be behind
- * (pure black and pure white; smoke and frost don't count), so it holds over any picture or work.
+ * PROTOTYPE adapter for Soul Mark: Glass, for the owner's review. Every number comes from the
+ * engine (glass.ts, copied from Soul-Mark-Themes): the glass color, each layer's fill, the
+ * accent fitted to the glass, the blur and the smoke. What's left here is the app's side:
+ * reading the setting from localStorage ("artcraft-glass-proto"; there is no picker card yet),
+ * finding glass over work, and the match-the-menu pass for workspaces.
  */
-export interface GlassProto {
+export interface GlassProto extends Partial<GlassSeeds> {
   on: boolean;
-  kind: "light" | "dark";
-  frostOn: boolean;
-  /** 0 to 100. */
-  frost: number;
-  darkOn: boolean;
-  /** 0 to 100. */
-  darkened: number;
-  /** A starter picture's name (public/glass/<name>.jpg). */
-  picture: string;
-  /** Guard off: the fill is `fill` as given, and shortfalls are logged. */
-  guard: boolean;
-  fill?: number;
-  /**
-   * Transparency: how much more of the picture glass stacked on the page glass (the side menu,
-   * workspace panels) covers than the page alone, 0 to 1, at any Frost. Unset = no thinning.
-   */
-  stackLift?: number;
-  /**
-   * Transparency, the simple way: the menu's own fill, 0 to 1 (0.09 = 9%), at the default.
-   * Every surface follows it, the way the menu is set. Overrides stackLift when given.
-   */
-  transparency?: number;
-  /**
-   * Transparency linked to Frost (the default): it applies only while Frost is on, as at first.
-   * Unlinked: Transparency and Frost are set apart, and Transparency applies at any Frost.
-   */
-  linked?: boolean;
-  /**
-   * EXPERIMENT (owner's request, to look at): inside a workspace, every surface takes the menu's
-   * fill, the floating tools and glass over work included, and the 3D scene itself turns as
-   * see-through as the menu. Readability over work is then not promised; it is measured.
-   */
+  /** A signature look by name; its seeds come first, the other fields override them. */
+  signature?: string;
+  /** Inside a workspace, every neutral surface is set the way the menu is (owner's choice). */
   matchMenu?: boolean;
-  /** 3D guide lines (grid, camera) on glass: the default light, or dark. */
-  lines?: "light" | "dark";
 }
 
-export const GLASS_PROTO_DEFAULTS: GlassProto = {
-  on: false, kind: "light", frostOn: true, frost: 30, darkOn: false, darkened: 50,
-  picture: "quartz", guard: true, transparency: 0.09, linked: true,
-};
-
-const BASE: Record<GlassProto["kind"], Hex> = { light: "#F2F5F8", dark: "#2B2E33" };
-const SMOKE: Hex = "#101214";
-const ACCENT: Hex = "#3B82F6";
-/** Blur at frost 100, in pixels. */
-const MAX_BLUR = 40;
-/** How much of what is behind the smoke can hide at Darkened 100. */
-const MAX_SMOKE_BEHIND = 0.75;
-/** How far the glass itself goes toward smoke at Darkened 100. */
-const MAX_SMOKE_GLASS = 0.8;
+export const GLASS_PROTO_DEFAULTS: GlassProto = { on: false, matchMenu: true };
 
 export function readGlassProto(): GlassProto {
   try {
     const raw = JSON.parse(localStorage.getItem("artcraft-glass-proto") ?? "null");
-    if (!raw || typeof raw !== "object") return GLASS_PROTO_DEFAULTS;
-    const g = { ...GLASS_PROTO_DEFAULTS, ...raw } as GlassProto;
-    g.frost = clamp(Number(g.frost), 0, 100);
-    g.darkened = clamp(Number(g.darkened), 0, 100);
-    g.kind = g.kind === "dark" ? "dark" : "light";
-    g.picture = /^[a-z0-9-]{1,32}$/.test(String(g.picture)) ? g.picture : "quartz";
-    return g;
+    return raw && typeof raw === "object" ? { ...GLASS_PROTO_DEFAULTS, ...raw } : GLASS_PROTO_DEFAULTS;
   } catch {
     return GLASS_PROTO_DEFAULTS;
   }
 }
 
-export interface ComposedGlass {
-  mark: SoulMark;
-  glass: Hex;
-  panel: Hex;
-  fill: number;
-  blur: number;
-  smokeBehind: number;
-  /** Body text over the glass at its worst spot (black or white behind). */
-  worst: number;
-  /** The fill of glass stacked on the page glass, and its text at the worst spot. */
-  stackedFill: number;
-  stackedWorst: number;
+/** The seeds the prototype draws with: a signature's (if named), then any fields set. */
+export function protoSeeds(g: GlassProto): GlassSeeds {
+  const sig = g.signature ? GLASS_SIGNATURES.find((s) => s.name.toLowerCase() === g.signature!.toLowerCase()) : undefined;
+  const { on: _on, signature: _s, matchMenu: _m, ...fields } = g;
+  const { name: _name, ...sigSeeds } = sig ?? { name: "" };
+  return { ...GLASS_STARTER, ...sigSeeds, ...fields } as GlassSeeds;
 }
 
-export function composeGlassProto(g: GlassProto): ComposedGlass {
-  const d = g.darkOn ? g.darkened / 100 : 0;
-  const glass = mix(BASE[g.kind], SMOKE, d * MAX_SMOKE_GLASS);
-  const mark = composeSoulMark({ background: glass, accent: ACCENT, tint: 0.5, character: "cool" });
-  const smokeBehind = d * MAX_SMOKE_BEHIND;
-  // The smoke covers only the background picture. Glass that floats over work (a toolbar over
-  // an image, a menu over a video) has no smoke under it, so, like frost, it isn't counted.
-  const behind: Hex[] = ["#000000", "#FFFFFF"];
-  const fg = mark.tokens.fg;
-  const surfaces = [mark.tokens.bg, mark.tokens.panel];
-  const worstAt = (fill: number) =>
-    Math.min(...surfaces.flatMap((s) => behind.map((b) => contrastRatio(mix(b, s, fill), fg))));
-  let fill = g.guard ? 1 : clamp(g.fill ?? 0.3, 0, 1);
-  if (g.guard) {
-    for (let f = 0; f <= 1.0001; f += 0.01) {
-      if (worstAt(f) >= AA) { fill = Math.round(f * 100) / 100; break; }
-    }
-  }
-  // Glass stacked on the page glass sees the picture through the page's fill too, so it can be
-  // thinner and still keep its text readable over pure black or pure white beneath both layers.
-  const { bg, panel } = mark.tokens;
-  const stackedWorstAt = (p: number) =>
-    Math.min(...behind.map((b) => contrastRatio(mix(mix(b, bg, fill), panel, p), fg)));
-  // Transparency: linked to Frost it applies only while frosted; unlinked, at any Frost.
-  let stackedFill = fill;
-  const thin = thinning(g);
-  if (thin) {
-    if (g.transparency != null) stackedFill = clamp(g.transparency, 0, 1);
-    else {
-      const total = Math.min(1, fill + clamp(g.stackLift ?? 0, 0, 1));
-      stackedFill = fill >= 1 ? 0 : Math.max(0, 1 - (1 - total) / (1 - fill));
-    }
-    while (g.guard && stackedFill < 1 && stackedWorstAt(stackedFill) < AA) stackedFill = Math.min(1, stackedFill + 0.01);
-    stackedFill = Math.round(stackedFill * 100) / 100;
-  }
-  return {
-    mark, glass, panel, fill,
-    blur: g.frostOn ? (g.frost / 100) * MAX_BLUR : 0,
-    smokeBehind, worst: worstAt(fill),
-    stackedFill, stackedWorst: stackedWorstAt(stackedFill),
-  };
+/** The picture behind the glass, as CSS: a starter's file, or a fade as a gradient. */
+function pictureCss(id: string): string {
+  const p = GLASS_PICTURES.find((x) => x.id === id);
+  if (p?.kind === "fade" && p.colors) return `linear-gradient(to bottom, ${p.colors.join(", ")})`;
+  return `url("/glass/${/^[a-z0-9-]{1,32}$/.test(id) ? id : "quartz"}.jpg")`;
 }
 
 /** Sets the glass on <html>. Returns false when the prototype is off. */
@@ -143,41 +50,30 @@ export function applyGlassProto(): boolean {
   const g = readGlassProto();
   const root = document.documentElement;
   if (!g.on) { delete root.dataset.glass; return false; }
-  const c = composeGlassProto(g);
-  for (const [name, value] of Object.entries(cssVariables({ ...c.mark, gradient: undefined })))
-    root.style.setProperty(name, value);
-  root.dataset.theme = "soul-mark";
-  root.dataset.glass = g.kind;
-  if (thinning(g)) root.dataset.glassThin = "";
-  else delete root.dataset.glassThin;
-  if (g.matchMenu) root.dataset.glassMatch = "";
-  else delete root.dataset.glassMatch;
+  const c: SoulMarkGlass = composeGlass(protoSeeds(g));
   const set = (k: string, v: string) => root.style.setProperty(k, v);
-  set("--glass-rgb", rgbTriplet(c.mark.tokens.bg));
-  set("--glass-panel-rgb", rgbTriplet(c.panel));
-  set("--glass-fill", String(c.fill));
-  set("--glass-blur", `${c.blur.toFixed(1)}px`);
-  set("--glass-smoke-rgb", rgbTriplet(SMOKE));
-  set("--glass-smoke", String(c.smokeBehind));
-  set("--glass-fill-stacked", String(c.stackedFill));
-  const total = Math.round((1 - (1 - c.fill) * (1 - c.stackedFill)) * 100) / 100;
-  set("--glass-fill-total", String(total));
-  const dark = g.lines === "dark";
-  set("--glass-line-rgb", dark ? "0 0 0" : rgbTriplet(c.mark.tokens.fg));
+  for (const [name, value] of Object.entries({ ...cssVariables({ ...c.mark, gradient: undefined }), ...glassVariables(c) }))
+    set(name, value);
+  set("--glass-picture", pictureCss(c.seeds.picture));
+  root.dataset.theme = "soul-mark";
+  root.dataset.glass = c.seeds.kind;
+  if (c.thin) root.dataset.glassThin = "";
+  else delete root.dataset.glassThin;
+  if (g.matchMenu !== false) root.dataset.glassMatch = "";
+  else delete root.dataset.glassMatch;
+  const dark = c.seeds.lines === "dark";
   const sceneLines = dark ? "#000000" : "#ffffff";
   if (root.dataset.sceneLines !== sceneLines) {
     if (dark) root.dataset.sceneLines = sceneLines; else delete root.dataset.sceneLines;
     window.dispatchEvent(new Event("artcraft:scene-line-color"));
   }
-  matchFills = { base: c.fill, stacked: c.stackedFill, total, fg: c.mark.tokens.fg, under: c.mark.tokens.bg };
-  set("--glass-picture", `url("/glass/${g.picture}.jpg")`);
+  matchFills = { base: c.fill, stacked: c.stackedFill, total: c.overWorkFill, fg: c.mark.tokens.fg, under: c.mark.tokens.bg };
   markGlassOverWork();
   window.setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
   root.dataset.glassReport = JSON.stringify({
-    glass: c.glass, fill: c.fill, blur: c.blur, smoke: c.smokeBehind,
-    worst: Math.round(c.worst * 100) / 100, guard: g.guard, fg: c.mark.tokens.fg,
-    stackedFill: c.stackedFill, stackedWorst: Math.round(c.stackedWorst * 100) / 100,
-    channels: channels(c.glass),
+    kind: c.seeds.kind, picture: c.seeds.picture, glass: c.glass, fill: c.fill, stackedFill: c.stackedFill,
+    overWorkFill: c.overWorkFill, thin: c.thin, blur: c.blur, smoke: c.smoke, textFade: c.textFade,
+    accentText: c.mark.tokens.accentText, notes: c.notes.length,
   });
   return true;
 }
@@ -226,18 +122,6 @@ function markGlassOverWork() {
   run();
 }
 
-/** Whether Transparency thins the glass now: set, and (if linked to Frost) while frosted. */
-function thinning(g: GlassProto): boolean {
-  const set = g.transparency != null || g.stackLift != null;
-  const frosted = g.frostOn && g.frost > 0;
-  return set && (g.linked === false || frosted);
-}
-
-function clamp(v: number, lo: number, hi: number) {
-  return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : lo;
-}
-
-
 // ---------------------------------------------------------------------------------------------
 // EXPERIMENT (matchMenu): every workspace surface as see-through as the menu.
 
@@ -277,10 +161,14 @@ function matchPass() {
     // A neutral fill far from the glass (a dark "ink" button on light glass, a black video frame
     // or badge) carries text made for that fill: it stays solid.
     if (contrastRatio(hexOf(r, g, bl), matchFills.under) > 3) { painted.add(el); continue; }
-    let covered = false;
-    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) if (painted.has(p)) { covered = true; break; }
-    const overWork = work.some(({ el: w, r: wr }) => !el.contains(w) && !w.contains(el) && !covered
-      && wr.left < b.right && wr.right > b.left && wr.top < b.bottom && wr.bottom > b.top);
+    // Painted glass under this surface. Glass that also holds the work (the page glass around a
+    // canvas) is drawn beneath the work, so over the work it doesn't count.
+    const glassUnder: Element[] = [];
+    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) if (painted.has(p)) glassUnder.push(p);
+    const overWork = work.some(({ el: w, r: wr }) => !el.contains(w) && !w.contains(el)
+      && wr.left < b.right && wr.right > b.left && wr.top < b.bottom && wr.bottom > b.top
+      && !glassUnder.some((g) => !g.contains(w)));
+    const covered = !overWork && glassUnder.length > 0;
     const fill = overWork ? matchFills.total : covered ? matchFills.stacked : matchFills.base;
     const own = hexOf(r, g, bl);
     el.dataset.glassOrig = "";
