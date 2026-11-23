@@ -19,13 +19,14 @@ const BLACK = "#000000" as Hex;
 const WHITE = "#FFFFFF" as Hex;
 
 describe("Soul Mark: Glass", () => {
-  // One test per glass, darkness and transparency, so a slow machine still reports between them;
+  // One test per glass, darkness and transparency, each letting the runner catch up first;
   // together they cover 2 × every accent × 6 darkness settings × 4 transparencies × 3 frost links.
   describe("the readability sweep: every combination stays readable over black and white", () => {
     for (const kind of ["light", "dark"] as const)
       for (const darkened of [null, 20, 40, 60, 80, 100])
         for (const transparency of [0, 0.09, 0.3, 1])
-          it(`${kind} glass, darkened ${darkened ?? "off"}, transparency ${transparency}`, () => {
+          it(`${kind} glass, darkened ${darkened ?? "off"}, transparency ${transparency}`, async () => {
+            await breathe();
             let checked = 0;
             for (const [, accent] of ALL_ACCENTS)
               for (const [linked, frost] of [[true, 30], [true, 0], [false, 0]] as const) {
@@ -193,4 +194,9 @@ function expectReadable(g: SoulMarkGlass, seeds: GlassSeeds): void {
           expect(contrastRatio(ink, s), `${where}: accent ${ink}`).toBeGreaterThanOrEqual(AA - 1e-9);
         expect(contrastRatio(t.accentLine, s), `${where}: line`).toBeGreaterThanOrEqual(NON_TEXT - 1e-9);
       }
+}
+
+/** Lets the test runner answer its own messages between sweep tests; some runners don't on their own. */
+function breathe(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
 }
