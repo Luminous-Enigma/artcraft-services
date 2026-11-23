@@ -1,5 +1,6 @@
 import { channels, contrastRatio, type Hex, mix, rgbTriplet } from "./contrast";
 import { AA, composeSoulMark, cssVariables, type SoulMark } from "./soul-mark";
+import { workspaceGrid } from "./workspace";
 
 /**
  * PROTOTYPE of Soul Mark: Glass, for the owner's first look. Not the engine: that comes to
@@ -30,6 +31,12 @@ export interface GlassProto {
    * workspace panels) covers than the page alone, 0 to 1. Unset = no thinning (two full layers).
    */
   stackLift?: number;
+  /**
+   * EXPERIMENT (owner's request, to look at): inside a workspace, every surface takes the menu's
+   * fill, the floating tools and glass over work included, and the 3D scene itself turns as
+   * see-through as the menu. Readability over work is then not promised; it is measured.
+   */
+  matchMenu?: boolean;
 }
 
 export const GLASS_PROTO_DEFAULTS: GlassProto = {
@@ -127,6 +134,8 @@ export function applyGlassProto(): boolean {
   root.dataset.glass = g.kind;
   if (g.frostOn && g.frost > 0) root.dataset.glassFrosted = "";
   else delete root.dataset.glassFrosted;
+  if (g.matchMenu) root.dataset.glassMatch = "";
+  else delete root.dataset.glassMatch;
   const set = (k: string, v: string) => root.style.setProperty(k, v);
   set("--glass-rgb", rgbTriplet(c.mark.tokens.bg));
   set("--glass-panel-rgb", rgbTriplet(c.panel));
@@ -135,6 +144,7 @@ export function applyGlassProto(): boolean {
   set("--glass-smoke-rgb", rgbTriplet(SMOKE));
   set("--glass-smoke", String(c.smokeBehind));
   set("--glass-fill-stacked", String(c.stackedFill));
+  set("--glass-fill-total", String(Math.round((1 - (1 - c.fill) * (1 - c.stackedFill)) * 100) / 100));
   set("--glass-picture", `url("/glass/${g.picture}.jpg")`);
   markGlassOverWork();
   root.dataset.glassReport = JSON.stringify({
@@ -174,6 +184,15 @@ function markGlassOverWork() {
     }
   };
   const later = () => { if (!pending) pending = window.setTimeout(run, 300); };
+  // Which page is open: a workspace (theme/workspace.ts), and which one.
+  const mark = () => {
+    const path = window.location.pathname;
+    const root = document.documentElement;
+    if (workspaceGrid(path) !== null) root.dataset.glassWorkspace = path.split("/")[1] ?? "";
+    else delete root.dataset.glassWorkspace;
+  };
+  mark();
+  window.setInterval(mark, 400);
   new MutationObserver(later).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style"] });
   window.addEventListener("resize", later);
   window.addEventListener("scroll", later, true);

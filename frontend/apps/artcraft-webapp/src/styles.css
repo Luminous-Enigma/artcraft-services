@@ -789,3 +789,17 @@ html[data-glass] [role="dialog"] {
 html[data-glass][data-glass-frosted] :is(.bg-ui-background, .bg-background) :is(.bg-sidebar, [class*="bg-ui-panel"], .bg-background):not([data-glass-over-work]):not([role="menu"]):not([role="dialog"]):not([role="listbox"]) {
   background-color: rgb(var(--glass-panel-rgb) / var(--glass-fill-stacked));
 }
+/* PROTOTYPE EXPERIMENT (html[data-glass-match]): inside a workspace, every surface takes the
+   menu's look while frosted: the floating tools and glass over work cover as much as the menu
+   does in all (--glass-fill-total), and the 3D scene itself (grid, floor and objects) turns as
+   see-through as the menu over the page glass under it (--glass-fill-stacked). The page glass
+   is already thinner than the menu and stays as it is. Readability over
+   work is not promised here. */
+html[data-glass][data-glass-frosted][data-glass-match][data-glass-workspace] :is(.glass, [data-glass-over-work]) {
+  background-color: rgb(var(--glass-panel-rgb) / var(--glass-fill-total)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+}
+html[data-glass][data-glass-frosted][data-glass-match][data-glass-workspace="edit-3d"] canvas {
+  opacity: var(--glass-fill-stacked);
+}
