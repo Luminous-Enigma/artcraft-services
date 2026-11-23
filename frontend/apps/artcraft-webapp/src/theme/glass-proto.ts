@@ -25,6 +25,11 @@ export interface GlassProto {
   /** Guard off: the fill is `fill` as given, and shortfalls are logged. */
   guard: boolean;
   fill?: number;
+  /**
+   * While frosted: how much more of the picture glass stacked on the page glass (the side menu,
+   * workspace panels) covers than the page alone, 0 to 1. Unset = no thinning (two full layers).
+   */
+  stackLift?: number;
 }
 
 export const GLASS_PROTO_DEFAULTS: GlassProto = {
@@ -66,6 +71,9 @@ export interface ComposedGlass {
   smokeBehind: number;
   /** Body text over the glass at its worst spot (black or white behind). */
   worst: number;
+  /** The fill of glass stacked on the page glass, and its text at the worst spot. */
+  stackedFill: number;
+  stackedWorst: number;
 }
 
 export function composeGlassProto(g: GlassProto): ComposedGlass {
@@ -86,10 +94,24 @@ export function composeGlassProto(g: GlassProto): ComposedGlass {
       if (worstAt(f) >= AA) { fill = Math.round(f * 100) / 100; break; }
     }
   }
+  // Glass stacked on the page glass sees the picture through the page's fill too, so it can be
+  // thinner and still keep its text readable over pure black or pure white beneath both layers.
+  const { bg, panel } = mark.tokens;
+  const stackedWorstAt = (p: number) =>
+    Math.min(...behind.map((b) => contrastRatio(mix(mix(b, bg, fill), panel, p), fg)));
+  const frosted = g.frostOn && g.frost > 0;
+  let stackedFill = fill;
+  if (frosted && g.stackLift != null) {
+    const total = Math.min(1, fill + clamp(g.stackLift, 0, 1));
+    stackedFill = fill >= 1 ? 0 : Math.max(0, 1 - (1 - total) / (1 - fill));
+    while (g.guard && stackedFill < 1 && stackedWorstAt(stackedFill) < AA) stackedFill = Math.min(1, stackedFill + 0.01);
+    stackedFill = Math.round(stackedFill * 100) / 100;
+  }
   return {
-    mark, glass, panel: mark.tokens.panel, fill,
+    mark, glass, panel, fill,
     blur: g.frostOn ? (g.frost / 100) * MAX_BLUR : 0,
     smokeBehind, worst: worstAt(fill),
+    stackedFill, stackedWorst: stackedWorstAt(stackedFill),
   };
 }
 
@@ -103,6 +125,8 @@ export function applyGlassProto(): boolean {
     root.style.setProperty(name, value);
   root.dataset.theme = "soul-mark";
   root.dataset.glass = g.kind;
+  if (g.frostOn && g.frost > 0) root.dataset.glassFrosted = "";
+  else delete root.dataset.glassFrosted;
   const set = (k: string, v: string) => root.style.setProperty(k, v);
   set("--glass-rgb", rgbTriplet(c.mark.tokens.bg));
   set("--glass-panel-rgb", rgbTriplet(c.panel));
@@ -110,13 +134,50 @@ export function applyGlassProto(): boolean {
   set("--glass-blur", `${c.blur.toFixed(1)}px`);
   set("--glass-smoke-rgb", rgbTriplet(SMOKE));
   set("--glass-smoke", String(c.smokeBehind));
+  set("--glass-fill-stacked", String(c.stackedFill));
   set("--glass-picture", `url("/glass/${g.picture}.jpg")`);
+  markGlassOverWork();
   root.dataset.glassReport = JSON.stringify({
     glass: c.glass, fill: c.fill, blur: c.blur, smoke: c.smokeBehind,
     worst: Math.round(c.worst * 100) / 100, guard: g.guard, fg: c.mark.tokens.fg,
+    stackedFill: c.stackedFill, stackedWorst: Math.round(c.stackedWorst * 100) / 100,
     channels: channels(c.glass),
   });
   return true;
+}
+
+/** Glass that can sit over work: never thinned, since anything can be under it. */
+const GLASS_PANELS = '.bg-sidebar, [class*="bg-ui-panel"], .bg-background';
+const WORK = "canvas, video, img";
+
+/**
+ * Marks glass panels that overlap someone's work (a canvas, video or picture that isn't inside
+ * the panel itself) with data-glass-over-work, so the stacked thinning in styles.css skips them.
+ * Rechecked whenever the page changes, at most every 300 ms.
+ */
+let watching = false;
+function markGlassOverWork() {
+  if (watching || typeof document === "undefined") return;
+  watching = true;
+  let pending = 0;
+  const run = () => {
+    pending = 0;
+    const work = Array.from(document.querySelectorAll<HTMLElement>(WORK))
+      .map((el) => ({ el, r: el.getBoundingClientRect() }))
+      .filter(({ r }) => r.width > 40 && r.height > 40);
+    for (const panel of Array.from(document.querySelectorAll<HTMLElement>(GLASS_PANELS))) {
+      const p = panel.getBoundingClientRect();
+      const over = work.some(({ el, r }) => !panel.contains(el) && !el.contains(panel)
+        && r.left < p.right && r.right > p.left && r.top < p.bottom && r.bottom > p.top);
+      if (over) panel.dataset.glassOverWork = "";
+      else delete panel.dataset.glassOverWork;
+    }
+  };
+  const later = () => { if (!pending) pending = window.setTimeout(run, 300); };
+  new MutationObserver(later).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style"] });
+  window.addEventListener("resize", later);
+  window.addEventListener("scroll", later, true);
+  run();
 }
 
 function clamp(v: number, lo: number, hi: number) {

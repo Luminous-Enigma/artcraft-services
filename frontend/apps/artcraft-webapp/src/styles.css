@@ -781,3 +781,11 @@ html[data-glass] [role="dialog"] {
     backdrop-filter: none;
   }
 }
+/* PROTOTYPE: while frosted, glass stacked on the page glass (the side menu, workspace panels)
+   is thinner: the page glass under it already covers part of the picture. glass-proto.ts works
+   the fill out so text still passes over pure black or pure white beneath both layers. Glass
+   over someone's work (data-glass-over-work) and menus and dialogs, which can open over
+   anything, keep the full fill. */
+html[data-glass][data-glass-frosted] :is(.bg-ui-background, .bg-background) :is(.bg-sidebar, [class*="bg-ui-panel"], .bg-background):not([data-glass-over-work]):not([role="menu"]):not([role="dialog"]):not([role="listbox"]) {
+  background-color: rgb(var(--glass-panel-rgb) / var(--glass-fill-stacked));
+}
