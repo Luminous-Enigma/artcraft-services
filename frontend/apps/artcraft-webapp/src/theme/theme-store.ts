@@ -8,6 +8,7 @@ import {
   sanitizeNeonSeeds,
   type SoulMarkNeon,
 } from "./neon";
+import { applyGlassProto } from "./glass-proto";
 import { GRADIENT_STARTER } from "./presets";
 import {
   composeSoulMark,
@@ -204,6 +205,8 @@ function applyNeon(root: HTMLElement, neon: SoulMarkNeon) {
 
 /** Applies the stored theme now (before the first render) and whenever it changes. */
 export function startTheming() {
+  // PROTOTYPE: Soul Mark: Glass, read from localStorage, takes over while it is on.
+  if (applyGlassProto()) return;
   const s = useThemeStore.getState();
   applyTheme(s.mode, activeSeeds(s));
   useThemeStore.subscribe((s, prev) => {

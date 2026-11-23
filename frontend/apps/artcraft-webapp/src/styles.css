@@ -734,3 +734,50 @@ html[data-neon-menu-grid][data-gradient] [role="dialog"] .bg-ui-controls {
     var(--st-gradient-panel);
   background-size: 32px 32px, 32px 32px, auto;
 }
+
+/* PROTOTYPE: Soul Mark: Glass (theme/glass-proto.ts sets html[data-glass]). A picture sits behind
+   the whole app, under an optional smoke (Darkened). Every surface is glass: a see-through fill
+   in the glass color, at the least opacity that keeps body text at AA over pure black and pure
+   white behind it, plus the Frost blur. The fill alone passes, so without backdrop-filter, or
+   with less transparency asked for, the glass simply turns solid. */
+html[data-glass] body {
+  background-color: rgb(var(--glass-smoke-rgb));
+  background-image:
+    linear-gradient(rgb(var(--glass-smoke-rgb) / var(--glass-smoke)), rgb(var(--glass-smoke-rgb) / var(--glass-smoke))),
+    var(--glass-picture);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+html[data-glass] .bg-ui-background,
+html[data-glass] .bg-background {
+  background-color: rgb(var(--glass-rgb) / var(--glass-fill));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+html[data-glass] [class*="bg-ui-panel"],
+html[data-glass] [class*="bg-ui-modal"],
+html[data-glass] .bg-sidebar,
+html[data-glass] [role="menu"],
+html[data-glass] [role="listbox"],
+html[data-glass] [role="dialog"] {
+  background-color: rgb(var(--glass-panel-rgb) / var(--glass-fill));
+  background-image: none;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 30px rgb(0 0 0 / 0.18);
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-glass] .bg-ui-background,
+  html[data-glass] .bg-background,
+  html[data-glass] [class*="bg-ui-panel"],
+  html[data-glass] [class*="bg-ui-modal"],
+  html[data-glass] .bg-sidebar,
+  html[data-glass] [role="menu"],
+  html[data-glass] [role="listbox"],
+  html[data-glass] [role="dialog"] {
+    background-color: rgb(var(--glass-panel-rgb));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
