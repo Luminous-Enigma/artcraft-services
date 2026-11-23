@@ -37,6 +37,8 @@ export interface GlassProto {
    * see-through as the menu. Readability over work is then not promised; it is measured.
    */
   matchMenu?: boolean;
+  /** 3D guide lines (grid, camera) on glass: the default light, or dark. */
+  lines?: "light" | "dark";
 }
 
 export const GLASS_PROTO_DEFAULTS: GlassProto = {
@@ -146,7 +148,13 @@ export function applyGlassProto(): boolean {
   set("--glass-fill-stacked", String(c.stackedFill));
   const total = Math.round((1 - (1 - c.fill) * (1 - c.stackedFill)) * 100) / 100;
   set("--glass-fill-total", String(total));
-  set("--glass-line-rgb", rgbTriplet(c.mark.tokens.fg));
+  const dark = g.lines === "dark";
+  set("--glass-line-rgb", dark ? "0 0 0" : rgbTriplet(c.mark.tokens.fg));
+  const sceneLines = dark ? "#000000" : "#ffffff";
+  if (root.dataset.sceneLines !== sceneLines) {
+    if (dark) root.dataset.sceneLines = sceneLines; else delete root.dataset.sceneLines;
+    window.dispatchEvent(new Event("artcraft:scene-line-color"));
+  }
   matchFills = { base: c.fill, stacked: c.stackedFill, total, fg: c.mark.tokens.fg, under: c.mark.tokens.bg };
   set("--glass-picture", `url("/glass/${g.picture}.jpg")`);
   markGlassOverWork();

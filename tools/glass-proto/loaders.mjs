@@ -60,6 +60,7 @@ export const WORKSPACES = {
     await tab.waitForTimeout(1500);
   } },
   media: { path: "/media/m_standin4" },
+  "edit-image-empty": { path: "/edit-image" },
 };
 
 export async function openWorkspace(tab, base, name) {

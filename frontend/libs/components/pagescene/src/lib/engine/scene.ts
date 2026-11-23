@@ -49,6 +49,15 @@ export type SceneDeps = {
   onGlbLoaded?: () => void;
 };
 
+/** The editor's guide-line materials (camera frustums), so the theme can recolor them. */
+const SCENE_LINE_MATERIALS = new Set<THREE.LineBasicMaterial>();
+
+/** The guide-line color the app theme asks for (html[data-scene-lines]), else white. */
+function themeLineColor(): string {
+  const v = typeof document !== "undefined" ? document.documentElement.dataset["sceneLines"] : undefined;
+  return v && /^#[0-9a-fA-F]{6}$/.test(v) ? v : "#ffffff";
+}
+
 class Scene {
   name: string;
   gridHelper: InfiniteGridHelper | undefined;
@@ -524,7 +533,8 @@ class Scene {
       tl, tr, tr, br, br, bl, bl, tl, // near rectangle
     ];
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    const material = new THREE.LineBasicMaterial({ color: themeLineColor() });
+    SCENE_LINE_MATERIALS.add(material);
     const lines = new THREE.LineSegments(geometry, material);
     // Disable line raycasting: THREE picks LineSegments with a 1-world-unit
     // threshold, which dwarfs this ~0.7u frustum and selects it from far
@@ -1313,6 +1323,23 @@ class Scene {
     return this.directional_light;
   }
 
+  /**
+   * Lets the app theme recolor the editor's guide lines (the floor grid and the camera frustum):
+   * html[data-scene-lines] holds a hex color, or is absent for the default white. The theme
+   * fires "artcraft:scene-line-color" when it changes. Editor-only lines; renders are unaffected.
+   */
+  _followThemeLineColor() {
+    if (typeof window === "undefined") return;
+    const apply = () => {
+      const c = themeLineColor();
+      const grid = (this.gridHelper as unknown as { material?: THREE.ShaderMaterial } | undefined)?.material;
+      grid?.uniforms?.["uColor"]?.value?.set?.(c);
+      for (const m of SCENE_LINE_MATERIALS) m.color.set(c);
+    };
+    apply();
+    window.addEventListener("artcraft:scene-line-color", apply);
+  }
+
   _createGrid() {
     // Create visual infinite grid
     const size1 = 0.5; // Primary grid
@@ -1323,6 +1350,7 @@ class Scene {
     this.gridHelper = new InfiniteGridHelper(size1, size2, color, distance);
     this.gridHelper.layers.set(1); // Enable default layer
     this.scene.add(this.gridHelper);
+    this._followThemeLineColor();
 
     // Create invisible ground plane for proper object placement
     const planeGeometry = new THREE.PlaneGeometry(300, 300); // Same as original grid size
