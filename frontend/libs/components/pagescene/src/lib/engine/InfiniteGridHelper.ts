@@ -37,6 +37,11 @@ export class InfiniteGridHelper extends THREE.Mesh {
         uFadeStart: {
           value: 0.2,
         },
+        // Line strength. 0.04 suits the default white lines, which add light (additive
+        // blending); dark lines are painted over what's behind (normal blending) and need more.
+        uAlpha: {
+          value: 0.04,
+        },
       },
       transparent: true,
       vertexShader: `
@@ -61,6 +66,7 @@ export class InfiniteGridHelper extends THREE.Mesh {
                 uniform float uDistance;
                 uniform float uFadeStrength;
                 uniform float uFadeStart;
+                uniform float uAlpha;
                 
                 float getGrid(float size) {
                     vec2 r = worldPosition.${planeAxes} / size;
@@ -79,7 +85,7 @@ export class InfiniteGridHelper extends THREE.Mesh {
                     
                     float grid = mix(g2 * 0.1, g1, g1);
                     
-                    gl_FragColor = vec4(uColor.rgb, grid * fadeOut * 0.04);
+                    gl_FragColor = vec4(uColor.rgb, grid * fadeOut * uAlpha);
                     gl_FragColor.a = mix(0.5 * gl_FragColor.a, gl_FragColor.a, g2);
                     
                     if (gl_FragColor.a <= 0.0) discard;

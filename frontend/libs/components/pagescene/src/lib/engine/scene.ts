@@ -1334,6 +1334,14 @@ class Scene {
       const c = themeLineColor();
       const grid = (this.gridHelper as unknown as { material?: THREE.ShaderMaterial } | undefined)?.material;
       grid?.uniforms?.["uColor"]?.value?.set?.(c);
+      // White lines add light; dark lines can't (adding black adds nothing), so they are
+      // painted over the scene instead, stronger.
+      if (grid) {
+        const dark = new THREE.Color(c).getHSL({ h: 0, s: 0, l: 0 }).l < 0.5;
+        grid.blending = dark ? THREE.NormalBlending : THREE.AdditiveBlending;
+        if (grid.uniforms?.["uAlpha"]) grid.uniforms["uAlpha"].value = dark ? 0.55 : 0.04;
+        grid.needsUpdate = true;
+      }
       for (const m of SCENE_LINE_MATERIALS) m.color.set(c);
     };
     apply();
