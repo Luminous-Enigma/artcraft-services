@@ -50,7 +50,16 @@ import {
   NEON_SIGNATURES,
 } from "../../theme/neon-presets";
 import {
+  decodeGlass,
+  encodeGlass,
+  type GlassNote,
+  type GlassSeeds,
+} from "../../theme/glass";
+import { GLASS_PICTURES, GLASS_SIGNATURES } from "../../theme/glass-presets";
+import { CUSTOM_PICTURE_KEY, saveCustomPicture } from "../../theme/glass-adapter";
+import {
   type ThemeMode,
+  useGlassMark,
   useGradientMark,
   useNeonMark,
   useSolidMark,
@@ -91,11 +100,13 @@ export function AppearanceSection() {
           <SoulMarkCard active={mode === "soul-mark"} onSelect={setMode} />
           <GradientsCard active={mode === "gradients"} onSelect={setMode} />
           <NeonCard active={mode === "neon"} onSelect={setMode} />
+          <GlassCard active={mode === "glass"} onSelect={setMode} />
         </div>
       </div>
       {mode === "soul-mark" && <SoulMarkControls kind="solid" />}
       {mode === "gradients" && <SoulMarkControls kind="gradient" />}
       {mode === "neon" && <NeonControls />}
+      {mode === "glass" && <GlassControls />}
     </div>
   );
 }
@@ -925,17 +936,23 @@ function Chip({ hex }: { hex: Hex }) {
   );
 }
 
-function ThemeCode({ seeds }: { seeds: SoulMarkSeeds | NeonSeeds }) {
+function ThemeCode({ seeds }: { seeds: SoulMarkSeeds | NeonSeeds | GlassSeeds }) {
   const setSeeds = useThemeStore((s) => s.setSeeds);
   const setGradientSeeds = useThemeStore((s) => s.setGradientSeeds);
   const setMode = useThemeStore((s) => s.setMode);
   const code =
-    "glow" in seeds ? encodeNeon(seeds as NeonSeeds) : encodeSeeds(seeds);
+    "transparency" in seeds
+      ? encodeGlass(seeds as GlassSeeds)
+      : "glow" in seeds
+        ? encodeNeon(seeds as NeonSeeds)
+        : encodeSeeds(seeds as SoulMarkSeeds);
+  const setGlassSeeds = useThemeStore((s) => s.setGlassSeeds);
   const [pasted, setPasted] = useState("");
   const [copied, setCopied] = useState(false);
   const setNeonSeeds = useThemeStore((s) => s.setNeonSeeds);
   const decoded = pasted ? decodeSeeds(pasted) : null;
   const decodedNeon = pasted ? decodeNeon(pasted) : null;
+  const decodedGlass = pasted ? decodeGlass(pasted) : null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -970,17 +987,21 @@ function ThemeCode({ seeds }: { seeds: SoulMarkSeeds | NeonSeeds }) {
           type="text"
           value={pasted}
           onChange={(e) => setPasted(e.target.value)}
-          placeholder="SM1-…, SM2-… or SM3-…"
+          placeholder="SM1-… to SM4-…"
           aria-label="Paste a theme code"
           spellCheck={false}
           className="h-8 w-56 border border-white/15 bg-ui-sunken px-2 font-mono text-xs text-white placeholder:text-white/40"
         />
         <button
           type="button"
-          disabled={!decoded && !decodedNeon}
+          disabled={!decoded && !decodedNeon && !decodedGlass}
           onClick={() => {
-            // A neon code (SM3) opens Neon; a gradient code (SM2) opens Gradients; a solid one (SM1) opens Soul Mark.
-            if (decodedNeon) {
+            // A glass code (SM4) opens Glass; a neon code (SM3) Neon; a gradient code (SM2)
+            // Gradients; a solid one (SM1) Soul Mark.
+            if (decodedGlass) {
+              setGlassSeeds(decodedGlass);
+              setMode("glass");
+            } else if (decodedNeon) {
               setNeonSeeds(decodedNeon);
               setMode("neon");
             } else if (decoded && themeForSeeds(decoded) === "gradients") {
@@ -996,7 +1017,7 @@ function ThemeCode({ seeds }: { seeds: SoulMarkSeeds | NeonSeeds }) {
         >
           Use code
         </button>
-        {pasted && !decoded && !decodedNeon && (
+        {pasted && !decoded && !decodedNeon && !decodedGlass && (
           <span className="text-xs text-white/60">Not a Soul Mark code</span>
         )}
       </div>
@@ -1318,6 +1339,367 @@ function AboutNeon() {
         holographic workshop of a sci-fi engineer. The glow lights the edges,
         never the words, and every text is checked beside it and over the grid,
         so it stays easy to read.
+      </p>
+    </div>
+  );
+}
+
+// ── Soul Mark: Glass ──────────────────────────────────────────────────────────
+
+/** What a picture looks like in a small swatch: a fade as its gradient, a starter as its file. */
+function pictureSwatch(id: string): string {
+  const p = GLASS_PICTURES.find((x) => x.id === id);
+  if (p?.kind === "fade" && p.colors) return gradientCss("vertical", p.colors);
+  if (id === "custom") return "linear-gradient(135deg, #9aa4b2, #3b4250)";
+  return `center / cover url("/glass/${p ? p.id : "quartz"}.jpg")`;
+}
+
+function GlassCard({
+  active,
+  onSelect,
+}: {
+  active: boolean;
+  onSelect: (m: ThemeMode) => void;
+}) {
+  const g = useGlassMark();
+  return (
+    <ModeCard
+      mode="glass"
+      active={active}
+      onSelect={onSelect}
+      title="Soul Mark: Glass"
+      subtitle="See-through glass"
+      swatch={[g.glass, g.mark.tokens.panel, g.mark.tokens.accent]}
+      firstSwatch={pictureSwatch(g.seeds.picture)}
+    />
+  );
+}
+
+function GlassControls() {
+  const seeds = useThemeStore((s) => s.glassSeeds);
+  const setSeeds = useThemeStore((s) => s.setGlassSeeds);
+  const resetSeeds = useThemeStore((s) => s.resetGlassSeeds);
+  const g = useGlassMark();
+  const guard = seeds.guard !== false;
+  const pct = (v: number) => `${Math.round(v * 100)}%`;
+
+  return (
+    <div className="space-y-5 border-t border-white/15 pt-4">
+      <SignatureGlass seeds={seeds} onPick={(n) => setSeeds(n)} />
+      <div className="flex flex-col gap-0.5 border-t border-white/15 pt-4">
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+          Mark it with your own taste
+        </p>
+        <p className="text-xs opacity-70">
+          Or make your own: clear or charcoal glass, a picture behind it, and
+          how frosted, see-through and smoky it is.
+        </p>
+      </div>
+      <GuardSwitch guard={guard} setGuard={(on) => setSeeds({ guard: on })} />
+      <div className="flex flex-col gap-2">
+        <Label title="Glass" hint="Clear glass with dark text, or charcoal glass with light text." />
+        <div className="flex gap-1.5">
+          {(["light", "dark"] as const).map((k) => (
+            <button
+              key={k}
+              type="button"
+              aria-pressed={seeds.kind === k}
+              onClick={() => setSeeds(k === "dark" ? { kind: k, lines: "light" } : { kind: k })}
+              className={twMerge(
+                "h-8 border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]",
+                seeds.kind === k && "border-primary bg-white/10 text-white",
+              )}
+            >
+              {k === "light" ? "Light" : "Dark"}
+            </button>
+          ))}
+        </div>
+      </div>
+      <PicturePicker picture={seeds.picture} onPick={(picture) => setSeeds({ picture })} />
+      <ColorField
+        title="Accent"
+        hint="Buttons like Generate, selections and highlights. On glass, its text takes a deeper or lighter shade of the same color so it reads over any picture."
+        value={seeds.accent}
+        presets={[["Classic", ACCENTS], ["Wheel", WHEEL]]}
+        onChange={(accent) => setSeeds({ accent })}
+      />
+      <Slider
+        title="Frost"
+        hint="How frosted the glass is: 0 shows the picture sharp, 100 blurs it soft. It never changes how readable the text is."
+        on={seeds.frostOn}
+        setOn={(frostOn) => setSeeds({ frostOn })}
+        value={seeds.frost}
+        onChange={(frost) => setSeeds({ frost })}
+        left="Clear"
+        right="Frosted"
+      />
+      <Slider
+        title="Transparency"
+        hint={
+          seeds.linked && !(seeds.frostOn && seeds.frost > 0)
+            ? "Linked to Frost, and Frost is off: menus and panels are a full layer of glass. Turn Frost on, or unlink, to use this."
+            : "How much the side menu, panels and every tool cover the picture. Lower is more see-through; the guard thickens it only as far as text needs."
+        }
+        value={Math.round(seeds.transparency * 100)}
+        onChange={(v) => setSeeds({ transparency: v / 100 })}
+        left="See-through"
+        right="Solid"
+      />
+      <div className="flex items-start justify-between gap-4">
+        <Label
+          title="Link Transparency to Frost"
+          hint="Linked, Transparency applies only while the glass is frosted (9% and 30% to start). Unlinked, set them apart and tinker freely."
+        />
+        <Switch enabled={seeds.linked} setEnabled={(linked) => setSeeds({ linked })} offClassName="bg-white/20" />
+      </div>
+      <Slider
+        title="Darkened"
+        hint="A smoky tint, like glasses that darken, except you choose when. It darkens the glass and the picture behind it."
+        on={seeds.darkOn}
+        setOn={(darkOn) => setSeeds({ darkOn })}
+        value={seeds.darkened}
+        onChange={(darkened) => setSeeds({ darkened })}
+        left="Clear"
+        right="Smoky"
+      />
+      <div className="flex flex-col gap-2">
+        <Label
+          title="3D lines"
+          hint={
+            seeds.kind === "light"
+              ? "The 3D editor's grid and camera lines: light, or dark for a crisp line on light glass."
+              : "The 3D editor's grid and camera lines. Dark lines are for light glass."
+          }
+        />
+        <div className="flex gap-1.5">
+          {(["light", "dark"] as const).map((l) => (
+            <button
+              key={l}
+              type="button"
+              disabled={l === "dark" && seeds.kind === "dark"}
+              aria-pressed={seeds.lines === l}
+              onClick={() => setSeeds({ lines: l })}
+              className={twMerge(
+                "h-8 border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06] disabled:opacity-40",
+                seeds.lines === l && "border-primary bg-white/10 text-white",
+              )}
+            >
+              {l === "light" ? "Light" : "Dark"}
+            </button>
+          ))}
+        </div>
+      </div>
+      <p className="flex items-start gap-2 text-xs text-white/80">
+        <ShieldCheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        <span>
+          Measured over black and white behind the glass: the page {pct(g.fill)}, menus and
+          panels {pct(g.stackedFill)}, glass over your work {pct(g.overWorkFill)}. Every text
+          stays readable over any picture.
+        </span>
+      </p>
+      {!guard && <Shortfalls shortfalls={g.shortfalls} />}
+      <GlassNotes notes={[...g.mark.notes.map((n) => ({ ...n, seed: "text" as const })), ...g.notes]} />
+      <ThemeCode seeds={seeds} />
+      <button
+        type="button"
+        onClick={resetSeeds}
+        className="flex h-8 items-center gap-2 border border-white/15 px-3 text-xs text-white/70 hover:bg-white/[0.06]"
+      >
+        <WandIcon className="h-3.5 w-3.5" />
+        Start again from Quartz
+      </button>
+      <AboutGlass />
+    </div>
+  );
+}
+
+/** A 0 to 100 bar, with an optional on/off switch beside its title. */
+function Slider({
+  title,
+  hint,
+  on,
+  setOn,
+  value,
+  onChange,
+  left,
+  right,
+}: {
+  title: string;
+  hint: string;
+  on?: boolean;
+  setOn?: (on: boolean) => void;
+  value: number;
+  onChange: (v: number) => void;
+  left: string;
+  right: string;
+}) {
+  const enabled = on ?? true;
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-start justify-between gap-4">
+        <Label title={title} hint={hint} />
+        {setOn && <Switch enabled={enabled} setEnabled={setOn} offClassName="bg-white/20" />}
+      </div>
+      <div className={twMerge("flex items-center gap-3", !enabled && "opacity-40")}>
+        <span className="text-xs text-white/60">{left}</span>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={value}
+          disabled={!enabled}
+          onChange={(e) => onChange(Number(e.target.value))}
+          aria-label={title}
+          className="flex-1 accent-primary"
+        />
+        <span className="w-8 text-right font-mono text-xs text-white/60">{value}</span>
+        <span className="text-xs text-white/60">{right}</span>
+      </div>
+    </div>
+  );
+}
+
+/** The starter pictures and fades, plus the person's own, fitted to their screen. */
+function PicturePicker({ picture, onPick }: { picture: string; onPick: (id: string) => void }) {
+  const [error, setError] = useState("");
+  const [hasOwn, setHasOwn] = useState(() => {
+    try {
+      return !!localStorage.getItem(CUSTOM_PICTURE_KEY);
+    } catch {
+      return false;
+    }
+  });
+  return (
+    <div className="flex flex-col gap-2">
+      <Label
+        title="Picture"
+        hint="What the glass sits over. Any picture works: the text is checked against the darkest and lightest thing behind the glass, so it never depends on the picture."
+      />
+      <div className="flex flex-wrap gap-1.5">
+        {[...GLASS_PICTURES, ...(hasOwn ? [{ id: "custom", name: "Yours" }] : [])].map((p) => (
+          <button
+            key={p.id}
+            type="button"
+            aria-pressed={picture === p.id}
+            onClick={() => onPick(p.id)}
+            className={twMerge(
+              "flex h-8 items-center gap-1.5 border border-white/15 pl-1 pr-2.5 text-xs text-white/70 hover:bg-white/[0.06]",
+              picture === p.id && "border-primary bg-white/10 text-white",
+            )}
+          >
+            <span
+              aria-hidden
+              className="h-6 w-6 rounded-[2px] border border-white/20"
+              style={{
+                background:
+                  p.id === "custom" ? `center / cover url("${localStorage.getItem(CUSTOM_PICTURE_KEY) ?? ""}")` : pictureSwatch(p.id),
+              }}
+            />
+            {p.name}
+          </button>
+        ))}
+        <label className="flex h-8 cursor-pointer items-center border border-dashed border-white/25 px-2.5 text-xs text-white/70 hover:bg-white/[0.06]">
+          Upload your own
+          <input
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (!file) return;
+              try {
+                setError("");
+                await saveCustomPicture(file);
+                setHasOwn(true);
+                onPick("custom");
+              } catch (err) {
+                setError(err instanceof Error ? err.message : "That picture couldn't be used.");
+              }
+            }}
+          />
+        </label>
+      </div>
+      {error && <p className="text-xs text-white/70">{error}</p>}
+    </div>
+  );
+}
+
+/** Whole Glass looks in one tap. */
+function SignatureGlass({
+  seeds,
+  onPick,
+}: {
+  seeds: GlassSeeds;
+  onPick: (n: Partial<GlassSeeds>) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <Label
+        title="Signature looks"
+        hint="Ready-made glass. Tap one to use it; change anything after."
+      />
+      <div className="flex flex-wrap gap-2">
+        {GLASS_SIGNATURES.map(({ name, ...n }) => {
+          const on =
+            seeds.kind === n.kind &&
+            seeds.picture === n.picture &&
+            seeds.accent === n.accent &&
+            seeds.darkOn === n.darkOn &&
+            (!n.darkOn || seeds.darkened === n.darkened);
+          return (
+            <button
+              key={name}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onPick(n)}
+              className={twMerge(
+                "flex items-center gap-2 rounded-[3px] border border-white/15 py-1.5 pl-1.5 pr-3 text-xs text-white/80 transition-colors hover:bg-white/10",
+                on && "border-primary bg-white/10 text-white",
+              )}
+            >
+              <span
+                aria-hidden
+                className="h-6 w-6 shrink-0 rounded-full border border-white/20"
+                style={{ background: pictureSwatch(n.picture) }}
+              />
+              {name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** What the guard did on glass, in plain words. */
+function GlassNotes({ notes }: { notes: GlassNote[] }) {
+  if (!notes.length) return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      {notes.map((n, i) => (
+        <p key={`${n.seed}-${i}`} className="flex items-start gap-2 text-xs text-white/80">
+          <ShieldCheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          <span>{n.message}</span>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+/** Why Glass exists, in a few words, at the very bottom of its panel. */
+function AboutGlass() {
+  return (
+    <div className="flex flex-col gap-1 border-t border-white/15 pt-4">
+      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+        About Soul Mark: Glass
+      </p>
+      <p className="text-xs leading-relaxed opacity-70">
+        For anyone who wants to explore how far the design and the work
+        limits of the app, their workspace and their own experience can go.
+        Purely for fun, and because it's cool. However clear you make it,
+        every text is checked over the darkest and the lightest thing that
+        could be behind the glass, so it stays easy to read.
       </p>
     </div>
   );

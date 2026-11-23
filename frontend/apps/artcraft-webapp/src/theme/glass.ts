@@ -213,16 +213,19 @@ export function composeGlass(raw: GlassSeeds): SoulMarkGlass {
     for (const m of [...pageMeasurements(tokens, fill), ...stackedMeasurements(tokens, fill, stackedFill)])
       if (m.ratio < m.floor - 1e-9) shortfalls.push({ label: m.what, ratio: m.ratio, floor: m.floor });
   }
-  for (const k of ACCENT_KEYS)
-    if (tokens[k] !== t[k])
-      notes.push({
-        kind: "adjusted",
-        seed: "text",
-        chosen: t[k],
-        used: tokens[k],
-        message: `The accent's ${k} is a shade ${shadeWord(t[k], tokens[k])} on glass so it stays readable.`,
-      });
-  if (textFade !== t.textFade)
+  // One note for the accent, in plain words, however many of its shades moved.
+  const moved = ACCENT_KEYS.filter((k) => tokens[k] !== t[k]);
+  if (moved.length)
+    notes.push({
+      kind: "adjusted",
+      seed: "text",
+      chosen: t.accentText,
+      used: tokens.accentText,
+      message: `Links, selections and other accent-colored text and lines take a ${shadeWord(t[moved[0]], tokens[moved[0]])} shade of your accent on glass, so they read over any picture.`,
+    });
+  // Faded captions: said once. The base theme already says it when it strengthened them too.
+  const baseSaidIt = mark.notes.some((n) => /faded text/i.test(n.message));
+  if (textFade !== t.textFade && !baseSaidIt)
     notes.push({
       kind: "adjusted",
       seed: "text",
@@ -306,7 +309,7 @@ export function fitAccent(t: SoulMarkTokens, fill: number): SoulMarkTokens {
   return out;
 }
 
-function shadeWord(from: Hex, to: Hex): string {
+function shadeWord(from: Hex, to: Hex): "deeper" | "lighter" {
   const l = (h: Hex) => contrastRatio(h, "#000000");
   return l(to) < l(from) ? "deeper" : "lighter";
 }

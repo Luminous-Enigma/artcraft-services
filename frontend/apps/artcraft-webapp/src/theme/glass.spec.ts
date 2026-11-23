@@ -87,6 +87,13 @@ describe("Soul Mark: Glass", () => {
       for (const kind of ["light", "dark"] as const) expect(composeGlass({ ...GLASS_STARTER, kind }).textFade).toBeGreaterThanOrEqual(MIN_TEXT_FADE - 1e-9);
     });
 
+    it("say what moved in plain words, once for the accent", () => {
+      const g = composeGlass(GLASS_STARTER);
+      const accent = g.notes.filter((n) => n.message.includes("accent"));
+      expect(accent).toHaveLength(1);
+      for (const n of g.notes) expect(n.message, n.message).not.toMatch(/accent(Text|Ink|Line|300|400)|textFade/);
+    });
+
     it("dark 3D lines on dark glass come with a note", () => {
       const g = composeGlass({ ...GLASS_STARTER, kind: "dark", lines: "dark" });
       expect(g.lines).toBe("#000000");

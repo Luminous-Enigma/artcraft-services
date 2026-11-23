@@ -1,81 +1,103 @@
 import { contrastRatio, type Hex, mix } from "./contrast";
-import { composeGlass, GLASS_STARTER, type GlassSeeds, glassVariables, type SoulMarkGlass } from "./glass";
-import { GLASS_PICTURES, GLASS_SIGNATURES } from "./glass-presets";
+import { type SoulMarkGlass, glassVariables } from "./glass";
+import { GLASS_PICTURES } from "./glass-presets";
 import { AA, cssVariables } from "./soul-mark";
 import { workspaceGrid } from "./workspace";
 
 /**
- * PROTOTYPE adapter for Soul Mark: Glass, for the owner's review. Every number comes from the
- * engine (glass.ts, copied from Soul-Mark-Themes): the glass color, each layer's fill, the
- * accent fitted to the glass, the blur and the smoke. What's left here is the app's side:
- * reading the setting from localStorage ("artcraft-glass-proto"; there is no picker card yet),
- * finding glass over work, and the match-the-menu pass for workspaces.
+ * Soul Mark: Glass in ArtCraft: the app's side of it. The engine (glass.ts) decides every color
+ * and how much of the picture each layer covers; this puts that on the page:
+ * - the picture behind the glass (a starter, a fade, or the person's own, fitted to the window),
+ * - the glass layers' variables and the data-* switches styles.css reads,
+ * - finding glass that sits over someone's work, and matching every workspace surface to the
+ *   menu, measuring each changed surface's text over pure black and white beneath,
+ * - the 3D editor's see-through scene and its guide-line color.
  */
-export interface GlassProto extends Partial<GlassSeeds> {
-  on: boolean;
-  /** A signature look by name; its seeds come first, the other fields override them. */
-  signature?: string;
-  /** Inside a workspace, every neutral surface is set the way the menu is (owner's choice). */
-  matchMenu?: boolean;
-}
 
-export const GLASS_PROTO_DEFAULTS: GlassProto = { on: false, matchMenu: true };
+/** Where a person's own picture is kept on this device (fitted to their screen, as a JPEG). */
+export const CUSTOM_PICTURE_KEY = "artcraft-glass-picture";
 
-export function readGlassProto(): GlassProto {
-  try {
-    const raw = JSON.parse(localStorage.getItem("artcraft-glass-proto") ?? "null");
-    return raw && typeof raw === "object" ? { ...GLASS_PROTO_DEFAULTS, ...raw } : GLASS_PROTO_DEFAULTS;
-  } catch {
-    return GLASS_PROTO_DEFAULTS;
-  }
-}
-
-/** The seeds the prototype draws with: a signature's (if named), then any fields set. */
-export function protoSeeds(g: GlassProto): GlassSeeds {
-  const sig = g.signature ? GLASS_SIGNATURES.find((s) => s.name.toLowerCase() === g.signature!.toLowerCase()) : undefined;
-  const { on: _on, signature: _s, matchMenu: _m, ...fields } = g;
-  const { name: _name, ...sigSeeds } = sig ?? { name: "" };
-  return { ...GLASS_STARTER, ...sigSeeds, ...fields } as GlassSeeds;
-}
-
-/** The picture behind the glass, as CSS: a starter's file, or a fade as a gradient. */
-function pictureCss(id: string): string {
-  const p = GLASS_PICTURES.find((x) => x.id === id);
-  if (p?.kind === "fade" && p.colors) return `linear-gradient(to bottom, ${p.colors.join(", ")})`;
-  return `url("/glass/${/^[a-z0-9-]{1,32}$/.test(id) ? id : "quartz"}.jpg")`;
-}
-
-/** Sets the glass on <html>. Returns false when the prototype is off. */
-export function applyGlassProto(): boolean {
-  const g = readGlassProto();
-  const root = document.documentElement;
-  if (!g.on) { delete root.dataset.glass; return false; }
-  const c: SoulMarkGlass = composeGlass(protoSeeds(g));
-  const set = (k: string, v: string) => root.style.setProperty(k, v);
-  for (const [name, value] of Object.entries({ ...cssVariables({ ...c.mark, gradient: undefined }), ...glassVariables(c) }))
-    set(name, value);
-  set("--glass-picture", pictureCss(c.seeds.picture));
-  root.dataset.theme = "soul-mark";
+/** Sets Glass on <html>; returns the variable names it set, for the theme store to clear later. */
+export function applyGlass(root: HTMLElement, c: SoulMarkGlass): string[] {
+  const vars: Record<string, string> = {
+    ...cssVariables({ ...c.mark, gradient: undefined }),
+    ...glassVariables(c),
+    "--glass-picture": pictureCss(c.seeds.picture),
+  };
+  for (const [name, value] of Object.entries(vars)) root.style.setProperty(name, value);
   root.dataset.glass = c.seeds.kind;
+  root.dataset.glassMatch = "";
   if (c.thin) root.dataset.glassThin = "";
   else delete root.dataset.glassThin;
-  if (g.matchMenu !== false) root.dataset.glassMatch = "";
-  else delete root.dataset.glassMatch;
-  const dark = c.seeds.lines === "dark";
-  const sceneLines = dark ? "#000000" : "#ffffff";
-  if (root.dataset.sceneLines !== sceneLines) {
-    if (dark) root.dataset.sceneLines = sceneLines; else delete root.dataset.sceneLines;
-    window.dispatchEvent(new Event("artcraft:scene-line-color"));
-  }
+  setSceneLines(c.seeds.lines === "dark" ? "#000000" : null);
   matchFills = { base: c.fill, stacked: c.stackedFill, total: c.overWorkFill, fg: c.mark.tokens.fg, under: c.mark.tokens.bg };
   markGlassOverWork();
   window.setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
-  root.dataset.glassReport = JSON.stringify({
-    kind: c.seeds.kind, picture: c.seeds.picture, glass: c.glass, fill: c.fill, stackedFill: c.stackedFill,
-    overWorkFill: c.overWorkFill, thin: c.thin, blur: c.blur, smoke: c.smoke, textFade: c.textFade,
-    accentText: c.mark.tokens.accentText, notes: c.notes.length,
-  });
-  return true;
+  return Object.keys(vars);
+}
+
+/** Takes Glass off <html>. */
+export function clearGlass(root: HTMLElement) {
+  for (const k of ["glass", "glassMatch", "glassThin", "glassMatchReport"]) delete root.dataset[k];
+  setSceneLines(null);
+  matchPass();
+}
+
+/** The picture behind the glass, as CSS: a starter's file, a fade as a gradient, or one's own. */
+function pictureCss(id: string): string {
+  if (id === "custom") {
+    try {
+      const own = localStorage.getItem(CUSTOM_PICTURE_KEY);
+      if (own && own.startsWith("data:image/jpeg;base64,")) return `url("${own}")`;
+    } catch {
+      // No storage: fall back to the starter below.
+    }
+    id = "quartz";
+  }
+  const p = GLASS_PICTURES.find((x) => x.id === id);
+  if (p?.kind === "fade" && p.colors) return `linear-gradient(to bottom, ${p.colors.join(", ")})`;
+  return `url("/glass/${p ? p.id : "quartz"}.jpg")`;
+}
+
+/**
+ * A person's own picture, fitted to their screen: scaled to cover the window at its largest
+ * (device pixels, at most 2560 wide), centered, saved as a JPEG on this device. Big uploads stay
+ * light; small ones are scaled up. Readability never depends on it.
+ */
+export async function saveCustomPicture(file: File): Promise<void> {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise<HTMLImageElement>((ok, fail) => {
+      const i = new Image();
+      i.onload = () => ok(i);
+      i.onerror = () => fail(new Error("That file isn't a picture this browser can open."));
+      i.src = url;
+    });
+    const scale = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.min(2560, Math.round(window.screen.width * scale));
+    const h = Math.round((w * window.screen.height) / window.screen.width);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("This browser can't fit the picture.");
+    const cover = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    const dw = img.naturalWidth * cover;
+    const dh = img.naturalHeight * cover;
+    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    localStorage.setItem(CUSTOM_PICTURE_KEY, canvas.toDataURL("image/jpeg", 0.82));
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function setSceneLines(color: string | null) {
+  const root = document.documentElement;
+  const want = color ?? undefined;
+  if (root.dataset.sceneLines === want) return;
+  if (want) root.dataset.sceneLines = want;
+  else delete root.dataset.sceneLines;
+  window.dispatchEvent(new Event("artcraft:scene-line-color"));
 }
 
 /** Glass that can sit over work: never thinned, since anything can be under it. */
@@ -123,9 +145,9 @@ function markGlassOverWork() {
 }
 
 // ---------------------------------------------------------------------------------------------
-// EXPERIMENT (matchMenu): every workspace surface as see-through as the menu.
+// Every workspace surface as see-through as the menu (the owner's choice, round 4).
 
-/** The fills the match pass uses, set by applyGlassProto. */
+/** The fills the match pass uses, set by applyGlass. */
 let matchFills = { base: 1, stacked: 1, total: 1, fg: "#FFFFFF" as Hex, under: "#000000" as Hex };
 
 /**
@@ -203,11 +225,11 @@ function hexOf(r: number, g: number, b: number): Hex {
 }
 
 /**
- * 3D: while the experiment is on, the scene's own background is cleared to see-through, so the
- * grid, floor lines and objects keep their full strength over the glass behind them. WebGL
- * contexts are asked for an alpha channel, and clears are made transparent on /edit-3d only.
+ * 3D: while Glass is on, the scene's own background is cleared to see-through, so the grid, floor
+ * lines and objects keep their full strength over the glass behind them. WebGL contexts are asked
+ * for an alpha channel, and clears are made transparent on /edit-3d only while Glass is on.
  */
-if (typeof window !== "undefined" && readGlassProto().on) {
+if (typeof window !== "undefined") {
   const getContext = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, attrs?: unknown) {
     const webgl = type === "webgl" || type === "webgl2";
@@ -216,7 +238,7 @@ if (typeof window !== "undefined" && readGlassProto().on) {
       const gl = ctx as WebGLRenderingContext & { __glassClear?: boolean };
       const clearColor = gl.clearColor.bind(gl);
       gl.clearColor = (r, g, b, a) => {
-        const see = document.documentElement.hasAttribute("data-glass-match") && window.location.pathname.startsWith("/edit-3d");
+        const see = document.documentElement.hasAttribute("data-glass") && window.location.pathname.startsWith("/edit-3d");
         return see ? clearColor(0, 0, 0, 0) : clearColor(r, g, b, a);
       };
       gl.__glassClear = true;
@@ -225,10 +247,3 @@ if (typeof window !== "undefined" && readGlassProto().on) {
   } as typeof HTMLCanvasElement.prototype.getContext;
 }
 
-// PROTOTYPE only: lets the screenshot tools change the glass live, so loaded work isn't lost.
-if (typeof window !== "undefined") {
-  (window as unknown as { __setGlassProto?: (g: Partial<GlassProto>) => void }).__setGlassProto = (g) => {
-    localStorage.setItem("artcraft-glass-proto", JSON.stringify({ ...readGlassProto(), ...g }));
-    applyGlassProto();
-  };
-}

@@ -735,7 +735,7 @@ html[data-neon-menu-grid][data-gradient] [role="dialog"] .bg-ui-controls {
   background-size: 32px 32px, 32px 32px, auto;
 }
 
-/* PROTOTYPE: Soul Mark: Glass (theme/glass-proto.ts sets html[data-glass]). A picture sits behind
+/* Soul Mark: Glass (theme/glass-adapter.ts sets html[data-glass]; theme/glass.ts decides the values). A picture sits behind
    the whole app, under an optional smoke (Darkened). Every surface is glass: a see-through fill
    in the glass color, at the least opacity that keeps body text at AA over pure black and pure
    white behind it, plus the Frost blur. The fill alone passes, so without backdrop-filter, or
@@ -781,15 +781,15 @@ html[data-glass] [role="dialog"] {
     backdrop-filter: none;
   }
 }
-/* PROTOTYPE: with Transparency set (any Frost), glass stacked on the page glass (the side menu, workspace panels)
-   is thinner: the page glass under it already covers part of the picture. glass-proto.ts works
+/* Glass: with Transparency on (linked: while frosted), glass stacked on the page glass (the side menu, workspace panels)
+   is thinner: the page glass under it already covers part of the picture. glass.ts works
    the fill out so text still passes over pure black or pure white beneath both layers. Glass
    over someone's work (data-glass-over-work) and menus and dialogs, which can open over
    anything, keep the full fill. */
 html[data-glass][data-glass-thin] :is(.bg-ui-background, .bg-background) :is(.bg-sidebar, [class*="bg-ui-panel"], .bg-background):not([data-glass-over-work]):not([role="menu"]):not([role="dialog"]):not([role="listbox"]) {
   background-color: rgb(var(--glass-panel-rgb) / var(--glass-fill-stacked));
 }
-/* PROTOTYPE EXPERIMENT (html[data-glass-match]): inside a workspace, every surface takes the
+/* Glass in workspaces (html[data-glass-match], the owner's choice): inside a workspace, every surface takes the
    menu's look while frosted: the floating tools and glass over work cover as much as the menu
    does in all (--glass-fill-total), and the 3D scene itself (grid, floor and objects) turns as
    see-through as the menu over the page glass under it (--glass-fill-stacked). The page glass
@@ -800,9 +800,9 @@ html[data-glass][data-glass-thin][data-glass-match][data-glass-workspace] :is(.g
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
   backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
 }
-/* 3D: the scene's background is cleared to see-through (glass-proto.ts), so its lines keep full
+/* 3D: the scene's background is cleared to see-through (glass-adapter.ts), so its lines keep full
    strength; the glass behind the scene takes the menu's fill, and every line gets a thin outline
-   in the text color so the grid, floor and camera read bolder over the picture. */
+   in the line color so the grid, floor and camera read bolder over the picture. */
 html[data-glass][data-glass-thin][data-glass-match][data-glass-workspace="edit-3d"] :has(> canvas) {
   background-color: rgb(var(--glass-panel-rgb) / var(--glass-fill-stacked));
 }

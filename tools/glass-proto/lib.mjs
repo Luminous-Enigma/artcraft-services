@@ -49,13 +49,14 @@ export function media(base) {
   });
 }
 
-export async function context(env, glass, viewport = { width: 1440, height: 900 }) {
+export async function context(env, glass, viewport = { width: 1440, height: 900 }, theme = { mode: "default" }) {
   const { browser, base } = env;
   const ctx = await browser.newContext({ viewport, reducedMotion: "reduce", deviceScaleFactor: 1 });
-  await ctx.addInitScript((g) => {
-    localStorage.setItem("artcraft-glass-proto", g);
-    localStorage.setItem("artcraft-theme", JSON.stringify({ state: { mode: "default" }, version: 0 }));
-  }, JSON.stringify(glass));
+  // The theme as a person saves it (the app's own store), and the old prototype key for earlier rounds.
+  await ctx.addInitScript(([g, t]) => {
+    if (g !== "null") localStorage.setItem("artcraft-glass-proto", g);
+    localStorage.setItem("artcraft-theme", JSON.stringify({ state: t, version: 0 }));
+  }, [JSON.stringify(glass), theme]);
   const work = media(base);
   ctx.log = [];
   await ctx.route("**/*", (route) => {
