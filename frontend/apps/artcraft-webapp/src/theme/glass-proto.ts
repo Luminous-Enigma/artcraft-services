@@ -7,9 +7,9 @@ import { AA, composeSoulMark, cssVariables, type SoulMark } from "./soul-mark";
  * ("artcraft-glass-proto"); there is no picker card yet.
  *
  * Glass is a see-through fill over a picture. Frost is the blur only. Darkened is a smoke tint:
- * it darkens the glass and what shows through it. The fill is never left to taste: it is the
+ * it darkens the glass and the background picture. The fill is never left to taste: it is the
  * least that keeps body text at AA over the darkest and the lightest thing that can be behind
- * (pure black and pure white, after the smoke), so it holds over any picture.
+ * (pure black and pure white; smoke and frost don't count), so it holds over any picture or work.
  */
 export interface GlassProto {
   on: boolean;
@@ -73,8 +73,9 @@ export function composeGlassProto(g: GlassProto): ComposedGlass {
   const glass = mix(BASE[g.kind], SMOKE, d * MAX_SMOKE_GLASS);
   const mark = composeSoulMark({ background: glass, accent: ACCENT, tint: 0.5, character: "cool" });
   const smokeBehind = d * MAX_SMOKE_BEHIND;
-  const lightest = mix("#FFFFFF", SMOKE, smokeBehind);
-  const behind: Hex[] = ["#000000", lightest];
+  // The smoke covers only the background picture. Glass that floats over work (a toolbar over
+  // an image, a menu over a video) has no smoke under it, so, like frost, it isn't counted.
+  const behind: Hex[] = ["#000000", "#FFFFFF"];
   const fg = mark.tokens.fg;
   const surfaces = [mark.tokens.bg, mark.tokens.panel];
   const worstAt = (fill: number) =>
