@@ -18,7 +18,7 @@ export interface GlassPicture {
 
 /** Glass's own names for the three-color fades (Glass doesn't say where they came from). */
 const FADE_NAMES: Record<string, string> = {
-  Aurora: "Northern lights",
+  Borealis: "Northern lights",
   Synthwave: "Neon dusk",
   Nebula: "Cosmos",
   Ember: "Hearth",
@@ -32,7 +32,7 @@ export const GLASS_PICTURES: GlassPicture[] = [
   { id: "shore", name: "Shore", kind: "image" },
   { id: "sunrise", name: "Sunrise", kind: "image" },
   { id: "marble", name: "Marble", kind: "image" },
-  { id: "aurora", name: "Aurora", kind: "image" },
+  { id: "aurora", name: "Polar lights", kind: "image" },
   { id: "ink", name: "Ink", kind: "image" },
   { id: "night-city", name: "Night city", kind: "image" },
   ...SIGNATURE_GRADIENTS.filter((g) => g.colors.length === 3).map(
@@ -51,7 +51,7 @@ export const GLASS_SIGNATURES: ({ name: string } & GlassSeeds)[] = [
   sig("Shore", "light", "shore", accent("Teal")),
   sig("Sunrise", "light", "sunrise", accent("Amber")),
   sig("Marble", "light", "marble", accent("Ink")),
-  sig("Aurora", "dark", "aurora", accent("Green")),
+  sig("Polar lights", "dark", "aurora", accent("Green")),
   sig("Ink", "dark", "ink", accent("Cerulean")),
   sig("Night city", "dark", "night-city", accent("Purple")),
   ...GLASS_PICTURES.filter((p) => p.kind === "fade").map((p) =>

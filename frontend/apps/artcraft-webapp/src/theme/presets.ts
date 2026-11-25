@@ -234,7 +234,7 @@ export const SIGNATURE_GRADIENTS: {
     accent: "#C21460",
   },
   {
-    name: "Aurora",
+    name: "Borealis",
     colors: ["#0D2661", "#0C2F1C", "#0B0E14"],
     shape: "vertical",
     accent: "#1CB6BE",
