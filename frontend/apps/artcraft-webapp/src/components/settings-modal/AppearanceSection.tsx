@@ -1438,17 +1438,17 @@ function GlassControls() {
         hint={
           seeds.linked && !(seeds.frostOn && seeds.frost > 0)
             ? "Linked to Frost, and Frost is off: menus and panels are a full layer of glass. Turn Frost on, or unlink, to use this."
-            : "How much the side menu, panels and every tool cover the picture. Lower is more see-through; the guard thickens it only as far as text needs."
+            : "How see-through the side menu, panels and every tool are. Higher shows more of the picture; the guard thickens them only as far as text needs."
         }
-        value={Math.round(seeds.transparency * 100)}
-        onChange={(v) => setSeeds({ transparency: v / 100 })}
-        left="See-through"
-        right="Solid"
+        value={Math.round((1 - seeds.transparency) * 100)}
+        onChange={(v) => setSeeds({ transparency: 1 - v / 100 })}
+        left="Solid"
+        right="See-through"
       />
       <div className="flex items-start justify-between gap-4">
         <Label
           title="Link Transparency to Frost"
-          hint="Linked, Transparency applies only while the glass is frosted (9% and 30% to start). Unlinked, set them apart and tinker freely."
+          hint="Linked, Transparency applies only while the glass is frosted (Transparency 91% and Frost 30% to start). Unlinked, set them apart and tinker freely."
         />
         <Switch enabled={seeds.linked} setEnabled={(linked) => setSeeds({ linked })} offClassName="bg-white/20" />
       </div>
