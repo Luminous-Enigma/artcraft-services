@@ -32,6 +32,7 @@ export const GLASS_PICTURES: GlassPicture[] = [
   { id: "shore", name: "Shore", kind: "image" },
   { id: "sunrise", name: "Sunrise", kind: "image" },
   { id: "marble", name: "Marble", kind: "image" },
+  { id: "confetti", name: "Confetti", kind: "image" },
   { id: "aurora", name: "Polar lights", kind: "image" },
   { id: "ink", name: "Ink", kind: "image" },
   { id: "night-city", name: "Night city", kind: "image" },
